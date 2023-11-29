@@ -1,3 +1,5 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100;200;400;500;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

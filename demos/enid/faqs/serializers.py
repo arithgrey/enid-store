@@ -6,5 +6,5 @@ from django.contrib.auth.models import User
 class FaqSerializer(serializers.HyperlinkedModelSerializer):    
     class Meta:
         model = Faq
-        fields = ['id', 'ask', 'answer', 'is_visible']
+        fields = ['id', 'ask', 'answer', 'is_visible','url_img','we_mean']
         
