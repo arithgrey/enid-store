@@ -39,7 +39,6 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
-local_settings.py
 db.sqlite3
 
 # Vite
