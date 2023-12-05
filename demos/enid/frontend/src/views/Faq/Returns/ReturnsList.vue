@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white md:w-1/2 mx-auto mt-5 mb-5">
+  <div class="bg-white rounded-lg shadow p-5 md:w-1/2 mx-auto mt-5 mb-5">
     <h2 class="font-bold text-gray-900 sm:text-3xl sm:tracking-tight">
       Cambios y devoluciones
     </h2>
@@ -15,7 +15,7 @@
 
     <section class="bg-white dark:bg-gray-900 mt-10">
       <div class="">
-        <h2 class="mb-8 text-2xl tracking-tight font-extrabold dark:text-white text-blue-800">
+        <h2 class="mb-8 text-2xl tracking font-extrabold dark:text-white text-blue-700">
           Preguntas relacionadas
         </h2>
         <returns-list />

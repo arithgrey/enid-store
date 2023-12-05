@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import FaqList from '@/views/Faq/FaqList.vue';
 import ReturnsList from '@/views/Faq/Returns/ReturnsList.vue'
 import ReturnsDetail from '@/views/Faq/Returns/ReturnsDetail.vue'
+import SeachOrders from '@/views/SearchOrders/Form.vue'
 
 const routes = [
   {
@@ -25,7 +26,7 @@ const routes = [
       {
         path: 'rastreo',
         name: 'rastreo',
-        component: [],
+        component: SeachOrders,
       },
     ],
   },

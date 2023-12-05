@@ -486,6 +486,7 @@ const navigation = {
     { name: "💪EXPERIENCIA", href: "#" },
     { name: "P-CONTRA ENTREGA", href: "#" },
     { name: "REFERENCIAS", href: "#" },
+    { name: "RASTREO", href: "rastreo" },
     { name: "CAMBIOS", href: "cambios-y-devoluciones" },
     { name: "FAQ 🫡 QUE NADIE TE DIÓ", href: "/faq" },
   ],
