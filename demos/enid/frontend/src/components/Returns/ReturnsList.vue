@@ -1,5 +1,5 @@
 <template>
-  <div class="grid pt-8 text-left border-t border-gray-200 md:gap-16 dark:border-gray-700 md:grid-cols-2">
+  <div class="grid pt-8 text-left border-t border-gray-200 md:gap-16 dark:border-gray-900 md:grid-cols-2">
     <div v-for="item in returnsList" :key="item.id">
       <div class="mb-10">
         <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
@@ -13,12 +13,12 @@
           <div v-if="item.call_to_action" class="mt-5 text-black">
             <!-- Verifica si item.path_seccion existe y renderiza el enlace correspondiente -->
             <router-link v-if="item.path_seccion" :to="{ name: item.path_seccion, params:{} }" 
-            class="px-8 py-2 border font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900">
+            class="px-8 py-2 border font-medium rounded-md text-white bg-gray-900 hover:bg-blue-700">
               {{ item.call_to_action }}
             </router-link>
             <!-- Si item.path_seccion no existe, renderiza el enlace para 'cambios-y-devoluciones' -->
             <router-link v-else :to="{ name: 'cambios-y-devoluciones', params: { id: item.id } }" 
-            class="px-8 py-2 border font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900">
+            class="px-8 py-2 border font-medium rounded-md text-white bg-gray-900 hover:bg-blue-700">
               {{ item.call_to_action }}
             </router-link>
           </div>
