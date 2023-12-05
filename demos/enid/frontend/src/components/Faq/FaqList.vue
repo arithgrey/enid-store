@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   data() {
@@ -49,7 +48,7 @@ export default {
   methods: {
     async fetchFaqList() {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/faq.json");
+        const response = await this.$axios.get("faq");
         this.faqList = response.data;
       } catch (error) {
         console.error("Error fetching FAQ list:", error);

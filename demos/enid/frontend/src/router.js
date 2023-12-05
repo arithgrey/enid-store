@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainLayout from '@/layouts/MainLayout.vue'; // Ajusta la ruta según la estructura de tu proyecto
-import FaqList from './views/Faq/FaqList.vue';
+import MainLayout from '@/layouts/MainLayout.vue'; 
+import FaqList from '@/views/Faq/FaqList.vue';
+import ReturnsList from '@/views/Faq/Returns/ReturnsList.vue'
+import ReturnsDetail from '@/views/Faq/Returns/ReturnsDetail.vue'
 
 const routes = [
   {
@@ -11,7 +13,20 @@ const routes = [
         path: 'faq',
         component: FaqList,
       },
-      // Otras rutas pueden ir aquí
+      {
+        path: 'cambios-y-devoluciones',
+        component: ReturnsList,        
+      },
+      {
+        path: '/cambios-y-devoluciones/:id',
+        name: 'cambios-y-devoluciones',
+        component: ReturnsDetail,
+      },
+      {
+        path: 'rastreo',
+        name: 'rastreo',
+        component: [],
+      },
     ],
   },
 ];
