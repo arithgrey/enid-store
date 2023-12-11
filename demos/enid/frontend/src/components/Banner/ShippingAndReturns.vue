@@ -306,12 +306,43 @@
 
             <div class="ml-auto flex items-center">
               <!-- Search -->
-              <div class="flex lg:ml-6">
-                <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
-                  <span class="sr-only">Search</span>
-                  <MagnifyingGlassIcon class="h-6 w-6" aria-hidden="true" />
-                </a>
-              </div>
+              
+
+
+  <div class="md:w-2/12 justify-end flex items-center space-x-4 xl:space-x-8">
+                                <div class="hidden lg:flex items-center">
+                                    <button @click="search=!search" aria-label="search items" class="text-gray-800 dark:hover:text-gray-300 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800">
+                                        <svg class="fill-stroke" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 11C5 15.4183 8.58172 19 13 19C17.4183 19 21 15.4183 21 11C21 6.58172 17.4183 3 13 3C8.58172 3 5 6.58172 5 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M2.99961 20.9999L7.34961 16.6499" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                    <input v-if="search" id="searchInput" type="text" placeholder="search" class="text-sm dark:bg-gray-900 dark:placeholder-gray-300 text-gray-600 rounded ml-1 border border-transparent focus:outline-none focus:border-gray-400 px-1" />
+                                </div>
+                                
+
+                                <div class="flex lg:hidden">
+                                    <button aria-label="show options" @click="search=!search" class="text-black dark:text-white dark:hover:text-gray-300 hidden md:flex focus:outline-none focus:ring-2 rounded focus:ring-gray-600">
+                                        <svg class="fill-stroke" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 6H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M6 18H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+
+                                    <button aria-label="open menu" @click="menu=true" class="text-black dark:text-white dark:hover:text-gray-300 md:hidden focus:outline-none focus:ring-2 rounded focus:ring-gray-600">
+                                        <svg class="fill-stroke" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 6H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M6 18H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+
 
               <!-- Cart -->
               <div class="ml-4 flow-root lg:ml-6">
@@ -336,6 +367,7 @@
 </template>
 
 <script setup>
+
 import { ref } from "vue";
 import {
   Dialog,
@@ -359,6 +391,9 @@ import {
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import axiosInstance from "@/axiosInstance.js";
+
+
+
 const navigation = {
   categories: [
     {
@@ -496,5 +531,22 @@ const open = ref(false);
 
 const generateRoute = (path) => {
   return path.startsWith("/") ? path : `/${path}`;
+};
+</script>
+
+
+<script>
+export default {
+  name: "component",
+  data() {
+    return {
+      menu: false,
+      search: false,
+      options: false
+    };
+  },
+  methods: {
+    // Aquí puedes agregar tus métodos
+  },
 };
 </script>

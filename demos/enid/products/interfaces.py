@@ -1,7 +1,7 @@
 from abc import ABC, abstractclassmethod
 
-class ProductCardHandler(ABC):
+class ProductCartHandler(ABC):
     
     @abstractclassmethod
-    def add_product(self, card, product, amount):
+    def add_product(self, cart, product, amount):
         pass
