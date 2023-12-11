@@ -41,8 +41,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',    
     'faqs',
-    'returns',
-    'products',
+    'returns',  
+    'cart',          
+    'products',                
+    'item_cart',    
+    'variants',  
+    'product_variant', 
+    
+
 ]
 
 MIDDLEWARE = [

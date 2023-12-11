@@ -4,6 +4,7 @@ import FaqList from '@/views/Faq/FaqList.vue';
 import ReturnsList from '@/views/Faq/Returns/ReturnsList.vue'
 import ReturnsDetail from '@/views/Faq/Returns/ReturnsDetail.vue'
 import SeachOrders from '@/views/SearchOrders/Form.vue'
+import ProductList from '@/views/Product/ProducList.vue'
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
         name: 'rastreo',
         component: SeachOrders,
       },
+      {
+        path: '/',
+        name: 'product-list',
+        component: ProductList,
+      },
+
     ],
   },
 ];

@@ -1,5 +1,6 @@
 import os
-from models_loader import FaqsLoader, ReturnsLoader
+from models_loader import FaqsLoader, ReturnsLoader, ProductsLoader, VariantLoader, ProductVariantLoader
+
 
 class EnidLoader:
     def load_Faqs(self):
@@ -65,9 +66,147 @@ class EnidLoader:
         ]
         ReturnsLoader(data).load_data()            
 
+    def load_products(self):
+        data = [
+            {
+                "id":1,
+                "name": '''Kit de pesas 16 discos 34kg en total, barra z, barra recta y mancuernas | ENVÍO GRATIS''',                 
+                "price": 1550,
+                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_1276.jpeg",
+                "weight": 34,
+            },
+            {
+                "id":2,
+                "name": '''Kit de 2 seguros para barras y mancuernas standard de una pulgada, de metal, para el intercambio rápido y práctico de discos | ENVÍO GRATIS ''',                 
+                "price": 169,
+                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/83527d66v-j2dssshh7ffsf5-4fcjfff6-b5a7-b24f576453b5.jpeg"
+            },
+            {
+                "id":3,
+                "name": '''soporte de inmersión para entrenamiento físico, barra de inmersión | ENVÍO GRATIS ''',                 
+                "price": 1499,
+                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/81rRJxNYhmL._AC_SL1500_.jpg",
+                "weight": 10,
+            },
+            {
+                "id":4,
+                "name": '''kit 16 discos 42kg en total, mancuernas, barra recta, barra z, barra romana | ENVÍO GRATIS ''',                 
+                "price": 2100,
+                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_6235.jpeg",
+                "weight": 42,
+            },            
+            {
+                "id":5,
+                "name": '''kit 80kg mancuernas, barra romana, barra z, barra recta | ENVÍO GRATIS ''',                 
+                "price": 3300,
+                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_2083.jpeg",
+                "weight": 80,
+            },
+                                             
+        ]
+        ProductsLoader(data).load_data()            
+
+
+    def load_variant(self):
+        data = [
+            {
+                "id":1,
+                "name": '''Disco de 5KG''',                                 
+                "weight": 5,                                
+            },
+            {
+                "id":2,
+                "name": '''Disco de 3KG''',                                 
+                "weight": 3,                
+            },
+            {
+                "id":3,
+                "name": '''Disco de 2KG''',                                 
+                "weight": 2,                
+            },
+            {
+                "id":4,
+                "name": '''Disco de 1KG''',                                 
+                "weight": 1,                
+            },
+            {
+                "id":5,
+                "name": '''Barra Z''',                                 
+                "weight": 1,                
+                "long": 140,
+            },
+            {
+                "id":6,
+                "name": '''Barra Romana''',                                 
+                "weight": 1,                
+                "long": 140,
+            },
+            {
+                "id":7,
+                "name": '''Barra Recta''',                                 
+                "weight": 1.5,                
+                "long": 165,
+            },
+            {
+                "id":8,
+                "name": '''Maneral para mancuerna''',
+                "weight": .5,                
+                "long": 30,
+            },
+            {
+                "id":9,
+                "name": '''Seguro (collarin para ajustar los disos) ''',
+                "weight": .2
+                
+            },
+                                            
+        ]
+
+        VariantLoader(data).load_data()            
+
+
+    def load_product_variant(self):
+
+        loader = ProductVariantLoader()
+        #34Kg
+        loader.load_product_variant(product_id=1, variant_id=1,pieces=2)
+        loader.load_product_variant(product_id=1, variant_id=2,pieces=2)
+        loader.load_product_variant(product_id=1, variant_id=3,pieces=6)
+        loader.load_product_variant(product_id=1, variant_id=4,pieces=6)
+
+        loader.load_product_variant(product_id=1, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=1, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=1, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=1, variant_id=9,pieces=6)
+        
+        #42Kg 2100 
+
+        loader.load_product_variant(product_id=4, variant_id=1,pieces=2)
+        loader.load_product_variant(product_id=4, variant_id=2,pieces=6)
+        loader.load_product_variant(product_id=4, variant_id=3,pieces=6)
+        loader.load_product_variant(product_id=4, variant_id=4,pieces=2)
+
+        loader.load_product_variant(product_id=4, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=4, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=4, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=4, variant_id=6,pieces=1)
+        loader.load_product_variant(product_id=4, variant_id=9,pieces=6)
+        
+    
+
     def load_base(self):
         self.load_Faqs()
         self.load_Returns()
+        self.load_products()
+        self.load_variant()
+        self.load_product_variant()
+        
 
 if __name__ == "__main__":
     EnidLoader().load_base()
+
+
+
+
+
+

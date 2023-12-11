@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from faqs.models import Faq
-from django.contrib.auth.models import User
 
 
 class FaqSerializer(serializers.HyperlinkedModelSerializer):    

@@ -1,7 +1,7 @@
-#Servicio par agregar productos al carro de compras (Ver implementaciones en product_card.py) 
-class ServiceProductCard:
-    def __init__(self, product_card_handler):
-        self.product_card_handler = product_card_handler
+#Servicio par agregar productos al carro de compras (Ver implementaciones en product_cart.py) 
+class ServiceProductCart:
+    def __init__(self, product_cart_handler):
+        self.product_cart_handler = product_cart_handler
 
-    def add_product(self, card, product, amount):
-        self.product_card_handler.add_product(card, product, amount)
+    def add_product(self, cart, product, amount):
+        self.product_cart_handler.add_product(cart, product, amount)
