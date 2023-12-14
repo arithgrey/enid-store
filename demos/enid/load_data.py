@@ -70,38 +70,36 @@ class EnidLoader:
         data = [
             {
                 "id":1,
-                "name": '''Kit de pesas 16 discos 34kg en total, barra z, barra recta y mancuernas | ENVÍO GRATIS''',                 
+                "name": '''PARA LOS QUE VAN INICIANDO''',                 
                 "price": 1550,
                 "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_1276.jpeg",
                 "weight": 34,
-            },
-            {
-                "id":2,
-                "name": '''Kit de 2 seguros para barras y mancuernas standard de una pulgada, de metal, para el intercambio rápido y práctico de discos | ENVÍO GRATIS ''',                 
-                "price": 169,
-                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/83527d66v-j2dssshh7ffsf5-4fcjfff6-b5a7-b24f576453b5.jpeg"
-            },
-            {
+                "count_discs": True,
+            },            
+           {
                 "id":3,
-                "name": '''soporte de inmersión para entrenamiento físico, barra de inmersión | ENVÍO GRATIS ''',                 
+                "name": '''PARA LOS QUE VAN RÁPIDO ''',                 
                 "price": 1499,
                 "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/81rRJxNYhmL._AC_SL1500_.jpg",
                 "weight": 10,
             },
             {
                 "id":4,
-                "name": '''kit 16 discos 42kg en total, mancuernas, barra recta, barra z, barra romana | ENVÍO GRATIS ''',                 
+                "name": '''PARA QUIEN QUIERE TODO, SIN ESPACIO''',                 
                 "price": 2100,
                 "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_6235.jpeg",
                 "weight": 42,
+                "count_discs": True,
             },            
             {
                 "id":5,
-                "name": '''kit 80kg mancuernas, barra romana, barra z, barra recta | ENVÍO GRATIS ''',                 
+                "name": '''PARA LOS QUE YA NO VAN AL GYM ''',                 
                 "price": 3300,
                 "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_2083.jpeg",
                 "weight": 80,
+                "count_discs": True,
             },
+             
                                              
         ]
         ProductsLoader(data).load_data()            
@@ -112,22 +110,26 @@ class EnidLoader:
             {
                 "id":1,
                 "name": '''Disco de 5KG''',                                 
-                "weight": 5,                                
+                "weight": 5,
+                "disc": True,
             },
             {
                 "id":2,
                 "name": '''Disco de 3KG''',                                 
-                "weight": 3,                
+                "weight": 3, 
+                "disc": True,               
             },
             {
                 "id":3,
                 "name": '''Disco de 2KG''',                                 
-                "weight": 2,                
+                "weight": 2, 
+                "disc": True,               
             },
             {
                 "id":4,
                 "name": '''Disco de 1KG''',                                 
-                "weight": 1,                
+                "weight": 1, 
+                "disc": True,               
             },
             {
                 "id":5,
@@ -137,7 +139,7 @@ class EnidLoader:
             },
             {
                 "id":6,
-                "name": '''Barra Romana''',                                 
+                "name": '''Barra Romana 1kg''',                                 
                 "weight": 1,                
                 "long": 140,
             },
