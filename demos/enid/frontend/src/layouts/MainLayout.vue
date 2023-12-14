@@ -1,6 +1,8 @@
 <template>
-  <div class="min-h-screen flex flex-col ">    
-    <ShippingAndReturns />
+  <div class="min-h-screen flex flex-col">    
+    <div class="fixed top-0 left-0 right-0 z-50">
+    <ShippingAndReturns/>
+    </div>
     <div class="flex-grow sm:py-12 w-96 md:w-full mx-auto md:mx-0 ">      
       <router-view />
     </div>

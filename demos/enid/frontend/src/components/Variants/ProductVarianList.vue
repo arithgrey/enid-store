@@ -6,54 +6,84 @@
       </p>
     </div>
     <div class="mt-2 mb-2">
-      <p class="tracking-tight text-base font-medium leading-4 text-gray-800">
+      <p
+        v-if="formattedTotalWeight < 0.5"
+        class="tracking-tight text-base font-medium leading-4 text-gray-800"
+      >
         Peso total {{ product.formatted_weight }}
       </p>
+      <p
+        v-if="formattedTotalWeight > 0"
+        class="tracking-tight text-base font-medium leading-4 text-gray-800"
+      >
+        Peso total de los discos {{ formattedTotalWeight.toFixed(2) }} Kg
+      </p>
     </div>
-    <div v-if="products_variant.length > 0">  
+    <div v-if="products_variant.length > 0">
       <ul>
-        <li v-for="(variant, index) in products_variant" :key="index" class="tracking-tight text-sm leading-3 text-gray-800 mt-1">
-          <span class="font-semibold mr-3"> {{ variant.pieces}} </span>
-          <span> {{variant.variant.name}}</span>
-          
+        <li
+          v-for="(variant, index) in products_variant"
+          :key="index"
+          class="tracking-tight text-sm leading-3 text-gray-800 mt-1"
+        >
+          <span class="font-semibold mr-3"> {{ variant.pieces }} </span>
+          <span> {{ variant.variant.name }}</span>
         </li>
       </ul>
     </div>
     <div class="mt-6">
-      <p class="tracking-tight text-base font-medium leading-4 text-gray-800">
-        {{ product.formatted_price }}
-      </p>
+      <p class="tracking-tight text-base font-medium leading-4 text-gray-900">
+        {{ product.formatted_price }} - envío gratis
+      </p>      
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   props: {
     product: {
       type: Object,
       required: true,
     },
-  },  
+  },
   data() {
     return {
-      products_variant: [],       
+      products_variant: [],
     };
+  },
+  computed: {
+    formattedTotalWeight() {
+      return this.calculate_total_disc_weight();
+    },
   },
   mounted() {
     this.fetch_products_variant();
   },
-  methods: {  
+  methods: {
     async fetch_products_variant() {
       try {
-        
-        const response = await this.$axios.get(`/producto-variante/producto/${this.product.id}/variantes/`);
+        const response = await this.$axios.get(
+          `/producto-variante/producto/${this.product.id}/variantes/`
+        );
         this.products_variant = response.data;
-
       } catch (error) {
         console.error("Error fetching FAQ list:", error);
       }
-    }
-  }
+    },
+    calculate_total_disc_weight() {
+      let total_weight = 0;
+
+      if (this.product.count_discs) {
+        total_weight = this.products_variant.reduce((total, item) => {
+          const { disc, weight } = item.variant;
+          return total + (disc ? item.pieces * weight : 0);
+        }, 0);
+      }
+
+      return total_weight;
+    },
+  },
 };
 </script>
