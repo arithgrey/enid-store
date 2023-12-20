@@ -1,5 +1,6 @@
 import os
-from models_loader import FaqsLoader, ReturnsLoader, ProductsLoader, VariantLoader, ProductVariantLoader
+from models_loader import FaqsLoader, ReturnsLoader, VariantLoader, ProductVariantLoader, CategoriesLoader, ProductLoader
+from initial_products_images import ImagesLoader
 
 
 class EnidLoader:
@@ -66,44 +67,70 @@ class EnidLoader:
         ]
         ReturnsLoader(data).load_data()            
 
+    def load_categories(self):
+        data = [
+            {
+                "id":1,
+                "name": '''Pesas y barras''',
+            },            
+           {
+                "id":2,
+                "name": '''Accesorios''',
+                
+            },             
+                                             
+        ]
+        CategoriesLoader(data,1).load_data()
+
+
+
     def load_products(self):
         data = [
             {
                 "id":1,
                 "name": '''PARA LOS QUE VAN INICIANDO''',                 
-                "price": 1550,
-                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_1276.jpeg",
+                "price": 1550,                
                 "weight": 34,
                 "count_discs": True,
+                "top_seller": True,
+                "category": 1,
             },            
            {
                 "id":3,
                 "name": '''PARA LOS QUE VAN RÁPIDO ''',                 
-                "price": 1499,
-                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/81rRJxNYhmL._AC_SL1500_.jpg",
+                "price": 1499,                
                 "weight": 10,
+                "top_seller": True,
+                "category":1,
             },
             {
                 "id":4,
                 "name": '''PARA QUIEN QUIERE TODO, SIN ESPACIO''',                 
-                "price": 2100,
-                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_6235.jpeg",
+                "price": 2100,                
                 "weight": 42,
                 "count_discs": True,
+                "top_seller": True,
+                "category":1,
             },            
             {
                 "id":5,
                 "name": '''PARA LOS QUE YA NO VAN AL GYM ''',                 
-                "price": 3300,
-                "path_main_image":"https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/img_tema/productos/IMG_2083.jpeg",
+                "price": 3300,                
                 "weight": 80,
                 "count_discs": True,
+                "top_seller": True,
+                "category":1,
             },
              
                                              
         ]
-        ProductsLoader(data).load_data()            
-
+        
+        loader = ProductLoader()
+        products = loader.products(data)
+        
+        images_loader = ImagesLoader()
+        images_loader.load_products_images(products)
+        
 
     def load_variant(self):
         data = [
@@ -153,7 +180,7 @@ class EnidLoader:
                 "id":8,
                 "name": '''Maneral para mancuerna''',
                 "weight": .5,                
-                "long": 30,
+                "long": 30,                
             },
             {
                 "id":9,
@@ -192,13 +219,12 @@ class EnidLoader:
         loader.load_product_variant(product_id=4, variant_id=7,pieces=1)
         loader.load_product_variant(product_id=4, variant_id=5,pieces=1)
         loader.load_product_variant(product_id=4, variant_id=6,pieces=1)
-        loader.load_product_variant(product_id=4, variant_id=9,pieces=6)
-        
-    
+        loader.load_product_variant(product_id=4, variant_id=9,pieces=6)    
 
     def load_base(self):
         self.load_Faqs()
         self.load_Returns()
+        self.load_categories()
         self.load_products()
         self.load_variant()
         self.load_product_variant()
@@ -206,9 +232,3 @@ class EnidLoader:
 
 if __name__ == "__main__":
     EnidLoader().load_base()
-
-
-
-
-
-

@@ -1,8 +1,8 @@
 <template>
   <div class="bg-white py-10 sm:px-10  mt-5">
     <div class="grid">
-      <h3 class="text-3xl font-semibold leading-7 text-gray-800 uppercase">
-        Los populares 
+      <h3 class="text-3xl font-semibold leading-7 text-gray-900 uppercase">
+        {{ title }}
       </h3>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-2 lg:gap-y-0">
@@ -11,9 +11,9 @@
         :key="index"
         class="flex flex-col mt-10 "
       >
-        <div class="relative">
-          <img
-            :src="item.path_main_image"
+        <div class="relative">          
+          <img            
+            :src="getMainImage(item)"
             :alt="item.name"
             class="block w-full h-auto"
           />
@@ -89,9 +89,10 @@
             </div>
             <div class="w-full">
               <button
-                @click="openModal"
-                class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800"
-              >
+                @click="addToCart(item)"
+                class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 
+                focus:ring-2 text-white w-full tracking-tight 
+                py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800">
                 Añadir al carrito
               </button>
             </div>
@@ -110,6 +111,16 @@ export default {
   components: {
     ProductVarianList,
   },
+  props: {
+    title: {
+      type: String,
+      default: "Ya sabes.. los populares", // Valor por defecto si no se proporciona desde el componente padre
+    },
+    url_api:{
+      type: String,
+      default: "top-sellers", // Valor por defecto si no se proporciona desde el componente padre
+    }
+  },  
   data() {
     return {
       products: [],
@@ -121,7 +132,7 @@ export default {
   methods: {
     async fetchProducts() {
       try {
-        const response = await this.$axios.get(`productos`);
+        const response = await this.$axios.get(`productos/${this.url_api}`);
         this.products = response.data.map((product) => ({
           ...product,
           show: false,
@@ -130,12 +141,28 @@ export default {
       } catch (error) {
         console.error("Error products FAQ list:", error);
       }
+    },   
+    async addToCart(product){
+      
+      try{
+
+      }catch(error){
+
+      }
+
     },    
     toggleShow(index) {
       this.products.forEach((product, i) => {
         product.show = index === i && !product.show;
       });
     },
+    getMainImage(item){
+        
+      const mainImage = item.images.find(img => img.is_main);
+      return mainImage ? mainImage.get_image_url : '';
+
+    }
+
   },
 };
 </script>

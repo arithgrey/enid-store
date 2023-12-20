@@ -7,3 +7,7 @@ router = DefaultRouter()
 router.register(r'', views.ItemCartVuewSet,basename="item-cart")
 # The API URLs are now determined automatically by the router.
 urlpatterns = router.urls
+
+urlpatterns = [
+    path('', include(router.urls)),       
+]

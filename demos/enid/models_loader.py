@@ -1,5 +1,8 @@
 import os
 import django
+from django.utils.text import slugify
+from django.core.files import File
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "enid.settings")
 django.setup()
@@ -9,14 +12,21 @@ from returns.models import Returns
 from products.models import Product
 from variants.models import Variant
 from product_variant.models import ProductVariant
+from categories.models import Category
+
 
 class DataLoader:
-    def __init__(self, model, data):
+    def __init__(self, model, data, slug=0):
         self.model = model
         self.data = data
+        self.slug = slug
 
     def load_data(self):
+        print(f"Ingresando {self.model}")
         for item in self.data:
+            if self.slug:
+                slug = slugify(item["name"])
+                item["slug"] = slug            
             if not self.model.objects.filter(**item).exists():
                 self.model.objects.create(**item)
 
@@ -28,15 +38,36 @@ class ReturnsLoader(DataLoader):
     def __init__(self, data):
         super().__init__(Returns, data)
 
-class ProductsLoader(DataLoader):
-    def __init__(self, data):
-        super().__init__(Product, data)
+class CategoriesLoader(DataLoader):
+    def __init__(self, data,slug=0):
+        super().__init__(Category, data, slug)
 
 class VariantLoader(DataLoader):
     def __init__(self, data):
         super().__init__(Variant, data)
 
 
+class ProductLoader:
+    
+   def products(self, data):
+    products = []
+    for item in data:
+        slug = slugify(item["name"])
+        item["slug"] = slug
+
+        # Obtener la instancia de Category
+        category_id = item["category"]
+        category = Category.objects.get(id=category_id)
+        item["category"]=category
+
+        # Crear el producto con la instancia de Category
+        if not Product.objects.filter(**item).exists():
+            product = Product.objects.create(**item) 
+            products.append(product)
+    
+    return products
+
+        
 
 class ProductVariantLoader:
 
@@ -63,3 +94,4 @@ class ProductVariantLoader:
             return new_product_variant
 
         return existing_product_variant
+

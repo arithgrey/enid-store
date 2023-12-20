@@ -1,10 +1,27 @@
 <template>
-  <div class="">
-    <div class="2xl:container 2xl:mx-auto md:py-12 py-9">
+  <div class="border-t ">
+    <div
+      class="grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 lg:overflow-visible"
+    >
+      <h2
+        class="block font-sans text-3xl antialiased font-semibold leading-tight tracking-normal text-inherit mt-10"
+      >
+        ¿Cuanto tiempo tarda en llegar un pedido?
+      </h2>
+
+      <h6
+        class="block font-sans text-base antialiased  leading-relaxed tracking-normal text-inherit mb-10 mt-5"
+      >
+        <span class="font-bold">
+          Hoy mismo 
+        </span>
+        en CDMX y 2-3 Días hábiles en los estados
+      </h6>
+    </div>
+    <div class="">
       <div
         class="bg-gray-900 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 lg:gap-8 md:gap-12 gap-14 lg:px-20 lg:py-12 py-10 md:px-12 px-4"
       >
-        <!-- Delivery grid Card -->
         <div class="">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +45,11 @@
           <p
             class="text-base leading-6 font-normal dark:text-gray-300 text-gray-100 mt-4 lg:w-full md:w-9/12 w-full"
           >
-            Envíos gratis a todo México
+            Envíos 
+            <span class="font-bold">
+            gratis
+            </span>
+            a todo México
           </p>
         </div>
 
@@ -93,7 +114,10 @@
           <p
             class="text-base leading-6 font-normal dark:text-gray-300 text-gray-100 mt-4 lg:w-full md:w-9/12 w-full"
           >
-            Llegan HOY en CDMX y área metropolitana y de uno a dos días en los
+            <span class="font-bold">
+              Llegan HOY 
+            </span>
+            en CDMX y área metropolitana y de uno a dos días en los
             estados
           </p>
         </div>
@@ -124,7 +148,11 @@
           <p
             class="text-base leading-6 font-normal dark:text-gray-300 text-gray-100 mt-4 lg:w-full md:w-9/12 w-full"
           >
-            El proceso de transacción tiene cifrado de extremo a extremo
+            90 días para 
+            <span class="font-bold">
+              devoluciones 
+            </span>
+            y pago contra entrega en CDMX
           </p>
         </div>
       </div>
