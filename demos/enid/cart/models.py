@@ -4,5 +4,4 @@ from products.models import Product
 
 #Un carro de compras puede tener varios productos   
 class Cart(models.Model):    
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, through='item_cart.ItemCart')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)

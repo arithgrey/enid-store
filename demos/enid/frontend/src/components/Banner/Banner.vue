@@ -25,7 +25,7 @@
           >
             Nada mejor que tener un look nuevo para lograr tus objetivos.
           </div>
-          <div class="text-slate-700 dark:text-slate-500 mt-3">
+          <div class="text-slate-950 dark:text-slate-500 mt-3">
             Kits deportivos para todos los niveles
           </div>
         </figcaption>

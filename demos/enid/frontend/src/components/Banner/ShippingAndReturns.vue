@@ -149,17 +149,7 @@
     </TransitionRoot>
 
     <header class="relative bg-white">
-      <p
-        class="flex h-7 items-center justify-center bg-slate-950 px-4 text-sm font-medium text-white sm:px-6 lg:px-8"
-      >
-        Envíos, cambios y devoluciones gratis
-      </p>
-      <p
-        class="flex h-5 items-center justify-center bg-gray-100 px-4 text-sm sm:px-6 lg:px-8"
-      >
-        Pide y recibe hoy y hasta 12 Meses sin intereses
-      </p>
-
+    <BannerAcion/>
       <nav aria-label="Top" class="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div class="border-b border-gray-200">
           <div class="flex h-16 items-center">
@@ -351,6 +341,7 @@ import {
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
 import ShoppingCartList from "@/components/Cart/ShoppingCartList.vue";
+import BannerAcion from "@/components/Banner/BannerAction.vue";
 
 
 const navigation = {

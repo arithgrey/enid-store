@@ -32,15 +32,25 @@
       </ul>
     </div>
     <div class="mt-6">
-      <p class="tracking-tight text-base font-medium leading-4 text-gray-900">
-        {{ product.formatted_price }} - envío gratis
-      </p>      
+      <p class="leading-4 text-gray-900">
+        <span class="font-bold text-1xl">
+        {{ product.formatted_price }}
+        </span>
+        
+        <span class=" text-slate-600 line-through">
+          ${{ normalizedPrice }}
+        </span>
+      </p>
+      <p
+        class="tracking-tight mt-1 text-sm font-medium leading-4 text-gray-900"
+      >
+        <span class=""> Envío gratis </span>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     product: {
@@ -57,6 +67,10 @@ export default {
     formattedTotalWeight() {
       return this.calculate_total_disc_weight();
     },
+    normalizedPrice() {
+      return (this.product.price * 1.2).toFixed(2);
+    },
+   
   },
   mounted() {
     this.fetch_products_variant();
@@ -83,7 +97,7 @@ export default {
       }
 
       return total_weight;
-    },
+    },    
   },
 };
 </script>

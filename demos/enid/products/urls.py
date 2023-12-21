@@ -6,7 +6,9 @@ from products import views
 router = DefaultRouter()
 router.register(r'', views.ProductVuewSet, basename="product")
 
+
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls)),  
+
 ]
