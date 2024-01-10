@@ -1,5 +1,5 @@
 <template>
-  <footer class="">
+  <footer v-if="show">
     <div
       class="flex flex-col items-center bg-neutral-950 text-center text-white"
     >
@@ -202,3 +202,21 @@
     </p>
   </footer>
 </template>
+
+<script>
+export default {  
+  data(){
+    return {
+      show:true,
+    }
+  },
+  watch: {
+    '$route'(newVal, oldVal) {
+      this.show = true;
+      if(newVal.path.includes('checkout')){
+        this.show = false;
+      }
+    }
+  },    
+};
+</script>

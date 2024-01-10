@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django_seed',
     'corsheaders',
     'rest_framework',    
+    'share_test',
+    'user',
     'image',
     'categories',
     'faqs',
@@ -49,6 +51,10 @@ INSTALLED_APPS = [
     'product_variant', 
     'cart',          
     'item_cart',
+    'state',
+    'address',
+    'order',
+    'item_order',    
 ]
 
 MIDDLEWARE = [
@@ -59,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    
 ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
@@ -137,12 +143,11 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
 CORS_ALLOWED_ORIGINS = [    
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    "http://localhost:5173",    
+    "http://127.0.0.1:5173",    
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/uploads/'

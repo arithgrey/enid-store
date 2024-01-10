@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-white">
-    <!-- Mobile menu -->
+  <div>
+    
     <TransitionRoot as="template" :show="open">
       <Dialog as="div" class="relative z-40 lg:hidden" @close="open = false">
         <TransitionChild
@@ -149,7 +149,7 @@
     </TransitionRoot>
 
     <header class="relative bg-white">
-    <BannerAcion/>
+      <BannerAcion />
       <nav aria-label="Top" class="mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div class="border-b border-gray-200">
           <div class="flex h-16 items-center">
@@ -165,18 +165,23 @@
 
             <!-- Logo -->
             <div class="ml-4 flex lg:ml-0">
-              <a href="#">
-                <span class="sr-only">Your Company</span>
+              <router-link 
+                        
+                       
+                        to="/">
+                  
+                          <span class="sr-only">Delivery Service</span>
                 <img
                   class="h-8 w-auto"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt=""
                 />
-              </a>
+              </router-link>
+              
             </div>
 
             <!-- Flyout menus -->
-            <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch">
+            <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch navegacion" v-if="showMenu">
               <div class="flex h-full space-x-8">
                 <Popover
                   v-for="category in navigation.categories"
@@ -293,7 +298,7 @@
               </div>
             </PopoverGroup>
 
-            <div class="ml-auto flex items-center">
+            <div class="ml-auto flex items-center navegacion">
               <!-- Search -->
               <div class="flex lg:ml-6">
                 <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
@@ -303,17 +308,32 @@
               </div>
 
               <!-- Cart -->
-             
 
               <div class="ml-4 flow-root lg:ml-6">
-                 <ShoppingCartList/>            
+                <a class="group -m-2 flex items-center p-2 "
+                @click="openShoppingCart">
+                  <ShoppingBagIcon
+                  :class="[
+                          totalItemsCart > 0
+                            ? 'font-bold text-gray-950 border-b border-black group-hover:text-blue-700'
+                            : 'text-gray-400 group-hover:text-gray-500',
+                            'h-6 w-6 flex-shrink-0  cursor-pointer'                          
+                        ]"
+                  
+                  aria-hidden="true"/>
+
+                  <span
+                    class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"
+                    >{{ totalItemsCart }}
+                  </span>
+                  <span class="sr-only">items in cart, view bag</span>
+                </a>
               </div>
-            
             </div>
           </div>
         </div>
       </nav>
-    </header>    
+    </header>
   </div>
 </template>
 
@@ -340,9 +360,8 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/vue/24/outline";
-import ShoppingCartList from "@/components/Cart/ShoppingCartList.vue";
-import BannerAcion from "@/components/Banner/BannerAction.vue";
 
+import BannerAcion from "@/components/Banner/BannerAction.vue";
 
 const navigation = {
   categories: [
@@ -468,19 +487,50 @@ const navigation = {
     },
   ],
   pages: [
-    { name: "💪EXPERIENCIA", href: "#" },
-    { name: "P-CONTRA ENTREGA", href: "#" },
-    { name: "REFERENCIAS", href: "#" },
-    { name: "RASTREO", href: "rastreo" },
+        
+    { name: "REFERENCIAS", href: "#" },    
     { name: "CAMBIOS", href: "cambios-y-devoluciones" },
-    { name: "FAQ 🫡 QUE NADIE TE DIÓ", href: "/faq" },
+    
   ],
 };
-
 
 const generateRoute = (path) => {
   return path.startsWith("/") ? path : `/${path}`;
 };
 
 const open = ref(false);
+</script>
+
+<script>
+export default {
+  data(){
+    return {
+      showMenu: true
+    }
+  },
+  model: {    
+    event: 'open_cart'
+  },
+  methods: {
+    openShoppingCart() {
+      this.$emit("open_shopping_cart");
+
+    }
+  },
+  computed: {
+    totalItemsCart() {
+      return this.$store.getters.totalItemsInCart;
+    },    
+  },
+  watch: {    
+    '$route'(newVal, oldVal) {
+      this.showMenu = true; 
+      if(newVal.path.includes('checkout')){
+        this.showMenu = false; 
+      }
+      
+    }
+  },    
+
+};
 </script>
