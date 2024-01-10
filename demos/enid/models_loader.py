@@ -13,7 +13,7 @@ from products.models import Product
 from variants.models import Variant
 from product_variant.models import ProductVariant
 from categories.models import Category
-
+from state.models import State
 
 class DataLoader:
     def __init__(self, model, data, slug=0):
@@ -46,6 +46,9 @@ class VariantLoader(DataLoader):
     def __init__(self, data):
         super().__init__(Variant, data)
 
+class StateLoader(DataLoader):
+    def __init__(self, data):
+        super().__init__(State, data)
 
 class ProductLoader:
     

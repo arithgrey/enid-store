@@ -5,6 +5,7 @@ import ReturnsList from '@/views/Faq/Returns/ReturnsList.vue'
 import ReturnsDetail from '@/views/Faq/Returns/ReturnsDetail.vue'
 import SeachOrders from '@/views/SearchOrders/Form.vue'
 import ProductList from '@/views/Product/ProducList.vue'
+import Checkout from '@/views/checkout/Checkout.vue'
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
         path: 'rastreo',
         name: 'rastreo',
         component: SeachOrders,
+      },
+      {
+        path: 'checkout',
+        name: 'checkout',
+        component: Checkout,
       },
       {
         path: '/',

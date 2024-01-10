@@ -6,6 +6,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/direccion/', include('address.urls')),    
+    path('api/estado/', include('state.urls')),
+    path('api/orden/', include('order.urls')),
+    path('api/item-order/', include('item_order.urls')),
     path('api/faq/', include('faqs.urls')),
     path('api/devoluciones/', include('returns.urls')),
     path('api/productos/', include('products.urls')),    
@@ -16,5 +20,6 @@ urlpatterns = [
     path('api/image/', include('image.urls')),
     path('', include('faqs.urls')),
     path('uploads/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

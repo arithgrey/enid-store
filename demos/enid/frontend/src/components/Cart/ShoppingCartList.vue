@@ -1,17 +1,5 @@
 <template>
   <div>
-    <a class="group -m-2 flex items-center p-2" @click="openCart">
-      <ShoppingBagIcon
-        class="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-        aria-hidden="true"
-      />
-      <span
-        class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"
-        >0</span
-      >
-      <span class="sr-only">items in cart, view bag</span>
-    </a>
-
     <TransitionRoot as="template" :show="open">
       <Dialog as="div" class="relative z-50" @close="open = false">
         <TransitionChild
@@ -49,7 +37,7 @@
                     <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                       <div class="flex items-start justify-between">
                         <DialogTitle class="text-lg font-medium text-gray-900"
-                          >Tu carro de la compra</DialogTitle
+                          >Tu carro de compra</DialogTitle
                         >
                         <div class="ml-3 flex h-7 items-center">
                           <button
@@ -66,60 +54,8 @@
 
                       <div class="mt-8">
                         <div class="flow-root">
-                          <ul
-                            role="list"
-                            class="-my-6 divide-y divide-gray-200"
-                          >
-                            <li
-                              v-for="product in products"
-                              :key="product.id"
-                              class="flex py-6"
-                            >
-                              <div
-                                class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
-                              >
-                                <img
-                                  :src="product.imageSrc"
-                                  :alt="product.imageAlt"
-                                  class="h-full w-full object-cover object-center"
-                                />
-                              </div>
-
-                              <div class="ml-4 flex flex-1 flex-col">
-                                <div>
-                                  <div
-                                    class="flex justify-between text-base font-medium text-gray-900"
-                                  >
-                                    <h3>
-                                      <a :href="product.href">{{
-                                        product.name
-                                      }}</a>
-                                    </h3>
-                                    <p class="ml-4">{{ product.price }}</p>
-                                  </div>
-                                  <p class="mt-1 text-sm text-gray-500">
-                                    {{ product.color }}
-                                  </p>
-                                </div>
-                                <div
-                                  class="flex flex-1 items-end justify-between text-sm"
-                                >
-                                  <p class="text-gray-500">
-                                    Qty {{ product.quantity }}
-                                  </p>
-
-                                  <div class="flex">
-                                    <button
-                                      type="button"
-                                      class="font-medium text-indigo-600 hover:text-indigo-500"
-                                    >
-                                      Remove
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
+                          <StepsShop/>
+                          <CartList/>                          
                         </div>
                       </div>
                     </div>
@@ -128,19 +64,28 @@
                       <div
                         class="flex justify-between text-base font-medium text-gray-900"
                       >
-                        <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>Total</p>
+                        <p>{{ totalPriceQuantity }}</p>
                       </div>
-                      <p class="mt-0.5 text-sm text-gray-500">
-                        Shipping and taxes calculated at checkout.
-                      </p>
+                      <p class="mt-0.5 text-sm text-gray-500">Envío gratis</p>
                       <div class="mt-6">
-                        <a
-                          href="#"
-                          class="flex items-center justify-center rounded-md border
-                           border-transparent bg-slate-900 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-slate-950"
-                          >Revisar y Pagar</a
-                        >
+
+                        <router-link                         
+                        v-if="showReviewAndPay"
+                        @click="open = false"
+                        class="flex items-center justify-center 
+                        rounded-md border border-transparent bg-slate-900 px-6 py-3 text-base font-medium text-white shadow-sm 
+                        hover:bg-slate-950"
+                        to="/checkout">Revisar y Pagar
+                        </router-link>
+                        
+                        <div
+                        v-if="!showReviewAndPay"                        
+                        class="flex items-center justify-center 
+                        rounded-md border border-transparent bg-slate-400 px-6 py-3 text-base font-medium text-white shadow-sm 
+                        hover:bg-slate-400"
+                        >Revisar y Pagar
+                        </div>                      
                       </div>
                       <div
                         class="mt-6 flex justify-center text-center text-sm text-gray-500"
@@ -152,8 +97,7 @@
                             class="font-medium text-blue-600 hover:text-blue-500"
                             @click="open = false"
                           >
-                            
-                            Segue Comprando
+                            Sigue Comprando
                             <span aria-hidden="true"> &rarr;</span>
                           </button>
                         </p>
@@ -170,8 +114,13 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script>
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 import {
   Dialog,
@@ -180,45 +129,40 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
+import CartList from '@/components/Cart/CartList.vue';
+import StepsShop from '@/components/Trusth/StepsShop.vue';
 
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
-
-const products = [
-  {
-    id: 1,
-    name: 'Throwback Hip Bag',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
+export default {
+  components: {
+    Dialog,
+    DialogPanel,
+    DialogTitle,
+    TransitionChild,
+    TransitionRoot,
+    Bars3Icon,
+    MagnifyingGlassIcon,
+    ShoppingBagIcon,
+    XMarkIcon,
+    CartList,
+    StepsShop,
   },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },  
-];
-
-const open = ref(false);
-
-const openCart = () => {
-  open.value = true;
-};
-
-const closeCart = () => {
-  open.value = false;
+  data() {
+    return {
+      open: false,
+    };
+  },
+  methods: {
+    openCart() {      
+      this.open = true;
+    },
+    closeCart() {
+      this.open = false;
+    }    
+  },
+  computed:{
+    showReviewAndPay() {      
+      return (this.$store.getters.totalItemsInCart) > 0;
+    },
+  }
 };
 </script>

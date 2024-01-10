@@ -1,9 +1,49 @@
 import os
-from models_loader import FaqsLoader, ReturnsLoader, VariantLoader, ProductVariantLoader, CategoriesLoader, ProductLoader
+from models_loader import FaqsLoader, ReturnsLoader, VariantLoader, ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader
 from initial_products_images import ImagesLoader
 
 
 class EnidLoader:
+    def load_states(self):
+
+        data = [
+            {"name":"Aguascalientes"},
+            {"name":"Baja California"},
+            {"name":"Baja California Sur"},
+            {"name":"Campeche"},
+            {"name":"Chiapas"},
+            {"name":"Chihuahua"},
+            {"name": "Ciudad de México"},
+            {"name":"Coahuila"},
+            {"name":"Colima"},
+            {"name":"Durango"},
+            {"name":"Estado de México"},
+            {"name":"Guanajuato"},
+            {"name":"Guerrero"},
+            {"name":"Hidalgo"},
+            {"name":"Jalisco"},
+            {"name":"Michoacán"},
+            {"name":"Morelos"},
+            {"name":"Nayarit"},
+            {"name":"Nuevo León"},
+            {"name":"Oaxaca"},
+            {"name":"Puebla"},
+            {"name":"Querétaro"},
+            {"name":"Quintana Roo"},
+            {"name":"San Luis Potosí"},
+            {"name":"Sinaloa"},
+            {"name":"Sonora"},
+            {"name":"Tabasco"},
+            {"name":"Tamaulipas"},
+            {"name":"Tlaxcala"},
+            {"name":"Veracruz"},
+            {"name":"Yucatán"},
+            {"name":"Zacatecas"}
+        ]
+        StateLoader(data).load_data()
+
+
+
     def load_Faqs(self):
         data = [
                 
@@ -222,12 +262,14 @@ class EnidLoader:
         loader.load_product_variant(product_id=4, variant_id=9,pieces=6)    
 
     def load_base(self):
+        self.load_states()
         self.load_Faqs()
         self.load_Returns()
         self.load_categories()
         self.load_products()
         self.load_variant()
         self.load_product_variant()
+        
         
 
 if __name__ == "__main__":

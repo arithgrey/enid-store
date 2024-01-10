@@ -89,7 +89,8 @@
             </div>
             <div class="w-full">
               <button
-                @click="addToCart(item)"
+                @click="addToCart(item)" 
+                                
                 class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 
                 focus:ring-2 text-white w-full tracking-tight 
                 py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800">
@@ -108,6 +109,7 @@
 import ProductVarianList from "@/components/Variants/ProductVarianList.vue";
 
 export default {
+  
   components: {
     ProductVarianList,
   },
@@ -123,13 +125,15 @@ export default {
   },  
   data() {
     return {
-      products: [],
+      open: false,
+      products: [],      
     };
   },
-  mounted() {
+  mounted() {    
     this.fetchProducts();
   },
   methods: {
+    
     async fetchProducts() {
       try {
         const response = await this.$axios.get(`productos/${this.url_api}`);
@@ -142,13 +146,10 @@ export default {
         console.error("Error products FAQ list:", error);
       }
     },   
-    async addToCart(product){
-      
-      try{
-
-      }catch(error){
-
-      }
+    addToCart(product){      
+            
+      this.$emit("open_shopping_cart_product_list");
+      return this.$store.commit('addToCart',product);      
 
     },    
     toggleShow(index) {
@@ -161,7 +162,7 @@ export default {
       const mainImage = item.images.find(img => img.is_main);
       return mainImage ? mainImage.get_image_url : '';
 
-    }
+    } 
 
   },
 };
