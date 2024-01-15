@@ -6,7 +6,7 @@ let fieldNamesAddress = {
   "phone_number": {
     "message": "Hey ingresa tu número tefónico!",
     "minLength": 10,
-    "maxLength": 12,    
+    "maxLength": 12,
   },
   "postal_code": {
     "message": "Hey ingresa tu código postal!",
@@ -45,13 +45,11 @@ describe('Max Lengths', () => {
       const wrapper = mount(FormComponent);
       if (typeof value === 'object' && 'maxLength' in value) {
         let minLengthwrong = value["maxLength"] + 1;
-        const validator = wrapper.vm.v$.form.address[key];
+        const validator = wrapper.vm.v$.form[key];
 
         wrapper.setData({
           form: {
-            address: {
-              [key]: 'a'.repeat(minLengthwrong)
-            }
+            [key]: 'a'.repeat(minLengthwrong)
           }
         });
 
@@ -73,13 +71,13 @@ describe('Min Lengths', () => {
       const wrapper = mount(FormComponent);
       if (typeof value === 'object' && 'minLength' in value) {
         let minLengthwrong = value["minLength"] - 1;
-        const validator = wrapper.vm.v$.form.address[key];
+        const validator = wrapper.vm.v$.form[key];
 
         wrapper.setData({
           form: {
-            address: {
-              [key]: 'a'.repeat(minLengthwrong)
-            }
+
+            [key]: 'a'.repeat(minLengthwrong)
+
           }
         });
 
@@ -107,7 +105,7 @@ describe('Requireds', () => {
 
       const wrapper = mount(FormComponent);
 
-      const validator = wrapper.vm.v$.form.user[key];
+      const validator = wrapper.vm.v$.form[key];
       validator.$touch();
       expect(validator.$errors[0].$validator).toBe("required");
       expect(validator.$errors[0].$message).toEqual(value);
@@ -120,7 +118,7 @@ describe('Requireds', () => {
     it(`mark an error on required - ${key}`, () => {
 
       const wrapper = mount(FormComponent);
-      const validator = wrapper.vm.v$.form.address[key];
+      const validator = wrapper.vm.v$.form[key];
       validator.$touch();
       expect(validator.$errors[0].$validator).toBe("required");
       expect(validator.$errors[0].$message).toEqual(value["message"]);
@@ -137,13 +135,13 @@ describe('Email Validation', () => {
   it('formats email correct', () => {
 
     const wrapper = mount(FormComponent);
-    const emailValidator = wrapper.vm.v$.form.user.email;
+    const emailValidator = wrapper.vm.v$.form.email;
 
     wrapper.setData({
       form: {
-        user: {
-          email: 'arithgrey@gmail.com'
-        }
+
+        email: 'arithgrey@gmail.com'
+
       }
     });
 
@@ -156,13 +154,11 @@ describe('Email Validation', () => {
   it('mark an error on blank', () => {
 
     const wrapper = mount(FormComponent);
-    const emailValidator = wrapper.vm.v$.form.user.email;
+    const emailValidator = wrapper.vm.v$.form.email;
 
     wrapper.setData({
       form: {
-        user: {
-          email: ''
-        }
+        email: ''
       }
     });
 
@@ -175,14 +171,10 @@ describe('Email Validation', () => {
   it('marks an error on false email', () => {
 
     const wrapper = mount(FormComponent);
-    const emailValidator = wrapper.vm.v$.form.user.email;
+    const emailValidator = wrapper.vm.v$.form.email;
 
     wrapper.setData({
-      form: {
-        user: {
-          email: 'arithgrey@slsl¿'
-        }
-      }
+      form: { email: 'arithgrey@slsl¿' }
     });
 
     emailValidator.$touch();
@@ -196,19 +188,19 @@ describe('Email Validation', () => {
 
 
 describe('Phone Number Formatting', () => {
-  
+
   it('formats phone number by removing non-numeric characters', () => {
     const wrapper = mount(FormComponent);
     wrapper.setData({
       form: {
-        address: {
-          phone_number: '123,-4qQ@56-7890'
-        }
+
+        phone_number: '123,-4qQ@56-7890'
+
       }
     });
-  
+
     wrapper.vm.formatPhoneNumber();
-    expect(wrapper.vm.form.address.phone_number).toBe('1234567890');
+    expect(wrapper.vm.form.phone_number).toBe('1234567890');
 
   });
 
@@ -217,15 +209,15 @@ describe('Phone Number Formatting', () => {
     const wrapper = mount(FormComponent);
     wrapper.setData({
       form: {
-        address: {
-          phone_number: '123,-4qQ@56-78911111110'
-        }
+
+        phone_number: '123,-4qQ@56-78911111110'
+
       }
     });
-  
+
     wrapper.vm.formatPhoneNumber();
-    expect(wrapper.vm.form.address.phone_number.length).toBe(12);
-    
+    expect(wrapper.vm.form.phone_number.length).toBe(12);
+
   });
 
 
@@ -235,19 +227,19 @@ describe('Phone Number Formatting', () => {
 
 
 describe('number house big or small number', () => {
-  
+
   it('Mark error on big number', () => {
     const wrapper = mount(FormComponent);
-    const validator = wrapper.vm.v$.form.address.number;
-    
+    const validator = wrapper.vm.v$.form.number;
+
     wrapper.setData({
       form: {
-        address: {
-          number: 11111111111111
-        }
+
+        number: 11111111111111
+
       }
     });
-      
+
     validator.$touch();
     expect(validator.$errors[0].$validator).toEqual('between');
 
@@ -255,16 +247,16 @@ describe('number house big or small number', () => {
 
   it('Mark error on small number', () => {
     const wrapper = mount(FormComponent);
-    const validator = wrapper.vm.v$.form.address.number;
-    
+    const validator = wrapper.vm.v$.form.number;
+
     wrapper.setData({
       form: {
-        address: {
-          number: 0
-        }
+
+        number: 0
+
       }
     });
-      
+
     validator.$touch();
     expect(validator.$errors[0].$validator).toEqual('between');
 
@@ -272,16 +264,16 @@ describe('number house big or small number', () => {
 
   it('Mark error on big interior_number ', () => {
     const wrapper = mount(FormComponent);
-    const validator = wrapper.vm.v$.form.address.interior_number;
-    
+    const validator = wrapper.vm.v$.form.interior_number;
+
     wrapper.setData({
       form: {
-        address: {
-          interior_number: 11111111111111
-        }
+
+        interior_number: 11111111111111
+
       }
     });
-      
+
     validator.$touch();
     expect(validator.$errors[0].$validator).toEqual('between');
 
@@ -289,16 +281,16 @@ describe('number house big or small number', () => {
 
   it('Mark error on small interior_number', () => {
     const wrapper = mount(FormComponent);
-    const validator = wrapper.vm.v$.form.address.interior_number;
-    
+    const validator = wrapper.vm.v$.form.interior_number;
+
     wrapper.setData({
       form: {
-        address: {
-          interior_number: 0
-        }
+
+        interior_number: 0
+
       }
     });
-      
+
     validator.$touch();
     expect(validator.$errors[0].$validator).toEqual('between');
 
@@ -308,7 +300,7 @@ describe('number house big or small number', () => {
 });
 
 describe('Utility Functions', () => {
-  
+
   it('should remove non-numeric characters', () => {
     const wrapper = shallowMount(FormComponent);
     expect(wrapper.vm.cleanNonNumericChars('123-456-7890')).toBe('1234567890');
@@ -333,24 +325,21 @@ describe('Rendering', () => {
 
 
 describe('Computeds', () => {
-  
+
   it('computes isContactInfo correctly when all fields are valid', async () => {
 
     const wrapper = shallowMount(FormComponent);
-    const validator = wrapper.vm.v$.form.user.email;
+    const validator = wrapper.vm.v$.form.email;
     wrapper.setData({
       form: {
-        user: {
-          email: 'test@example.com',
-          name: 'John Doe'
-        },
-        address: {
-          phone_number: '1234567890'
-        }
+        email: 'test@example.com',
+        name: 'John Doe',
+        phone_number: '1234567890'
+
       }
     });
-    
-    validator.$touch();    
+
+    validator.$touch();
     expect(wrapper.vm.isContactInfo).toBe(true);
 
   });
@@ -358,20 +347,18 @@ describe('Computeds', () => {
   it('computes isContactInfo false when one field are not valid', async () => {
 
     const wrapper = shallowMount(FormComponent);
-    const validator = wrapper.vm.v$.form.user.email;
+    const validator = wrapper.vm.v$.form.email;
     wrapper.setData({
       form: {
-        user: {
-          email: 'test@exampl..e.com',
-          name: 'John Doe'
-        },
-        address: {
-          phone_number: '1234567890'
-        }
+
+        email: 'test@exampl..e.com',
+        name: 'John Doe',
+        phone_number: '1234567890'
+
       }
     });
-    
-    validator.$touch();    
+
+    validator.$touch();
     expect(wrapper.vm.isContactInfo).toBe(false);
 
   });
@@ -379,24 +366,20 @@ describe('Computeds', () => {
   it('computes isContactInfo false when one field is black', async () => {
 
     const wrapper = shallowMount(FormComponent);
-    const validator = wrapper.vm.v$.form.user.email;
+    const validator = wrapper.vm.v$.form.email;
     wrapper.setData({
       form: {
-        user: {
-          email: 'test@example.com',
-          name: ''
-        },
-        address: {
-          phone_number: '1234567890'
-        }
+        email: 'test@example.com',
+        name: '',
+        phone_number: '1234567890'
       }
     });
-    
-    validator.$touch();    
+
+    validator.$touch();
     expect(wrapper.vm.isContactInfo).toBe(false);
 
   });
 
 
-  
+
 });

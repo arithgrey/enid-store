@@ -9,9 +9,9 @@
         <div>
           <div class="relative z-0 w-full mb-5 mt-5 group">
             <input
-              v-model="form.user.email"
+              v-model="form.email"
               name="floating_email"
-              @input="v$?.form.user.email.$touch()"
+              @input="v$?.form.email.$touch()"
               id="floating_email"
               class="peer input-cart"
             />
@@ -20,21 +20,18 @@
             </label>
             <span
               class="text-red-500 text-sm"
-              v-if="this.errors.user && this.errors.user.email"
+              v-if="this.errors && this.errors.email"
             >
-              {{ formatError(this.errors.user.email) }}
+              {{ formatError(this.errors.email) }}
             </span>
-            <span
-              class="text-red-500 text-sm"
-              v-if="v$?.form.user.email.$error"
-            >
-              {{ v$?.form.user.email.$errors[0].$message }}
+            <span class="text-red-500 text-sm" v-if="v$?.form.email.$error">
+              {{ v$?.form.email.$errors[0].$message }}
             </span>
           </div>
 
           <div class="relative z-0 w-full mb-5 mt-5 group">
             <input
-              v-model="form.user.name"
+              v-model="form.name"
               @input="formatName"
               type="text"
               name="name"
@@ -47,17 +44,17 @@
             </label>
             <span
               class="text-red-500 text-sm"
-              v-if="this.errors.user && this.errors.user.name"
-              >{{ formatError(this.errors.user.name) }}</span
+              v-if="this.errors && this.errors.name"
+              >{{ formatError(this.errors.name) }}</span
             >
-            <span class="text-red-500 text-sm" v-if="v$?.form.user.name.$error">
-              {{ v$?.form.user.name.$errors[0].$message }}
+            <span class="text-red-500 text-sm" v-if="v$?.form.name.$error">
+              {{ v$?.form.name.$errors[0].$message }}
             </span>
           </div>
 
           <div class="relative z-0 w-full mb-5 mt-5 group">
             <input
-              v-model="form.address.phone_number"
+              v-model="form.phone_number"
               @input="formatPhoneNumber"
               type="tel"
               id="floating_name_phone_number"
@@ -69,14 +66,14 @@
             </label>
             <span
               class="text-red-500 text-sm"
-              v-if="this.errors.address && this.errors.address.phone_number"
-              >{{ formatError(this.errors.address.phone_number) }}</span
+              v-if="this.errors && this.errors.phone_number"
+              >{{ formatError(this.errors.phone_number) }}</span
             >
             <span
               class="text-red-500 text-sm"
-              v-if="v$?.form.address.phone_number.$error"
+              v-if="v$?.form.phone_number.$error"
             >
-              {{ v$?.form.address.phone_number.$errors[0].$message }}
+              {{ v$?.form.phone_number.$errors[0].$message }}
             </span>
           </div>
         </div>
@@ -91,7 +88,7 @@
 
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            v-model="form.address.postal_code"
+            v-model="form.postal_code"
             type="text"
             name="name"
             id="floating_postal_code"
@@ -105,39 +102,33 @@
           </label>
           <span
             class="text-red-500 text-sm"
-            v-if="this.errors.address && this.errors.address.postal_code"
-            >{{ formatError(this.errors.address.postal_code) }}</span
+            v-if="this.errors && this.errors.postal_code"
+            >{{ formatError(this.errors.postal_code) }}</span
           >
-          <span
-            class="text-red-500 text-sm"
-            v-if="v$?.form.address.postal_code.$error"
-          >
-            {{ v$?.form.address.postal_code.$errors[0].$message }}
+          <span class="text-red-500 text-sm" v-if="v$?.form.postal_code.$error">
+            {{ v$?.form.postal_code.$errors[0].$message }}
           </span>
         </div>
 
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            v-model="form.address.street"
+            v-model="form.street"
             type="text"
             name="street"
             id="floating_street"
             class="peer input-cart"
             placeholder=""
             required
-            @input="v$?.form.address.street.$touch()"
+            @input="v$?.form.street.$touch()"
           />
           <label for="floating_street" class="label-input-cart"> Calle* </label>
           <span
             class="text-red-500 text-sm"
-            v-if="this.errors.address && this.errors.address.street"
-            >{{ formatError(this.errors.address.street) }}</span
+            v-if="this.errors && this.errors.street"
+            >{{ formatError(this.errors.street) }}</span
           >
-          <span
-            class="text-red-500 text-sm"
-            v-if="v$?.form.address.street.$error"
-          >
-            {{ v$?.form.address.street.$errors[0].$message }}
+          <span class="text-red-500 text-sm" v-if="v$?.form.street.$error">
+            {{ v$?.form.street.$errors[0].$message }}
           </span>
         </div>
 
@@ -145,7 +136,7 @@
           <div class="">
             <div class="relative z-0 w-full mb-5 mt-5 group">
               <input
-                v-model="form.address.number"
+                v-model="form.number"
                 type="text"
                 name="number"
                 id="floating_number"
@@ -159,21 +150,18 @@
               </label>
               <span
                 class="text-red-500 text-sm"
-                v-if="this.errors.address && this.errors.address.number"
-                >{{ formatError(this.errors.address.number) }}</span
+                v-if="this.errors && this.errors.number"
+                >{{ formatError(this.errors.number) }}</span
               >
-              <span
-                class="text-red-500 text-sm"
-                v-if="v$?.form.address.number.$error"
-              >
-                {{ v$?.form.address.number.$errors[0].$message }}
+              <span class="text-red-500 text-sm" v-if="v$?.form.number.$error">
+                {{ v$?.form.number.$errors[0].$message }}
               </span>
             </div>
           </div>
           <div>
             <div class="relative z-0 w-full mb-5 mt-5 group">
               <input
-                v-model="form.address.interior_number"
+                v-model="form.interior_number"
                 type="interior_number"
                 name="interior_number"
                 id="floating_interior_number"
@@ -187,14 +175,14 @@
               <span
                 class="text-red-500 text-sm"
                 v-if="this.errors.interior_number"
-                >{{ formatError(this.errors.address.interior_number) }}</span
+                >{{ formatError(this.errors.interior_number) }}</span
               >
 
               <span
                 class="text-red-500 text-sm"
-                v-if="v$?.form.address.interior_number.$error"
+                v-if="v$?.form.interior_number.$error"
               >
-                {{ v$?.form.address.interior_number.$errors[0].$message }}
+                {{ v$?.form.interior_number.$errors[0].$message }}
               </span>
             </div>
           </div>
@@ -202,8 +190,8 @@
 
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            @input="v$?.form.address.colony.$touch()"
-            v-model="form.address.colony"
+            @input="v$?.form.colony.$touch()"
+            v-model="form.colony"
             type="text"
             name="colony"
             id="floating_colony"
@@ -215,22 +203,19 @@
           </label>
           <span
             class="text-red-500 text-sm"
-            v-if="this.errors.address && this.errors.address.colony"
+            v-if="this.errors && this.errors.colony"
           >
-            {{ formatError(this.errors.address.colony) }}
+            {{ formatError(this.errors.colony) }}
           </span>
-          <span
-            class="text-red-500 text-sm"
-            v-if="v$?.form.address.colony.$error"
-          >
-            {{ v$?.form.address.colony.$errors[0].$message }}
+          <span class="text-red-500 text-sm" v-if="v$?.form.colony.$error">
+            {{ v$?.form.colony.$errors[0].$message }}
           </span>
         </div>
 
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            @input="v$?.form.address.delegation_or_municipality.$touch()"
-            v-model="form.address.delegation_or_municipality"
+            @input="v$?.form.delegation_or_municipality.$touch()"
+            v-model="form.delegation_or_municipality"
             name="delegation_or_municipality"
             id="floating_delegation_or_municipality"
             class="peer input-cart"
@@ -245,25 +230,23 @@
           <span
             class="text-red-500 text-sm"
             v-if="
-              this.errors.address &&
-              this.errors.address.delegation_or_municipality
+              this.errors &&
+              this.errors.delegation_or_municipality
             "
             >{{
-              formatError(this.errors.address.delegation_or_municipality)
+              formatError(this.errors.delegation_or_municipality)
             }}</span
           >
           <span
             class="text-red-500 text-sm"
-            v-if="v$?.form.address.delegation_or_municipality.$error"
+            v-if="v$?.form.delegation_or_municipality.$error"
           >
-            {{
-              v$?.form.address.delegation_or_municipality.$errors[0].$message
-            }}
+            {{ v$?.form.delegation_or_municipality.$errors[0].$message }}
           </span>
         </div>
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            v-model="form.address.city"
+            v-model="form.city"
             type="text"
             name="city"
             id="floating_city"
@@ -271,16 +254,13 @@
             required
           />
           <label for="floating_city" class="label-input-cart"> Ciudad * </label>
-          <span
-            class="text-red-500 text-sm"
-            v-if="v$?.form.address.city.$error"
-          >
-            {{ v$?.form.address.city.$errors[0].$message }}
+          <span class="text-red-500 text-sm" v-if="v$?.form.city.$error">
+            {{ v$?.form.city.$errors[0].$message }}
           </span>
         </div>
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
-            v-model="form.address.additional_details"
+            v-model="form.additional_details"
             name="additional_details"
             id="floating_additional_details"
             class="peer input-cart"
@@ -294,7 +274,7 @@
           Estado
         </h5>
         <select
-          v-model="form.address.state"
+          v-model="form.state"
           class="block py-2.5 px-4 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         >
           <option class="p-0" value="" disabled selected>
@@ -311,8 +291,8 @@
         </select>
         <span
           class="text-red-500 text-sm"
-          v-if="this.errors.address && this.errors.address.state"
-          >{{ formatError(this.errors.address.state) }}</span
+          v-if="this.errors && this.errors.state"
+          >{{ formatError(this.errors.state) }}</span
         >
 
         <h5
@@ -344,8 +324,9 @@ import { helpers } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 
-const user_rules = {
-  name: {
+const rules = {
+ 
+ name: {
     minLength: helpers.withMessage(
       "El nombre debe tener al menos 10 caracteres.",
       minLength(10)
@@ -356,13 +337,12 @@ const user_rules = {
     ),
     required: helpers.withMessage("El nombre es obligatorio.", required),
   },
+  
   email: {
     required: helpers.withMessage("Hey ingresa un email!", required),
     email: helpers.withMessage("Hey ingresa un email válido!", email),
   },
-};
 
-const address_rules = {
   phone_number: {
     required: helpers.withMessage("Hey ingresa tu número tefónico!", required),
     minLength: helpers.withMessage(
@@ -375,7 +355,7 @@ const address_rules = {
     ),
     numeric: helpers.withMessage("Hey ingresa un teléfono correcto!", numeric),
   },
-
+  
   postal_code: {
     required: helpers.withMessage("Hey ingresa tu código postal!", required),
     minLength: helpers.withMessage(
@@ -413,7 +393,7 @@ const address_rules = {
     integer: helpers.withMessage("Hey ingresa solo números!", required),
     numeric: helpers.withMessage("Hey ingresa solo números!", numeric),
     between: helpers.withMessage(
-      "Hey ingresa solo números correctos!",
+      "Hey ingresa solo números correctos !",
       between(1, 1000000)
     ),
   },
@@ -457,67 +437,57 @@ export default {
     return {
       states: [],
       form: {
-        user: {
-          email: "",
-          name: "",
-        },
-        address: {
-          postal_code: "",
-          street: "",
-          number: "",
-          interior_number: "",
-          colony: "",
-          delegation_or_municipality: "",
-          city: "",
-          state: "",
-          additional_details: "",
-          phone_number: "",
-        },
+        email: "",
+        name: "",
+        postal_code: "",
+        street: "",
+        number: "",
+        interior_number: "",
+        colony: "",
+        delegation_or_municipality: "",
+        city: "",
+        state: "",
+        additional_details: "",
+        phone_number: "",
         products: [],
       },
       errors: {
-        user: {
-          email: "",
-          name: "",
-        },
-        address: {
-          postal_code: "",
-          street: "",
-          number: "",
-          interior_number: "",
-          colony: "",
-          delegation_or_municipality: "",
-          city: "",
-          additional_details: "",
-          phone_number: "",
-        },
+        email: "",
+        name: "",
+        postal_code: "",
+        street: "",
+        number: "",
+        interior_number: "",
+        colony: "",
+        delegation_or_municipality: "",
+        city: "",
+        additional_details: "",
+        phone_number: "",
       },
     };
   },
   setup: () => ({ v$: useVuelidate() }),
   validations() {
     return {
-      form: {
-        user: user_rules,
-        address: address_rules,
-      },
+      form: rules,
+      
     };
   },
   mounted() {
     this.fetchStates().then(() => {
-      this.form.address.state = 7;
+      this.form.state = 7;
     });
   },
   watch: {},
   computed: {
     isContactInfo() {
       let status =
-        !this.v$?.form.user.email.$error &&
-        !this.v$?.form.user.name.$error &&
-        !this.v$?.form.address.phone_number.$error &&
-        this.form.user.email.length > 0 &&
-        this.form.user.name.length > 0 &&
-        this.form.address.phone_number.length > 0;
+        !this.v$?.form.email.$error &&
+        !this.v$?.form.name.$error &&
+        !this.v$?.form.phone_number.$error &&
+        this.form.email.length > 0 &&
+        this.form.name.length > 0 &&
+        this.form.phone_number.length > 0;
       if (status) {
         this.scrollToShippingAddress();
       }
@@ -537,42 +507,35 @@ export default {
     },
 
     formatName() {
-      this.v$?.form.user.name.$touch();
-      this.form.user.name = this.cleanNonChars(this.form.user.name);
+      this.v$?.form.name.$touch();
+      this.form.name = this.cleanNonChars(this.form.name);
     },
 
     formatInteriorNumber() {
-      this.form.address.interior_number = this.cleanNonNumericChars(
-        this.form.address.interior_number
+      this.form.interior_number = this.cleanNonNumericChars(
+        this.form.interior_number
       );
     },
 
     formatNumber() {
-      this.form.address.number = this.cleanNonNumericChars(
-        this.form.address.number
-      );
-      this.v$?.form.address.number.$touch();
+      this.form.number = this.cleanNonNumericChars(this.form.number);
+      this.v$?.form.number.$touch();
     },
 
     formatPostalCode() {
-      this.v$?.form.address.postal_code.$touch();
-      this.form.address.postal_code = this.cleanNonNumericChars(
-        this.form.address.postal_code
-      );
+      this.v$?.form.postal_code.$touch();
+      this.form.postal_code = this.cleanNonNumericChars(this.form.postal_code);
     },
 
     formatPhoneNumber() {
-      this.v$?.form.address.phone_number.$touch();
+      this.v$?.form.phone_number.$touch();
 
-      this.form.address.phone_number = this.cleanNonNumericChars(
-        this.form.address.phone_number
+      this.form.phone_number = this.cleanNonNumericChars(
+        this.form.phone_number
       );
 
-      if (this.form.address.phone_number.length > 12) {
-        this.form.address.phone_number = this.form.address.phone_number.slice(
-          0,
-          12
-        );
+      if (this.form.phone_number.length > 12) {
+        this.form.phone_number = this.form.phone_number.slice(0, 12);
       }
     },
 
