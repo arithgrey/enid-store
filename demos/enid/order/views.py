@@ -14,6 +14,8 @@ from state.models import State
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from order.stripe_payment import StripePayment
+from stripe.error import StripeError
+from django.db import IntegrityError
 
 class OrderViewSet(viewsets.ModelViewSet):
 
@@ -44,6 +46,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                     if charge_result['status'] == 'success':                                        
                         return Response(serializer.data, status=status.HTTP_201_CREATED)                    
                     else:      
+                        transaction.set_rollback(True)
                         errors['stripe_error'] = charge_result['message']                                      
                         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -52,6 +55,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
 
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        
+        except StripeError as e:
+
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         except Exception as e:
 
@@ -65,7 +72,12 @@ class OrderViewSet(viewsets.ModelViewSet):
             order_instance = Order.objects.create(
                 shipping_address=address, user=user)
             return order_instance
+        
+        except IntegrityError as integrity_error:            
+            print(f"Error de integridad al crear la instancia de Order: {integrity_error}")
+            return None
         except Exception as e:
+            # Capturar otros posibles errores
             print(f"Error al crear la instancia de Order: {e}")
             return None
 
