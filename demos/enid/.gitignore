@@ -60,6 +60,19 @@ db.sqlite3
 .vscode/
 .idea/
 uploads/
-migrations/
-enid/settings.py
-enid/frontend/src/config/*
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Ignore the virtual environment
+venv/
+
+# Ignore database files
+db.sqlite3
+
+# Ignore migration files
+**/migrations/
+
+# Ignore local development settings
+enid/settings_local.py
