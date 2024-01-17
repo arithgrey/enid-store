@@ -2,7 +2,7 @@
   <div>
     <form class="mt-8" @submit.prevent="submitForm">
       <div>
-        <h5 class="text-1xl font-bold tracking-tight text-gray-900 sm:tc mb-5">
+        <h5 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-10">
           Contacto
         </h5>
 
@@ -80,9 +80,7 @@
       </div>
 
       <div v-if="isContactInfo" ref="shippingAddressSection">
-        <h5
-          class="text-1xl font-bold tracking-tight text-gray-900 sm:tc mb-5 mt-5"
-        >
+        <h5 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-10">
           Dirección de envío
         </h5>
 
@@ -229,13 +227,8 @@
           </label>
           <span
             class="text-red-500 text-sm"
-            v-if="
-              this.errors &&
-              this.errors.delegation_or_municipality
-            "
-            >{{
-              formatError(this.errors.delegation_or_municipality)
-            }}</span
+            v-if="this.errors && this.errors.delegation_or_municipality"
+            >{{ formatError(this.errors.delegation_or_municipality) }}</span
           >
           <span
             class="text-red-500 text-sm"
@@ -296,13 +289,26 @@
         >
 
         <h5
-          class="text-1xl font-bold tracking-tight text-gray-900 sm:tc mb-5 mt-5"
+          class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-1 mt-10"
         >
-          Datos del pago
+          Pago
         </h5>
+        <div class="text-gray-600 text-sm mb-5">
+          Todas las transacciones son seguras y están cifradas.
+        </div>
+        <div id="card-element"></div>
+        <div v-if="this.stripe_message_error" class="text-red-500 text-sm"> 
+          {{this.stripe_message_error}}
+        </div>
+        <span
+          class="text-red-500 text-sm"
+          v-if="this.errors && this.errors.stripe_error"
+          >{{ this.errors.stripe_error }}</span
+        >
+
         <button
           type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Confirmar
         </button>
@@ -313,129 +319,21 @@
 
 
 <script>
-import {
-  minLength,
-  maxLength,
-  alphaNum,
-  numeric,
-  between,
-} from "@vuelidate/validators";
-import { helpers } from "@vuelidate/validators";
+
+
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { loadStripe } from '@stripe/stripe-js';
+import { rules } from "@/rules/formCheckout.js";
+import { stripePublicKey } from "@/config/stripe.js";
 
-const rules = {
- 
- name: {
-    minLength: helpers.withMessage(
-      "El nombre debe tener al menos 10 caracteres.",
-      minLength(10)
-    ),
-    maxLength: helpers.withMessage(
-      "Hey ese nombre es muy largo",
-      maxLength(150)
-    ),
-    required: helpers.withMessage("El nombre es obligatorio.", required),
-  },
-  
-  email: {
-    required: helpers.withMessage("Hey ingresa un email!", required),
-    email: helpers.withMessage("Hey ingresa un email válido!", email),
-  },
-
-  phone_number: {
-    required: helpers.withMessage("Hey ingresa tu número tefónico!", required),
-    minLength: helpers.withMessage(
-      "El teléfono debe tener al menos 10 números!",
-      minLength(10)
-    ),
-    maxLength: helpers.withMessage(
-      "El teléfono no puede tener más de 12 números!",
-      maxLength(12)
-    ),
-    numeric: helpers.withMessage("Hey ingresa un teléfono correcto!", numeric),
-  },
-  
-  postal_code: {
-    required: helpers.withMessage("Hey ingresa tu código postal!", required),
-    minLength: helpers.withMessage(
-      "El código postal es muy corto!",
-      minLength(4)
-    ),
-    maxLength: helpers.withMessage(
-      "El código postal es muy largo!",
-      maxLength(8)
-    ),
-    numeric: helpers.withMessage("Hey ingresa solo números!", numeric),
-  },
-
-  street: {
-    required: helpers.withMessage("Ingresa el nombre de tu calle!", required),
-    minLength: helpers.withMessage(
-      "El nombre de tu calle es tan corto?",
-      minLength(4)
-    ),
-    maxLength: helpers.withMessage(
-      "El nombre de tu calle es tan largo?",
-      maxLength(100)
-    ),
-  },
-
-  number: {
-    required: helpers.withMessage("Hey falta tu número de casa!", required),
-    between: helpers.withMessage(
-      "Hey ingresa solo números correctos!",
-      between(1, 1000000)
-    ),
-  },
-
-  interior_number: {
-    integer: helpers.withMessage("Hey ingresa solo números!", required),
-    numeric: helpers.withMessage("Hey ingresa solo números!", numeric),
-    between: helpers.withMessage(
-      "Hey ingresa solo números correctos !",
-      between(1, 1000000)
-    ),
-  },
-
-  colony: {
-    required: helpers.withMessage("Indica cual es tu colonia!", required),
-    minLength: helpers.withMessage(
-      "Registra el nombre de tu colonia!",
-      minLength(4)
-    ),
-    maxLength: helpers.withMessage(
-      "Es tan largo el nombre de tu colonia?",
-      maxLength(50)
-    ),
-  },
-
-  delegation_or_municipality: {
-    required: helpers.withMessage("Falta tu Delegación!", required),
-    minLength: helpers.withMessage("Ingresa tu delegación!", minLength(4)),
-    maxLength: helpers.withMessage(
-      "Es tan largo el nombre de tu delegación?",
-      maxLength(50)
-    ),
-  },
-
-  city: {
-    required: helpers.withMessage("Ingresa tu ciudad!", required),
-    minLength: helpers.withMessage(
-      "Ingresa el nombre de tu ciudad!",
-      minLength(3)
-    ),
-    maxLength: helpers.withMessage(
-      "Es tan largo el nombre de tu ciudad?",
-      maxLength(50)
-    ),
-  },
-};
 
 export default {
   data() {
     return {
-      states: [],
+      states: [],      
+      stripe: null, 
+      card: null,   
+      stripe_message_error:"",
       form: {
         email: "",
         name: "",
@@ -450,6 +348,7 @@ export default {
         additional_details: "",
         phone_number: "",
         products: [],
+        stripe_token: "",
       },
       errors: {
         email: "",
@@ -463,6 +362,8 @@ export default {
         city: "",
         additional_details: "",
         phone_number: "",
+        stripe_error:"",
+        
       },
     };
   },
@@ -470,17 +371,19 @@ export default {
   validations() {
     return {
       form: rules,
-      
     };
   },
   mounted() {
     this.fetchStates().then(() => {
       this.form.state = 7;
     });
+
+    
   },
   watch: {},
   computed: {
     isContactInfo() {
+      
       let status =
         !this.v$?.form.email.$error &&
         !this.v$?.form.name.$error &&
@@ -489,21 +392,52 @@ export default {
         this.form.name.length > 0 &&
         this.form.phone_number.length > 0;
       if (status) {
-        this.scrollToShippingAddress();
+        this.$nextTick(() => {
+          this.initializeStripe();
+        });
+      
+        //this.scrollToShippingAddress();
       }
       return status;
     },
   },
   methods: {
+    async initializeStripe() {
+      
+      this.stripe =  await loadStripe(stripePublicKey);
+      const elements = this.stripe.elements();
+
+      const style = {
+        base: {
+          color: "#32325d",
+          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+          fontSmoothing: "antialiased",
+          fontSize: "16px",
+          "::placeholder": {
+            color: "#aab7c4",
+          },
+        },
+        invalid: {
+          color: "#fa755a",
+          iconColor: "#fa755a",
+        },
+      };
+
+      this.card = elements.create("card", { style });
+      this.card.mount("#card-element");
+
+    },
     scrollToShippingAddress() {
+      /*
       this.$nextTick(() => {
-        /*
+        
         const section = this.$refs.shippingAddressSection;        
         if (section) {
           section.scrollIntoView({ behavior: "smooth" });
         }
-        */
+        
       });
+      */
     },
 
     formatName() {
@@ -548,26 +482,46 @@ export default {
     },
 
     async submitForm() {
-      /*
       const result = await this.v$.$validate();
-
-      if (!result) {
-        return;
-      }*/
+      if (!result) {return;}
 
       try {
-        this.cleanErrors();
-        this.form.products = this.$store.getters.getProductsFromCart;
+        
+        this.cleanErrors();        
+        const { token, error } = await this.stripe.createToken(this.card);        
+        if (error) {
+          this.stripe_message_error = error.message          
+          return;
+        }
+        this.stripe_message_error = '';  
+        this.form.stripe_token = token.id;
+        await this.processPayment();
 
-        const response = await this.$axios.post("orden/compra/", this.form, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
       } catch (error) {
+        debugger;
+        /*
         if (error.response && error.response.data) {
           this.errors = error.response.data;
         }
+        */
+        
+      }
+    },
+    async processPayment() {
+
+      try {
+
+        this.form.products = this.$store.getters.getProductsFromCart;
+        const response = await this.$axios.post("orden/compra/", this.form);
+        this.nextToSaveOrder(response);
+
+      } catch (error) {
+        debugger;
+        if (error.response && error.response.data) {
+          this.errors = error.response.data;
+        }
+        
+        
       }
     },
     async fetchStates() {
@@ -582,10 +536,26 @@ export default {
       return error[0];
     },
     cleanErrors() {
-      for (let section in this.errors) {
-        for (let field in this.errors[section]) {
-          this.errors[section][field] = "";
+      Object.keys(this.errors).forEach((field) => {
+        this.errors[field] = "";
+      });
+    },
+    cleanFields() {
+      Object.keys(this.form).forEach((field) => {
+        if (field != "products") {
+          this.form[field] = "";
+        } else {
+          this.form[field] = [];
         }
+      });
+
+      this.cleanErrors("clearCart");
+    },
+    nextToSaveOrder(response) {
+      debugger;
+      if (response.status === 201) {
+        this.cleanFields();
+        this.$store.commit("clearCart");
       }
     },
   },

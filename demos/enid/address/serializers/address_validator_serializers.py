@@ -1,10 +1,11 @@
 from rest_framework import serializers
-
+#from user.serializers.user_validator_serializers import UserValidatorSerializer
 
 class AddressValidatorSerializer(serializers.Serializer):    
     
-    postal_code = serializers.CharField(
-            source="address.postal_code",
+    #user = UserValidatorSerializer(required=True)    
+    
+    postal_code = serializers.CharField(            
             required=True,
             min_length=4,
             max_length=10,         
@@ -18,8 +19,7 @@ class AddressValidatorSerializer(serializers.Serializer):
             }
         )
     
-    street = serializers.CharField(
-        source="address.street", 
+    street = serializers.CharField(        
         max_length=100, 
         min_length=4, 
         required=True, 
@@ -31,8 +31,7 @@ class AddressValidatorSerializer(serializers.Serializer):
             'min_length': 'La longitud mínima permitida para la calle es de 30 caracteres.'
         }
     )
-    number = serializers.IntegerField(
-        source="address.number", 
+    number = serializers.IntegerField(        
         required=True,
         min_value=1, 
         max_value=9999999,             
@@ -44,8 +43,7 @@ class AddressValidatorSerializer(serializers.Serializer):
             'invalid':'Ingresa un número!'
         })
 
-    colony = serializers.CharField(
-        source="address.colony", 
+    colony = serializers.CharField(        
         max_length=100, 
         min_length=3, 
         required=True, 
@@ -57,8 +55,7 @@ class AddressValidatorSerializer(serializers.Serializer):
             'min_length': 'Falta tu colonia!'
         }
         )
-    delegation_or_municipality = serializers.CharField(
-        source="address.delegation_or_municipality",
+    delegation_or_municipality = serializers.CharField(        
         max_length=100, 
         min_length=3, 
         required=True,         
@@ -70,7 +67,7 @@ class AddressValidatorSerializer(serializers.Serializer):
         }
         )
     city = serializers.CharField(
-        source="address.city",
+        
         max_length=100,
         min_length=4,
         required=True, 
@@ -82,8 +79,7 @@ class AddressValidatorSerializer(serializers.Serializer):
             'min_length': 'Falta este campo!'
         })
     
-    state = serializers.IntegerField(
-        source="address.state",
+    state = serializers.IntegerField(        
         min_value=1, 
         max_value=32,         
         required=True,         
@@ -94,8 +90,7 @@ class AddressValidatorSerializer(serializers.Serializer):
         }
         )    
     
-    phone_number = serializers.CharField(
-        source="address.phone_number",
+    phone_number = serializers.CharField(        
         min_length=8, 
         max_length=14,
         required=True,         

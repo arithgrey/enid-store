@@ -26,6 +26,10 @@ export default createStore({
         item.quantity = quantity;
       }
     },    
+    clearCart(state) {
+      state.cart = [];
+      localStorage.removeItem('cart');
+    },
   },
   getters: {
     totalItemsInCart: (state) => {

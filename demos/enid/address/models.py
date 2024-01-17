@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from state.models import State
 
 class Address(models.Model):
@@ -25,8 +24,7 @@ class Address(models.Model):
     number = models.IntegerField()
     interior_number = models.IntegerField(default=1, blank=True, null=True)
 
-    state = models.ForeignKey(State, related_name="state_address", on_delete=models.CASCADE, null=False, blank=False)
-    user = models.ForeignKey(User, related_name='user_address', on_delete=models.CASCADE, null=True, blank=True)
+    state = models.ForeignKey(State, related_name="state_address", on_delete=models.CASCADE, null=False, blank=False)    
     phone_number = models.CharField(max_length=15, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

@@ -2,6 +2,8 @@ from categories.models import Category
 from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 from image.models import Image
+from autoslug import AutoSlugField
+
 
 class Product(models.Model):
 
@@ -11,11 +13,12 @@ class Product(models.Model):
     weight = models.DecimalField(default=0.5, max_digits=5, decimal_places=2)            
     count_discs = models.BooleanField(default=False)
     top_seller = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True)
+    slug = AutoSlugField(unique=True, populate_from='name')
     images = GenericRelation(Image)
     
     def __str__(self):
         return self.name
-        
+    
     def get_absolute_url(self):
             return f"{self.category.slug}/{self.slug}/"
+        
