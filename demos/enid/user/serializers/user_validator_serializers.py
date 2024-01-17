@@ -9,8 +9,7 @@ class CustomEmailValidator(EmailValidator):
 
 class UserValidatorSerializer(serializers.Serializer):          
         
-    email = serializers.EmailField(
-        source="user.email",
+    email = serializers.EmailField(        
         required=True,
         allow_blank=False,
         validators=[CustomEmailValidator(), django_validate_email],  
@@ -20,8 +19,7 @@ class UserValidatorSerializer(serializers.Serializer):
             'invalid': 'Ups! este email no parece ser correcto'
         })
     
-    name = serializers.CharField(
-        source="user.name",
+    name = serializers.CharField(        
         max_length=200,
         min_length=3,
         required=True,
@@ -35,6 +33,7 @@ class UserValidatorSerializer(serializers.Serializer):
     )
     class Meta:
 
+        fields = '__all__' 
         required_fields = ["email", "name"]
         not_allow_blank = ["email", "name"]
         max_lengths = {"name":200}

@@ -1,18 +1,33 @@
 from django.test import TestCase
+from unittest.mock import patch, Mock, call
+from functools import reduce
 from rest_framework.test import APIClient
+from django.http import Http404
 from rest_framework import status
+from categories.models import Category
 from order.views import OrderViewSet
 from user.serializers.user_validator_serializers import UserValidatorSerializer
 from address.serializers.address_validator_serializers import AddressValidatorSerializer
-
+from faker import Faker
 from django.contrib.auth.models import User
 from state.models import State
+from address.models import Address
+from item_order.models import ItemOrder
+from products.models import Product
+import random
+from order.models import Order
+
+import re
 
 
 class TestsOrderViewSet(TestCase):
     def setUp(self):
+        self.user = User.objects.create(username='jonathan')
+        self.fake = Faker('es_MX')
         self.client = APIClient()
-        state = State.objects.create(name="CDMX")
+        self.view = OrderViewSet()
+        self.state = State.objects.create(name="CDMX")
+        self.category = Category.objects.create(name="test category")
         self.required_fields = UserValidatorSerializer.Meta.required_fields
         self.not_allow_blank = UserValidatorSerializer.Meta.not_allow_blank
         self.max_lengths = UserValidatorSerializer.Meta.max_lengths
@@ -28,153 +43,204 @@ class TestsOrderViewSet(TestCase):
         self.min_values_address = AddressValidatorSerializer.Meta.min_values
         self.max_values_address = AddressValidatorSerializer.Meta.max_values
 
+     
+    def test_create_valid_orders(self):
+        for _ in range(100):
+
+            user = {"email": self.fake.email(), "name": self.fake.name()}
+            address = self.create_fake_address(False)
+            products = {'products':self.create_fake_products(random.randint(1,10))}
+            data = {**user, **address,**products}            
+            
+            response = self.client.post(
+                '/api/orden/compra/', data, format='json')  
+            
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+    def test_error_on_create_valid_orders_without_products(self):
+        for _ in range(1):
+
+            user = {"email": self.fake.email(), "name": self.fake.name()}
+            address = self.create_fake_address(False)
+            products = {'products':[]}
+            data = {**user, **address,**products}            
+            
+            response = self.client.post(
+                '/api/orden/compra/', data, format='json')            
+                                         
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                  
+
+    def create_fake_address(self, create_object=True):
+
+        postal_code = self.fake.postcode()
+        street = self.fake.street_address()
+        number = self.fake.random_int(min=1, max=10000)
+        while number < 1:
+            number = self.fake.random_int(min=2, max=100)
+
+        colony = self.fake.city_prefix()
+        delegation_or_municipality = self.fake.city()
+        city = self.fake.city()
+        id = self.state.id
+        phone_number = self.fake.phone_number().split('x')[0].strip()
+        cleaned_phone_number = re.sub(r'[^0-9]', '', phone_number)
+
+        address_data = {
+            "postal_code": postal_code,
+            "street": street,
+            "number": number,
+            "colony": colony,
+            "delegation_or_municipality": delegation_or_municipality,
+            "city": city,
+            "state": id,
+            "phone_number": cleaned_phone_number,
+        }
+
+        if create_object:
+            return self.view.register_address(address_data=address_data)
+
+        return address_data
+
+    def create_fake_products(self, items):
+
+        products = []
+        for _ in range(items):
+
+            product_name = self.fake.word()
+            price = round(random.uniform(1.0, 1000.0), 2)
+            product, created = Product.objects.get_or_create(
+                name=product_name,
+                price=price,
+                category=self.category
+            )
+
+            product_dict = {
+                'id': product.id,
+                'name': product.name,
+                'price': product.price,
+                'quantity': random.randint(1, 100)
+            }
+
+            products.append(product_dict)
+        return products
+
+    def test_register_address(self):
+
+        for _ in range(100):
+            address = self.create_fake_address()
+            self.assertIsInstance(address, Address)
+
     def test_register_user(self):
-        view = OrderViewSet()
-        data = {"user": {"email": "jmedrano@gmail9006.com",
-                         "name": "Jonathan Govinda Medrano Salazar"}}
-        user = view.register_user(data["user"])
-        self.assertIsInstance(user, User)
-        self.assertEqual(user.email, 'jmedrano@gmail9006.com')
+
+        for _ in range(100):
+
+            email = self.fake.email()
+            data = {"email": email, "name": self.fake.name()}
+            user, _ = self.view.register_user(data)
+            self.assertIsInstance(user, User)
+            self.assertEqual(user.email, email)
 
     def test_mark_error_on_invalid_data(self):
 
-        invalid_data = {
-            'user': {},
-            'address': {},
-            'products': []
-        }
+        invalid_data = {}
         response = self.client.post(
             '/api/orden/compra/', invalid_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-
     def test_mark_error_when_minor_the_min_value_user(self):
 
         user_min_values = self.min_values
+        invalid_data = {key: (value - 1)
+                        for key, value in user_min_values.items()}
 
-        invalid_data = {
-            'user': {key: (value - 1) for key, value in user_min_values.items()}}
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-        user_errors_api = self.filter_errors(
-            'min_value', user_min_values, user_errors)
-        
-        keys = list(user_min_values.keys())
-        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")
-
-
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=user_min_values, rule='min_value')
 
     def test_mark_error_when_minor_the_min_value_address(self):
 
         address_min_values = self.min_values_address
 
-        invalid_data = {
-            'address': {key: (value - 1) for key, value in address_min_values.items()}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
-        address_errors_api = self.filter_errors(
-            'min_value', address_min_values, address_errors)
-        
-        keys = list(address_min_values.keys())
-        self.assertEqual(keys, address_errors_api, "Las listas no son iguales.")
+        invalid_data = {key: (value - 1)
+                        for key, value in address_min_values.items()}
 
-    
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=address_min_values, rule='min_value')
 
     def test_mark_error_when_pass_the_max_value_address(self):
 
         address_max_values = self.max_values_address
 
-        invalid_data = {
-            'address': {key: (value + 1) for key, value in address_max_values.items()}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
-        address_errors_api = self.filter_errors(
-            'max_value', address_max_values, address_errors)
-        
-        keys = list(address_max_values.keys())
-        self.assertEqual(keys, address_errors_api, "Las listas no son iguales.")
+        invalid_data = {key: (value + 1)
+                        for key, value in address_max_values.items()}
 
-    
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=address_max_values, rule='max_value')
+
     def test_mark_error_when_pass_the_max_value_user(self):
 
         users_max_values = self.max_values
 
-        invalid_data = {
-            'user': {key: (value + 1) for key, value in users_max_values.items()}}
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-        user_errors_api = self.filter_errors(
-            'max_value', users_max_values, user_errors)
-        keys = list(users_max_values.keys())
-        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")
+        invalid_data = {key: (value + 1)
+                        for key, value in users_max_values.items()}
+
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=users_max_values, rule='max_value')
 
     def test_return_error_when_input_is_minor_of_the_rules_minlength_address(self):
 
         min_lengths = self.min_lengths_address
-        invalid_data = {'address': {key: 'a' * (value - 1) for key, value in min_lengths.items()}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
-        address_errors_api = self.filter_errors(
-            'min_length', min_lengths, address_errors)
-        keys = list(min_lengths.keys())
-        self.assertEqual(keys, address_errors_api,"Las listas no son iguales.")
+        invalid_data = {key: 'a' * (value - 1)
+                        for key, value in min_lengths.items()}
 
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=min_lengths, rule='min_length')
 
     def test_return_error_when_input_is_minor_of_the_rules_minlength_user(self):
 
         users_min_lengths = self.min_lengths
 
-        invalid_data = {
-            'user': {key: 'a' * (value -1) for key, value in users_min_lengths.items()}}
-                
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-        user_errors_api = self.filter_errors(
-            'min_length', users_min_lengths, user_errors)
-        keys = list(users_min_lengths.keys())
+        invalid_data = {key: 'a' * (value - 1)
+                        for key, value in users_min_lengths.items()}
 
-        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=users_min_lengths, rule='min_length')
 
     def test_mark_error_when_pass_the_max_length_user(self):
 
-        invalid_data = {
-            'user': {key: 'a' * (value + 1) for key, value in self.max_lengths.items()}}
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-        user_errors_api = self.filter_errors(
-            'max_length', self.max_lengths, user_errors)
-        keys = list(self.max_lengths.keys())
-        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")
+        user_max_lengths = self.max_lengths
+
+        invalid_data = {key: 'a' * (value + 1)
+                        for key, value in self.max_lengths.items()}
+
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=user_max_lengths, rule='max_length')
 
     def test_mark_error_when_pass_the_max_length_address(self):
 
         max_lengths = self.max_lengths_address
-        invalid_data = {'address': {key: 'a' *
-                                    (value + 1) for key, value in max_lengths.items()}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
-        address_errors_api = self.filter_errors(
-            'max_length', max_lengths, address_errors)
-        keys = list(max_lengths.keys())
-        self.assertEqual(keys, address_errors_api,
-                         "Las listas no son iguales.")
+        invalid_data = {key: 'a' * (value + 1)
+                        for key, value in max_lengths.items()}
+
+        self.generic_errors(invalid_data=invalid_data,
+                            rules_expecteds=max_lengths, rule='max_length')
 
     def test_mark_error_on_user_blank_fields(self):
 
-        invalid_data = {'user': {'name': '', 'email': ''}}
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-        user_errors_api = self.filter_errors(
-            'blank', self.not_allow_blank, user_errors)
-        self.assertEqual(self.not_allow_blank, user_errors_api,
-                         "Las listas no son iguales.")
+        invalid_data = {key: '' for key in self.not_allow_blank}
+        self.blanks_asserts(invalid_data=invalid_data, rules_expecteds=self.not_allow_blank)
 
     def test_mark_error_on_address_blank_fields(self):
 
-        invalid_data = {'address': {
-            key: '' for key in self.not_allow_blank_address}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
-        address_errors_api = self.filter_errors(
-            'blank', self.not_allow_blank_address, address_errors)
-        self.assertEqual(self.not_allow_blank_address,
-                         address_errors_api, "Las listas no son iguales.")
+        invalid_data = {key: '' for key in self.not_allow_blank_address}
+        self.blanks_asserts(invalid_data=invalid_data, rules_expecteds=self.not_allow_blank_address)
+        
 
     def test_mark_error_on_user_required_fields(self):
 
-        invalid_data = {'user': {}, 'address': {}, "products": {}}
-        user_errors = self.make_the_type_of_error(invalid_data, 'user')
-
+        invalid_data = {}
+        user_errors = self.make_the_type_of_error(invalid_data)
         required_user_fields = self.required_fields
         filtered_user_errors = list(
             filter(lambda error: error['field'] in required_user_fields, user_errors))
@@ -184,8 +250,8 @@ class TestsOrderViewSet(TestCase):
 
     def test_mark_error_on_address_required_fields(self):
 
-        invalid_data = {'user': {}, 'address': {}, "products": {}}
-        address_errors = self.make_the_type_of_error(invalid_data, 'address')
+        invalid_data = {}
+        address_errors = self.make_the_type_of_error(invalid_data)
 
         required_address_fields = self.required_fields_address
         filtered_address_errors = list(
@@ -195,11 +261,11 @@ class TestsOrderViewSet(TestCase):
         self.assertEqual(required_address_fields,
                          address_errors_api, "Las listas no son iguales.")
 
-    def make_the_type_of_error(self, invalid_data, key):
+    def make_the_type_of_error(self, invalid_data):
 
         response = self.client.post(
             '/api/orden/compra/', invalid_data, format='json')
-        return self.error_type(response, key)
+        return self.error_type(response)
 
     def filter_errors(self, code, requireds, errors):
 
@@ -207,20 +273,92 @@ class TestsOrderViewSet(TestCase):
             lambda error: error['field'] in requireds and error['code'] == code, errors))
         return [item['field'] for item in filtered_errors]
 
-    def error_type(self, response, key):
+    def error_type(self, response):
 
         field_errors = []
-        if key in response.data:
-            user_errors = response.data[key]
-            for field, errors in user_errors.items():
-                for error in errors:
-                    code = getattr(error, 'code', None)
+        user_errors = response.data
+        for field, errors in user_errors.items():
+            for error in errors:
+                code = getattr(error, 'code', None)
 
-                    error_info = {
-                        'field': field,
-                        'code': code if code else 'No disponible'
-                    }
+                error_info = {
+                    'field': field,
+                    'code': code if code else 'No disponible'
+                }
 
-                    field_errors.append(error_info)
+                field_errors.append(error_info)
 
         return field_errors
+    
+
+    def create_fake_order(self):
+        email = self.fake.email()
+        data = {"email": email, "name": self.fake.name()}
+        user, _ = self.view.register_user(data)
+        address = self.create_fake_address()
+        return self.view.create_order_instance(address=address,user=user)
+
+
+    def test_create_order_instance(self):
+        order_instance = self.create_fake_order()
+        self.assertIsInstance(order_instance, Order)
+            
+
+    def test_register_items_order_success(self):     
+
+        with patch('order.views.get_object_or_404') as mock_get_object:
+            
+            mock_product = Product(id=1, name='Example Product', price=10.0)
+            mock_get_object.return_value = mock_product
+
+            order = self.create_fake_order()
+            expected_products = self.create_fake_products(5)
+
+            total_quantity_expected = reduce(lambda acc, product: acc + product["quantity"], expected_products,0)
+            
+
+            self.view.register_items_order(order=order, products=expected_products)   
+            
+            expected_calls = [call(Product, id=product['id'], price=product['price']) for product in expected_products]
+            mock_get_object.assert_has_calls(expected_calls, any_order=True)         
+            item_orders = ItemOrder.objects.filter(order=order)            
+            total_quantity = reduce(lambda acc, item_order: acc + item_order.quantity, item_orders, 0)
+                    
+            self.assertEqual(total_quantity_expected, total_quantity)
+
+    
+    def test_register_items_order_failure_product_not_found(self):
+        
+        order = Order.objects.create()
+        expected_products = [
+            {'id': 1, 'price': 10.0, 'quantity': 2},
+            {'id': 2, 'price': 20.0, 'quantity': 3}
+        ]
+        
+        with patch('order.views.get_object_or_404') as mock_get_object:
+            # Configura el retorno del mock para simular un producto no encontrado
+            mock_get_object.side_effect = Http404("Product not found")
+            
+            with self.assertRaises(Http404):
+                self.view.register_items_order(order=order, products=expected_products)
+            
+            mock_get_object.assert_called_with(Product, id=1, price=10.0)
+
+            item_orders = ItemOrder.objects.filter(order=order)
+            self.assertEqual(len(item_orders), 0)
+    
+   
+    def blanks_asserts(self, invalid_data,rules_expecteds):
+
+        user_errors = self.make_the_type_of_error(invalid_data)
+        user_errors_api = self.filter_errors('blank', rules_expecteds, user_errors)
+        self.assertEqual(rules_expecteds, user_errors_api, "Las listas no son iguales.")
+        
+    def generic_errors(self, invalid_data, rules_expecteds, rule):
+
+        user_errors = self.make_the_type_of_error(invalid_data)
+        user_errors_api = self.filter_errors(
+            rule, rules_expecteds, user_errors)
+
+        keys = list(rules_expecteds.keys())
+        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")

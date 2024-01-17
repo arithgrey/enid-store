@@ -19,7 +19,9 @@ yarn-error.log*
 .idea/
 
 # Django
+__pycache__
 __pycache__/
+htmlcov
 *.pyc
 *.pyo
 *.pyd
@@ -59,3 +61,5 @@ db.sqlite3
 .idea/
 uploads/
 migrations/
+enid/settings.py
+enid/frontend/src/config/*

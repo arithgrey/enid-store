@@ -268,9 +268,7 @@ describe('number house big or small number', () => {
 
     wrapper.setData({
       form: {
-
         interior_number: 11111111111111
-
       }
     });
 

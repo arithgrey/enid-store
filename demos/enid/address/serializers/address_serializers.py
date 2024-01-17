@@ -8,7 +8,7 @@ class AddressSerializer(serializers.ModelSerializer):
     
     state = StateSerializer(read_only=True)
     user = UserSerializer(read_only=True)      
-    
+        
     class Meta:
         model = Address
         fields = '__all__'
