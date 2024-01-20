@@ -93,17 +93,17 @@ WSGI_APPLICATION = 'enid.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if config('DATABASE_URL', default='').startswith('postgres://'):
+if config('LOCAL', default=False, cast=bool):
 
-    DATABASES = {'default': dj_database_url.config(default=config('DATABASE_URL'))}
-
-else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+else:
+    DATABASES = {'default': dj_database_url.config(default=config('DATABASE_URL'))}    
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -146,7 +146,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='').split(',')
+
 CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = '/static/'
