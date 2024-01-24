@@ -9,9 +9,7 @@
       <TrusthHome />
       <Community />      
     </div>
-    <div class="mx-auto xs:w-full md:w-10/12  lg:mt-20">
-      <SpecialsAndReleases/>
-    </div>
+    
   </div>
 </template>
 
@@ -21,7 +19,6 @@ import Banner from "@/components/Banner/Banner.vue";
 import BannerOffert from "@/components/Banner/BannerOffert.vue";
 import TrusthHome from "@/components/Trusth/TrusthHome.vue";
 import Community from "@/components/Trusth/Community.vue";
-import SpecialsAndReleases from "@/components/Collections/SpecialsAndReleases.vue";
 
 
 export default {
@@ -31,7 +28,7 @@ export default {
     BannerOffert,
     TrusthHome,
     Community,
-    SpecialsAndReleases
+    
   },
   methods: {
     handleOpenCartProductList() {      
