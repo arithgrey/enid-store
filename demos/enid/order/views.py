@@ -16,6 +16,7 @@ from rest_framework.exceptions import ValidationError
 from order.stripe_payment import StripePayment
 from stripe.error import StripeError
 from django.db import IntegrityError
+from order.error_handling import ErrorResponse
 
 class OrderViewSet(viewsets.ModelViewSet):
 
@@ -41,7 +42,8 @@ class OrderViewSet(viewsets.ModelViewSet):
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        
-                    charge_result = StripePayment.stripeCharge(data=data, order=order)
+                    stripe_payment = StripePayment()
+                    charge_result = stripe_payment.stripeCharge(data=data, order=order)
                     
                     if charge_result['status'] == 'success':                                        
                         return Response(serializer.data, status=status.HTTP_201_CREATED)                    
@@ -53,16 +55,14 @@ class OrderViewSet(viewsets.ModelViewSet):
                     
 
         except ValidationError as e:
-
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
         
         except StripeError as e:
-
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(ErrorResponse.handle_exception(e))
 
         except Exception as e:
+            return Response(ErrorResponse.handle_exception(e))
 
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
    
 
@@ -77,7 +77,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             print(f"Error de integridad al crear la instancia de Order: {integrity_error}")
             return None
         except Exception as e:
-            # Capturar otros posibles errores
+            
             print(f"Error al crear la instancia de Order: {e}")
             return None
 

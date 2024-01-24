@@ -99,17 +99,17 @@ class TestsOrderViewSet(TestCase):
                  
         with patch('order.views.StripePayment.stripeCharge') as mock_stripe_charge:
             
-            mock_stripe_charge.side_effect = stripe.error.CardError("Error en la tarjeta ...", param='', code='')            
+            mock_stripe_charge.side_effect = stripe.error.CardError("Error en la tarjeta ...", param='', code=500)            
             user = {"email": self.fake.email(), "name": self.fake.name()}
             address = self.create_fake_address(False)
             products = {'products':self.create_fake_products(random.randint(1,10))}
             stripe_token = {'stripe_token':'stripe_token x'}
             data = {**user, **address,**products, **stripe_token}            
             
-            response = self.client.post(
-                '/api/orden/compra/', data, format='json')  
-                                    
-            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            with self.assertRaises(stripe.error.CardError):
+                response = self.client.post(
+                    '/api/orden/compra/', data, format='json')                                         
+                self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 
     def test_create_valid_orders(self):
