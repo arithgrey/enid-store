@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
+from django.conf import settings
 
 class Image(models.Model):
 
@@ -19,4 +19,7 @@ class Image(models.Model):
         return self.title or f"Imagen {self.id}"
 
     def get_image_url(self):
-        return f"http://localhost:8000/{self.image.url}"
+        
+        if settings.DOMAIN:                        
+            return f"{settings.DOMAIN}{self.image.url}"
+
