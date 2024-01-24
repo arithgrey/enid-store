@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'state',
     'address',
     'order',
-    'item_order',    
+    'item_order',
 ]
 
 MIDDLEWARE = [
@@ -91,9 +91,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'enid.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-if config('LOCAL', default=False, cast=bool):
+LOCAL = config('LOCAL', default=False, cast=bool)
+DOMAIN = config('DOMAIN', default='')
+
+if LOCAL:
 
     DATABASES = {
         'default': {
@@ -127,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
