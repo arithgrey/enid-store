@@ -1,10 +1,9 @@
 from django.test import TestCase
 from unittest.mock import patch, Mock, call
 from functools import reduce
-from rest_framework.test import APIClient
 from order.stripe_payment import StripePayment
-import stripe
-import re
+from stripe.error import CardError, StripeError
+
 
 class TestsStripePayment(TestCase):
     def setUp(self):
@@ -15,20 +14,10 @@ class TestsStripePayment(TestCase):
         with patch('order.stripe_payment.stripeCharge') as mock_stripe_charge_create:
 
             expected = {'status': 'success','message': f'Cargo exitoso. ID: 123'}
-            response = mock_stripe_charge_create.return_value = Mock(status='success', id=123)
+            mock_stripe_charge_create.return_value = Mock(status='success', id=123)
             order = Mock(id=1)
             self.stripePayment.stripeCharge(data=self.data, order=order)
-            self.assertEqual(response, expected)
-
-    def test_stripe_charge_card_error(self):
-        
-        order = Mock(id=1)
-        data = {'products': [{'price': 10.0, 'quantity': 2}], 'stripe_token': 'invalid_token', 'email': 'test@example.com', 'phone_number': '123456789'}
-        with patch('order.stripe_payment.stripeCharge') as mock_stripe_charge_create:
-            mock_stripe_charge_create.side_effect = stripe.error.CardError("Error en la tarjeta ...", param='', code=500)
-            response = self.stripeCharge(data, order)            
-            self.assertEqual(response.status_code, 500)
-            self.assertIn('error', response.data)
+            self.assertEqual(mock_stripe_charge_create, expected)
 
     def test_calculate_total(self):
 
@@ -38,7 +27,7 @@ class TestsStripePayment(TestCase):
     
     def test_handle_charge_response_success(self):
         
-        charge = Mock(status='success', id=123)
+        charge = Mock(status='succeeded', id=123)
         response = self.stripePayment._handle_charge_response(charge=charge)
         expected = {'status': 'success','message': f'Cargo exitoso. ID: 123'}
         self.assertEqual(expected, response)
@@ -54,3 +43,24 @@ class TestsStripePayment(TestCase):
         self.assertEqual(expected, response)
 
 
+    def test_stripe_charge_handle_exception_cardError(self):
+        with patch('order.stripe_payment.stripe.Charge.create') as mock_charge_create:
+            
+            mock_charge_create.side_effect =  CardError('error_type', 'message', 'param', 'code', 'http_status')
+            order = Mock(id=1)
+            response = self.stripePayment.stripeCharge(data=self.data, order=order)
+            expected = {'status': 'failed','stripe_error': 'error_type'}
+            self.assertEqual(expected, response)
+            
+
+    def test_stripe_charge_handle_exception_stripe_error(self):
+        with patch('order.stripe_payment.stripe.Charge.create') as mock_charge_create:
+            mock_charge_create.side_effect = StripeError('error stripe')
+            order = Mock(id=1)
+            response = self.stripePayment.stripeCharge(data=self.data, order=order)
+            expected = {'status': 'failed','stripe_error': 'error stripe'}
+            self.assertEqual(expected, response)
+            
+            
+
+            

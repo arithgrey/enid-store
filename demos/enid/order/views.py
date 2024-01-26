@@ -25,8 +25,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], url_path='compra')
     def create_order(self, request):
-        
-        
+                
         data = request.data
         errors = self.validatorSerializers(data=data)
         if errors:
@@ -43,8 +42,8 @@ class OrderViewSet(viewsets.ModelViewSet):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        
                     stripe_payment = StripePayment()
-                    charge_result = stripe_payment.stripeCharge(data=data, order=order)
-                    
+                    charge_result = stripe_payment.stripeCharge(data=data, order=order)                    
+                                        
                     if charge_result['status'] == 'success':                                        
                         return Response(serializer.data, status=status.HTTP_201_CREATED)                    
                     else:      
@@ -53,15 +52,17 @@ class OrderViewSet(viewsets.ModelViewSet):
                         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
                     
-
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
         
-        except StripeError as e:
-            return Response(ErrorResponse.handle_exception(e))
+        except StripeError as e:            
+            
+            transaction.set_rollback(True)
+            errors['stripe_error'] = charge_result['message']                                      
+            return Response(errors,status=status.HTTP_400_BAD_REQUEST)
 
-        except Exception as e:
-            return Response(ErrorResponse.handle_exception(e))
+        except Exception as e:            
+            return Response(ErrorResponse.handle_exception(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
    
@@ -74,11 +75,11 @@ class OrderViewSet(viewsets.ModelViewSet):
             return order_instance
         
         except IntegrityError as integrity_error:            
-            print(f"Error de integridad al crear la instancia de Order: {integrity_error}")
+            #print(f"Error de integridad al crear la instancia de Order: {integrity_error}")
             return None
         except Exception as e:
             
-            print(f"Error al crear la instancia de Order: {e}")
+            ##print(f"Error al crear la instancia de Order: {e}")
             return None
 
 
@@ -104,7 +105,7 @@ class OrderViewSet(viewsets.ModelViewSet):
                         price=product["price"])
                     
         except Exception as e:
-            print(f"Error durante el registro de items en order: {type(e).__name__} - {str(e)}")
+            #print(f"Error durante el registro de items en order: {type(e).__name__} - {str(e)}")
             raise  
 
     def register_user(self, data):
