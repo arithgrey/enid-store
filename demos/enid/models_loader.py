@@ -92,7 +92,7 @@ class ProductVariantLoader:
             new_product_variant = ProductVariant.objects.create(
                 product=product_instance,
                 variant=variant_instance,
-                pieces=pieces
+                pieces=pieces                
             )
             return new_product_variant
 

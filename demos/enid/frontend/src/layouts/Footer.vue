@@ -215,7 +215,7 @@ export default {
     return {
       show:true,
     }
-  },
+  },  
   watch: {
     '$route'(newVal, oldVal) {
       this.show = true;

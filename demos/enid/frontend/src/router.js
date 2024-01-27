@@ -6,9 +6,11 @@ import ReturnsDetail from '@/views/Faq/Returns/ReturnsDetail.vue'
 import SeachOrders from '@/views/SearchOrders/Form.vue'
 import ProductList from '@/views/Product/ProducList.vue'
 import Checkout from '@/views/checkout/Checkout.vue'
+import ProductDetail from '@/views/Product/ProductDetail.vue'
 
 const routes = [
   {
+   
     path: '/',
     component: MainLayout,
     children: [
@@ -18,7 +20,8 @@ const routes = [
       },
       {
         path: 'cambios-y-devoluciones',
-        component: ReturnsList,        
+        component: ReturnsList,    
+
       },
       {
         path: '/cambios-y-devoluciones/:id',
@@ -40,8 +43,17 @@ const routes = [
         name: 'product-list',
         component: ProductList,
       },
-
+      {
+        path: '/:categorySlug/:productSlug',
+        name: 'product-detail',
+        component: ProductDetail,
+        meta: {
+          title: '/:categorySlug/:productSlug',
+        },
+      },
+      
     ],
+   
   },
 ];
 

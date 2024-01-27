@@ -31,7 +31,7 @@
         </li>
       </ul>
     </div>
-    <div class="mt-6">
+    <div class="mt-6" >
       <p class="leading-4 text-gray-900">
         <span class="font-bold text-1xl">
         {{ product.formatted_price }}
@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      products_variant: [],
+      products_variant: [],        
     };
   },
   computed: {
@@ -70,18 +70,28 @@ export default {
     normalizedPrice() {
       return (this.product.price * 1.2).toFixed(2);
     },
-   
+      
   },
-  mounted() {
-    this.fetch_products_variant();
+  async mounted() {
+      
+    await this.fetch_products_variant();
+    
+  },
+  watch: {    
+    'product.id': {
+      handler: 'fetch_products_variant',
+      immediate: true, 
+    },
   },
   methods: {
     async fetch_products_variant() {
       try {
+              
         const response = await this.$axios.get(
           `/producto-variante/producto/${this.product.id}/variantes/`
         );
         this.products_variant = response.data;
+
       } catch (error) {
         console.error("Error fetching FAQ list:", error);
       }

@@ -9,14 +9,14 @@
         />
       </div>
       <div
-        class="md:ml-4 pt-6 md:p-8 md:text-left space-y-4 flex flex-col justify-center mb-10 p-5 md:p-0"
+        class="md:ml-4 pt-6 md:text-left space-y-4 flex flex-col justify-center mb-10 p-5 md:p-0"
       >
         <blockquote>
           <h1
             role="main"
             class="text-3xl lg:text-5xl font-semibold leading-7 text-gray-900 uppercase"
           >
-            Pasar al siguiente nivel ya!
+            Pasa al siguiente nivel ya!
           </h1>
         </blockquote>
         <figcaption class="font-medium">

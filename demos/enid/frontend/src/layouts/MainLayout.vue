@@ -1,7 +1,8 @@
 <template>
-<div>
-    
+
+<div>  
     <div class="fixed top-0 left-0 right-0 z-50 bg-white ">
+      
       <!-- Contenido del menú aquí -->
       <ShippingAndReturns @open_shopping_cart="handleOpenCart" />
     </div>

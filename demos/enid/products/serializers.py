@@ -2,12 +2,15 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from products.models import Product
 from image.serializers import ImageSerializer
+from categories.serializers import CategorySerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     short_name = serializers.SerializerMethodField()
     formatted_price = serializers.SerializerMethodField()
     formatted_weight = serializers.SerializerMethodField()
+    category = CategorySerializer()     
+    
 
     class Meta:
         model = Product        
