@@ -324,7 +324,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { loadStripe } from '@stripe/stripe-js';
 import { rules } from "@/rules/formCheckout.js";
-import { stripePublicKey } from "@/config/stripe.js";
+//import { stripePublicKey } from "@/config/stripe.js";
 
 
 export default {
@@ -404,7 +404,7 @@ export default {
   methods: {
     async initializeStripe() {
       
-      this.stripe =  await loadStripe(stripePublicKey);
+      this.stripe =  await loadStripe(import.meta.env.VITE_APP_STRIPE);
       const elements = this.stripe.elements();
 
       const style = {
