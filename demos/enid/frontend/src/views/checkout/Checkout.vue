@@ -69,6 +69,9 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
   methods: {
     formattedPrice(price) {
       return price.toLocaleString("es-MX", {

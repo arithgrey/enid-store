@@ -6,6 +6,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/categorias/', include('categories.urls')),    
     path('api/direccion/', include('address.urls')),    
     path('api/estado/', include('state.urls')),
     path('api/orden/', include('order.urls')),

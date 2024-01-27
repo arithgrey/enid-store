@@ -2,7 +2,7 @@
   <div>
     <Banner />
     <BannerOffert />
-    <div class="mx-auto xs:w-full md:w-10/12">
+    <div class="mx-auto xs:w-full md:w-10/12 p-5 md:p-0">
       <ProductList @open_shopping_cart_product_list="handleOpenCartProductList" />
     </div>
     <div class="mx-auto xs:w-full">

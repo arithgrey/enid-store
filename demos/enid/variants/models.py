@@ -6,6 +6,7 @@ class Variant(models.Model):
     weight = models.DecimalField(default=0.5, max_digits=5, decimal_places=2)
     long = models.DecimalField(default=0, max_digits=5, decimal_places=2)    
     disc = models.BooleanField(default=False)    
+    material = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         return self.name

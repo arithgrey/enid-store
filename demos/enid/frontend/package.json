@@ -32,6 +32,7 @@
     "vue": "^3.2.36",
     "vue-faker": "^3.0.0",
     "vue-masked-input": "^0.5.2",
+    "vue-meta": "^2.4.0",
     "vue-router": "^4.2.5",
     "vuelidate": "^0.7.7",
     "vuex": "^4.1.0"

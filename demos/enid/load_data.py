@@ -161,6 +161,15 @@ class EnidLoader:
                 "top_seller": True,
                 "category":1,
             },
+            {
+                "id":6,
+                "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''',                 
+                "price": 1450,                
+                "weight": 20,
+                "count_discs": True,
+                "top_seller": True,
+                "category":1,
+            },
              
                                              
         ]
@@ -228,6 +237,26 @@ class EnidLoader:
                 "weight": .2
                 
             },
+            {
+                "id":10,
+                "name": '''Disco de 3KG''',                                 
+                "weight": 3, 
+                "disc": True,               
+                "material":'Acero'
+            },
+            {
+                "id":11,
+                "name": '''Disco de 2KG''',                                 
+                "weight": 2, 
+                "disc": True,     
+                "material":'Acero'          
+            },
+            {
+                "id":12,
+                "name": '''+ seguros adicionales de regalo''',
+                "weight": .2
+                
+            },
                                             
         ]
 
@@ -260,6 +289,29 @@ class EnidLoader:
         loader.load_product_variant(product_id=4, variant_id=5,pieces=1)
         loader.load_product_variant(product_id=4, variant_id=6,pieces=1)
         loader.load_product_variant(product_id=4, variant_id=9,pieces=6)    
+
+        #80Kg 3300
+
+        loader.load_product_variant(product_id=5, variant_id=1,pieces=4)
+        loader.load_product_variant(product_id=5, variant_id=2,pieces=8)
+        loader.load_product_variant(product_id=5, variant_id=3,pieces=12)
+        loader.load_product_variant(product_id=5, variant_id=4,pieces=12)
+
+        loader.load_product_variant(product_id=5, variant_id=8,pieces=2)
+
+        loader.load_product_variant(product_id=5, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=5, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=5, variant_id=6,pieces=1)
+        loader.load_product_variant(product_id=5, variant_id=9,pieces=10)    
+        
+        #par de 10kg
+
+        loader.load_product_variant(product_id=6, variant_id=10,pieces=4)    
+        loader.load_product_variant(product_id=6, variant_id=11,pieces=4)    
+        loader.load_product_variant(product_id=6, variant_id=9,pieces=4) 
+        loader.load_product_variant(product_id=6, variant_id=12,pieces=2)    
+        loader.load_product_variant(product_id=6, variant_id=8,pieces=2)    
+
 
     def load_base(self):
         self.load_states()

@@ -1,27 +1,35 @@
 <template>
   <div class="bg-white py-10 sm:px-10 mt-3 md:mt-5">
     <div class="grid">
-      <h3 class="text-5xl  font-semibold leading-5 text-gray-900 uppercase">
+      <h3 class="text-5xl font-semibold leading-5 text-gray-900 uppercase">
         {{ title }}
       </h3>
-      
-      <h3 class="text-5xl font-semibold  text-gray-900 uppercase mt-5">
+
+      <h3 class="text-5xl font-semibold text-gray-900 uppercase mt-5">
         Los populares
       </h3>
-      
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-2 lg:gap-y-0">
       <div
         v-for="(item, index) in products"
         :key="index"
-        class="flex flex-col mt-10 "
+        class="flex flex-col mt-10"
       >
-        <div class="relative">          
-          <img            
+        <div class="relative">
+           <router-link
+                :to="{
+                  name: 'product-detail',
+                  params: {
+                    categorySlug: item.category.slug,
+                    productSlug: item.slug,
+                  },
+                }">
+          <img
             :src="getMainImage(item)"
             :alt="item.name"
             class="block w-full h-auto"
           />
+           </router-link>
         </div>
         <div class="mt-6 flex justify-between items-center">
           <div class="flex justify-center items-center">
@@ -86,19 +94,24 @@
             class="flex jusitfy-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8"
           >
             <div class="w-full">
-              <button
-                class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2text-gray-800 w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 bg-white border border-gray-800"
-              >
+              <router-link
+                :to="{
+                  name: 'product-detail',
+                  params: {
+                    categorySlug: item.category.slug,
+                    productSlug: item.slug,
+                  },
+                }">
+                <button class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2text-gray-800 w-full tracking-tight py-4 text-lg leading-4 hover:bg-gray-300 hover:text-gray-800 bg-white border border-gray-800">
                 Más info
-              </button>
+                </button>
+              </router-link>
             </div>
             <div class="w-full">
               <button
-                @click="addToCart(item)" 
-                                
-                class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 
-                focus:ring-2 text-white w-full tracking-tight 
-                py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800">
+                @click="addToCart(item)"
+                class="focus:outline-none focus:ring-gray-800 focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800"
+              >
                 Añadir al carrito
               </button>
             </div>
@@ -114,31 +127,29 @@
 import ProductVarianList from "@/components/Variants/ProductVarianList.vue";
 
 export default {
-  
   components: {
     ProductVarianList,
   },
   props: {
     title: {
       type: String,
-      default: "Ya sabes..", // Valor por defecto si no se proporciona desde el componente padre
+      default: "Ya sabes..",
     },
-    url_api:{
+    url_api: {
       type: String,
-      default: "top-sellers", // Valor por defecto si no se proporciona desde el componente padre
-    }
-  },  
+      default: "top-sellers",
+    },
+  },
   data() {
     return {
       open: false,
-      products: [],      
+      products: [],
     };
   },
-  mounted() {    
+  mounted() {
     this.fetchProducts();
   },
   methods: {
-    
     async fetchProducts() {
       try {
         const response = await this.$axios.get(`productos/${this.url_api}`);
@@ -150,25 +161,20 @@ export default {
       } catch (error) {
         console.error("Error products FAQ list:", error);
       }
-    },   
-    addToCart(product){      
-            
+    },
+    addToCart(product) {
       this.$emit("open_shopping_cart_product_list");
-      return this.$store.commit('addToCart',product);      
-
-    },    
+      return this.$store.commit("addToCart", product);
+    },
     toggleShow(index) {
       this.products.forEach((product, i) => {
         product.show = index === i && !product.show;
       });
     },
-    getMainImage(item){
-        
-      const mainImage = item.images.find(img => img.is_main);
-      return mainImage ? mainImage.get_image_url : '';
-
-    } 
-
+    getMainImage(item) {
+      const mainImage = item.images.find((img) => img.is_main);
+      return mainImage ? mainImage.get_image_url : "";
+    },
   },
 };
 </script>
