@@ -1,9 +1,18 @@
 import os
-from models_loader import FaqsLoader, ReturnsLoader, VariantLoader, ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader
+from models_loader import BusinessLoader, FaqsLoader, ReturnsLoader, VariantLoader
+from models_loader import ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader
 from initial_products_images import ImagesLoader
-
+from initial_business_images import ImagesBusinessLoader
 
 class EnidLoader:
+
+    def load_business(self):
+
+        data = [
+            {"name":"Enid Service"},            
+        ]
+        BusinessLoader(data).load_data()
+
     def load_states(self):
 
         data = [
@@ -314,6 +323,7 @@ class EnidLoader:
 
 
     def load_base(self):
+        self.load_business()
         self.load_states()
         self.load_Faqs()
         self.load_Returns()
@@ -321,8 +331,11 @@ class EnidLoader:
         self.load_products()
         self.load_variant()
         self.load_product_variant()
-        
+        image_business = ImagesBusinessLoader()
+        image_business.add_business_images()
         
 
 if __name__ == "__main__":
     EnidLoader().load_base()
+            
+    
