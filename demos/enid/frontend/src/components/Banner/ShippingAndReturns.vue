@@ -488,7 +488,7 @@ const navigation = {
   ],
   pages: [
         
-    { name: "REFERENCIAS", href: "#" },    
+    { name: "REFERENCIAS", href: "referencias" },    
     { name: "CAMBIOS", href: "cambios-y-devoluciones" },
     
   ],

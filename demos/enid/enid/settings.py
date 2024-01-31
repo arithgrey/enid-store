@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',    
     'rest_framework',    
     'share_test',
+    'business',
     'user',
     'image',
     'categories',

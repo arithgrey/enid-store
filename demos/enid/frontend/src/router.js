@@ -7,6 +7,7 @@ import SeachOrders from '@/views/SearchOrders/Form.vue'
 import ProductList from '@/views/Product/ProducList.vue'
 import Checkout from '@/views/checkout/Checkout.vue'
 import ProductDetail from '@/views/Product/ProductDetail.vue'
+import References from '@/views/References/ReferencesList.vue'
 
 const routes = [
   {
@@ -51,6 +52,15 @@ const routes = [
           title: '/:categorySlug/:productSlug',
         },
       },
+      {
+        path: 'referencias',
+        name: 'referencias',
+        component: References,
+        meta: {
+          title: 'Enid service - Referencias',
+        },
+      },
+
       
     ],
    

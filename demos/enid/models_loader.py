@@ -14,6 +14,7 @@ from variants.models import Variant
 from product_variant.models import ProductVariant
 from categories.models import Category
 from state.models import State
+from business.models import Business
 
 class DataLoader:
     def __init__(self, model, data, slug=0):
@@ -29,6 +30,11 @@ class DataLoader:
                 item["slug"] = slug            
             if not self.model.objects.filter(**item).exists():
                 self.model.objects.create(**item)
+
+
+class BusinessLoader(DataLoader):
+    def __init__(self, data):
+        super().__init__(Business, data)
 
 class FaqsLoader(DataLoader):
     def __init__(self, data):

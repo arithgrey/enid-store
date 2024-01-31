@@ -2,24 +2,12 @@ import os
 import django
 from django.core.files import File
 from image.models import Image 
-
+from initial_images import Images
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "enid.settings")
 django.setup()
 
-class ImagesLoader:    
-        
-    def save_image(self,file_path,file_name,is_main=False):
-
-        path_uploads = f'uploads/{file_name}'
-        if os.path.exists(path_uploads):        
-            os.remove(path_uploads)
-
-        with open(file_path, 'rb') as file:
-            django_file = File(file)        
-            image = Image(is_main=is_main)
-            image.image.save(os.path.basename(file_path), django_file, save=True)
-            return image
-
+class ImagesLoader(Images):            
+    
     def load_products_images(self, products):
         base_path = 'initial_images/'
         base = [
