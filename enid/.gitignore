@@ -5,7 +5,7 @@ node_modules/
 /dist/
 
 # Vue.js development server
-/.env
+/frontend/.env
 /.env.local
 /.env.*.local
 
