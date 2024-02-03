@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/direccion/', include('address.urls')),    
     path('api/estado/', include('state.urls')),
     path('api/orden/', include('order.urls')),
+    path('api/compra/', include('order_management.urls')),
     path('api/item-order/', include('item_order.urls')),
     path('api/faq/', include('faqs.urls')),
     path('api/devoluciones/', include('returns.urls')),

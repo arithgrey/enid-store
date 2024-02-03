@@ -46,6 +46,7 @@ class StripePayment:
     
 
     def _handle_charge_response(self, charge):
+            
         if charge.status == 'succeeded':
             return {'status': 'success',
                     'message': f'Cargo exitoso. ID: {charge.id}'}

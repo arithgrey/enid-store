@@ -1,7 +1,6 @@
 {
-    "presets": [
-      ["@babel/preset-typescript", {
-        "rewriteImportExtensions": true
-      }]
-    ]
-  }
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-typescript"
+  ]
+}

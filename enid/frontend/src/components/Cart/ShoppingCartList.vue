@@ -157,11 +157,26 @@ export default {
     },
     closeCart() {
       this.open = false;
-    }    
+    },
+    formattedPrice(price) {
+      return price.toLocaleString("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        minimumFractionDigits: 2,
+      });
+    },
   },
   computed:{
     showReviewAndPay() {      
       return (this.$store.getters.totalItemsInCart) > 0;
+    },    
+    totalPriceQuantity() {
+      const total = this.$store.getters.getProductsFromCart.reduce((acc, product) => {
+        let total_quantity = product.price * product.quantity;
+        return acc + total_quantity;
+      }, 0);
+
+      return this.formattedPrice(total);
     },
   }
 };

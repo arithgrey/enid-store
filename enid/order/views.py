@@ -47,16 +47,16 @@ class OrderViewSet(viewsets.ModelViewSet):
                     if charge_result['status'] == 'success':                                        
                         return Response(serializer.data, status=status.HTTP_201_CREATED)                    
                     else:      
+                        
                         transaction.set_rollback(True)
-                        errors['stripe_error'] = charge_result['message']                                      
+                        errors['stripe_error'] = charge_result['stripe_error']                                      
                         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
                     
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
         
-        except StripeError as e:            
-            
+        except StripeError as e:                                 
             transaction.set_rollback(True)
             errors['stripe_error'] = charge_result['message']                                      
             return Response(errors,status=status.HTTP_400_BAD_REQUEST)
@@ -125,6 +125,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             "postal_code": address_data['postal_code'],
             "street": address_data['street'],
             "number": address_data['number'],
+            "interior_number":address_data['number'],
             "colony": address_data['colony'],
             "delegation_or_municipality": address_data['delegation_or_municipality'],
             "city": address_data['city'],

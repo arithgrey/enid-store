@@ -8,6 +8,7 @@ import ProductList from '@/views/Product/ProducList.vue'
 import Checkout from '@/views/checkout/Checkout.vue'
 import ProductDetail from '@/views/Product/ProductDetail.vue'
 import References from '@/views/References/ReferencesList.vue'
+import OrderDetail from '@/views/Order/OrderDetail.vue'
 
 const routes = [
   {
@@ -60,7 +61,11 @@ const routes = [
           title: 'Enid service - Referencias',
         },
       },
-
+      {
+        path: '/orden-compra/:id',
+        name: 'order-detail',
+        component: OrderDetail,        
+      },
       
     ],
    

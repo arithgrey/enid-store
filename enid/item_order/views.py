@@ -10,4 +10,5 @@ class ItemOrderViewSet(viewsets.ModelViewSet):
         
     queryset = ItemOrder.objects.all()
     serializer_class = ItemOrderSerializer
-    lookup_field = 'id'
+    lookup_field = 'id'    
+

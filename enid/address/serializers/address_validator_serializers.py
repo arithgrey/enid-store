@@ -43,6 +43,19 @@ class AddressValidatorSerializer(serializers.Serializer):
             'invalid':'Ingresa un número!'
         })
 
+    interior_number = serializers.IntegerField(        
+        required=True,
+        min_value=1, 
+        max_value=9999,             
+        error_messages={
+            'required': 'Hey falta este campo!',
+            'blank': 'Hey te falta este dato!',            
+            'max_value': 'Seguro tu número de casa es tan grande?',
+            'min_value': 'hey! indicanos cual es el número de casa',
+            'invalid':'Ingresa un número!'
+        })
+
+
     colony = serializers.CharField(        
         max_length=100, 
         min_length=3, 
@@ -118,6 +131,6 @@ class AddressValidatorSerializer(serializers.Serializer):
         not_allow_blank = ["postal_code", "street","colony","city"]        
         max_lengths = {"postal_code":10,"street":100,"colony":100,"delegation_or_municipality":100,"city":100,"phone_number":14}
         min_lengths = {"postal_code":4,"street":4,"colony":3,"delegation_or_municipality":3,"city":4,"phone_number":8}
-        min_values = {"number":1,"state":1}
-        max_values = {"number":9999999,"state":33}
+        min_values = {"number":1,"state":1, "interior_number":1}
+        max_values = {"number":9999999,"state":33, "interior_number":9999}
         

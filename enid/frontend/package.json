@@ -24,6 +24,7 @@
     "axios": "^1.6.2",
     "babel-jest": "^27.0.0",
     "libphonenumber-js": "^1.10.53",
+    "moment": "^2.30.1",
     "process": "^0.11.10",
     "stripe": "^14.12.0",
     "uuid": "^9.0.1",

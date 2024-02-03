@@ -321,7 +321,6 @@ describe('Rendering', () => {
   });
 });
 
-
 describe('Computeds', () => {
 
   it('computes isContactInfo correctly when all fields are valid', async () => {
@@ -377,7 +376,6 @@ describe('Computeds', () => {
     expect(wrapper.vm.isContactInfo).toBe(false);
 
   });
-
 
 
 });

@@ -52,7 +52,8 @@ class TestAddressValidatorSerializer(ValidatorTest):
         data = {            
             "postal_code":'08500',            
             "street":'Avenida sur 12',  
-            "number":'129',     
+            "number":'129',    
+            "interior_number":1,
             "colony":'Agricola Oriental',
             "delegation_or_municipality":"Iztacalco",
             "city":"CDMX",
@@ -69,6 +70,7 @@ class TestAddressValidatorSerializer(ValidatorTest):
             postal_code = self.fake.postcode()
             street = self.fake.street_address()
             number = self.fake.random_int(min=1, max=10000)
+            interior_number = self.fake.random_int(min=1, max=9999)
             while number < 1:
                 number = self.fake.random_int(min=2, max=100)
                                 
@@ -83,6 +85,7 @@ class TestAddressValidatorSerializer(ValidatorTest):
                 "postal_code": postal_code,
                 "street": street,
                 "number": number,
+                "interior_number":interior_number,
                 "colony": colony,
                 "delegation_or_municipality": delegation_or_municipality,
                 "city": city,

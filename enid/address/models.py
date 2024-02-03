@@ -22,7 +22,7 @@ class Address(models.Model):
     delegation_or_municipality = models.TextField(blank=True, null=True)
     additional_details = models.TextField(blank=True, null=True)
     number = models.IntegerField()
-    interior_number = models.IntegerField(default=1, blank=True, null=True)
+    interior_number = models.IntegerField()
 
     state = models.ForeignKey(State, related_name="state_address", on_delete=models.CASCADE, null=False, blank=False)    
     phone_number = models.CharField(max_length=15, null=True, blank=True)

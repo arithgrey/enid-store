@@ -14,10 +14,9 @@
               @input="v$?.form.email.$touch()"
               id="floating_email"
               class="peer input-cart"
+              placeholder="Correo electrónico*"
             />
-            <label for="floating_email" class="label-input-cart">
-              Correo electrónico*
-            </label>
+
             <span
               class="text-red-500 text-sm"
               v-if="this.errors && this.errors.email"
@@ -37,11 +36,10 @@
               name="name"
               id="floating_name"
               class="peer input-cart"
+              placeholder="Nombre"
               required
             />
-            <label for="floating_name" class="label-input-cart">
-              Nombre*
-            </label>
+
             <span
               class="text-red-500 text-sm"
               v-if="this.errors && this.errors.name"
@@ -59,11 +57,10 @@
               type="tel"
               id="floating_name_phone_number"
               class="peer input-cart"
+              placeholder="Teléfono*"
               required
             />
-            <label for="floating_name_phone_number" class="label-input-cart">
-              Teléfono*
-            </label>
+
             <span
               class="text-red-500 text-sm"
               v-if="this.errors && this.errors.phone_number"
@@ -91,13 +88,10 @@
             name="name"
             id="floating_postal_code"
             class="peer input-cart"
-            placeholder=""
             @input="formatPostalCode"
             required
+            placeholder="Código postal*"
           />
-          <label for="floating_postal_code" class="label-input-cart">
-            Código postal*
-          </label>
           <span
             class="text-red-500 text-sm"
             v-if="this.errors && this.errors.postal_code"
@@ -115,11 +109,10 @@
             name="street"
             id="floating_street"
             class="peer input-cart"
-            placeholder=""
+            placeholder="Calle*"
             required
             @input="v$?.form.street.$touch()"
           />
-          <label for="floating_street" class="label-input-cart"> Calle* </label>
           <span
             class="text-red-500 text-sm"
             v-if="this.errors && this.errors.street"
@@ -139,13 +132,11 @@
                 name="number"
                 id="floating_number"
                 class="peer input-cart"
-                placeholder=""
+                placeholder="Número exterior*"
                 @input="formatNumber"
                 required
               />
-              <label for="floating_number" class="label-input-cart">
-                Número exterior*
-              </label>
+
               <span
                 class="text-red-500 text-sm"
                 v-if="this.errors && this.errors.number"
@@ -164,12 +155,10 @@
                 name="interior_number"
                 id="floating_interior_number"
                 class="peer input-cart"
-                placeholder=""
+                placeholder="Número interior*"
                 @input="formatInteriorNumber"
               />
-              <label for="floating_interior_number" class="label-input-cart">
-                Número interior*
-              </label>
+
               <span
                 class="text-red-500 text-sm"
                 v-if="this.errors.interior_number"
@@ -195,10 +184,9 @@
             id="floating_colony"
             class="peer input-cart"
             required
+            placeholder="Colonia*"
           />
-          <label for="floating_colony" class="label-input-cart">
-            Colonia*
-          </label>
+
           <span
             class="text-red-500 text-sm"
             v-if="this.errors && this.errors.colony"
@@ -218,13 +206,8 @@
             id="floating_delegation_or_municipality"
             class="peer input-cart"
             required
+            placeholder="Delegación o Municipio*"
           />
-          <label
-            for="floating_delegation_or_municipality"
-            class="label-input-cart"
-          >
-            Delegación o Municipio*
-          </label>
           <span
             class="text-red-500 text-sm"
             v-if="this.errors && this.errors.delegation_or_municipality"
@@ -245,8 +228,9 @@
             id="floating_city"
             class="peer input-cart"
             required
+            placeholder="Ciudad *"
           />
-          <label for="floating_city" class="label-input-cart"> Ciudad * </label>
+
           <span class="text-red-500 text-sm" v-if="v$?.form.city.$error">
             {{ v$?.form.city.$errors[0].$message }}
           </span>
@@ -257,10 +241,8 @@
             name="additional_details"
             id="floating_additional_details"
             class="peer input-cart"
+            placeholder="¿Alguna referencia?"
           />
-          <label for="floating_additional_details" class="label-input-cart">
-            ¿Alguna referencia?
-          </label>
         </div>
 
         <h5 class="text-1xl font-bold tracking-tight text-gray-900 sm:tc">
@@ -268,7 +250,7 @@
         </h5>
         <select
           v-model="form.state"
-          class="block py-2.5 px-4 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          class="block py-2.5 px-4 w-full text-gray-900 bg-transparent border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
         >
           <option class="p-0" value="" disabled selected>
             Selecciona un estado
@@ -293,17 +275,18 @@
         >
           Pago
         </h5>
-        <div class="text-gray-600 text-sm mb-5">
+        <div class="text-gray-800 text-sm mb-5">
           Todas las transacciones son seguras y están cifradas.
         </div>
-        <div id="card-element"></div>
-        <div v-if="this.stripe_message_error" class="text-red-500 text-sm"> 
-          {{this.stripe_message_error}}
+
+        <div id="card-element" class="input-cart placeholder-gray-900"></div>
+        <div v-if="this.stripe_message_error" class="text-red-500 mt-3 font-bold">
+          {{ this.stripe_message_error }} Intenta de nuevo!
         </div>
-        <span
-          class="text-red-500 text-sm"
+        <div
+          class="text-red-500 text-sm mt-3 font-bold"
           v-if="this.errors && this.errors.stripe_error"
-          >{{ this.errors.stripe_error }}</span
+          >{{ this.errors.stripe_error }} Intenta de nuevo!</div
         >
 
         <button
@@ -319,21 +302,19 @@
 
 
 <script>
-
-
 import { useVuelidate } from "@vuelidate/core";
-import { loadStripe } from '@stripe/stripe-js';
-import { rules } from "@/rules/formCheckout.js";
-//import { stripePublicKey } from "@/config/stripe.js";
+import { loadStripe } from "@stripe/stripe-js";
+import { rules } from "@/rules/checkout/formCheckout.js";
+import * as utilities from "@/rules/checkout/utilities.js";
 
 
 export default {
   data() {
     return {
-      states: [],      
-      stripe: null, 
-      card: null,   
-      stripe_message_error:"",
+      states: [],
+      stripe: null,
+      card: null,
+      stripe_message_error: "",
       form: {
         email: "",
         name: "",
@@ -362,8 +343,7 @@ export default {
         city: "",
         additional_details: "",
         phone_number: "",
-        stripe_error:"",
-        
+        stripe_error: "",
       },
     };
   },
@@ -377,13 +357,10 @@ export default {
     this.fetchStates().then(() => {
       this.form.state = 7;
     });
-
-    
   },
   watch: {},
   computed: {
     isContactInfo() {
-      
       let status =
         !this.v$?.form.email.$error &&
         !this.v$?.form.name.$error &&
@@ -394,134 +371,79 @@ export default {
       if (status) {
         this.$nextTick(() => {
           this.initializeStripe();
+          this.scrollToShippingAddress();
         });
-      
-        //this.scrollToShippingAddress();
       }
       return status;
     },
   },
   methods: {
+    ...utilities,
     async initializeStripe() {
-      
-      this.stripe =  await loadStripe(import.meta.env.VITE_APP_STRIPE);
-      const elements = this.stripe.elements();
+      try {
+        this.stripe = await loadStripe(import.meta.env.VITE_APP_STRIPE);
+        const elements = this.stripe.elements();
 
-      const style = {
-        base: {
-          color: "#32325d",
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSmoothing: "antialiased",
-          fontSize: "16px",
-          "::placeholder": {
-            color: "#aab7c4",
+        const style = {
+          base: {
+            color: "#32325d",
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: "antialiased",
+            fontSize: "20px",
+            "::placeholder": {
+              color: "#253d74",
+            },
           },
-        },
-        invalid: {
-          color: "#fa755a",
-          iconColor: "#fa755a",
-        },
-      };
+          invalid: {
+            color: "#fa755a",
+            iconColor: "#fa755a",
+          },
+        };
 
-      this.card = elements.create("card", { style });
-      this.card.mount("#card-element");
-
-    },
-    scrollToShippingAddress() {
-      /*
-      this.$nextTick(() => {
-        
-        const section = this.$refs.shippingAddressSection;        
-        if (section) {
-          section.scrollIntoView({ behavior: "smooth" });
-        }
-        
-      });
-      */
-    },
-
-    formatName() {
-      this.v$?.form.name.$touch();
-      this.form.name = this.cleanNonChars(this.form.name);
-    },
-
-    formatInteriorNumber() {
-      this.form.interior_number = this.cleanNonNumericChars(
-        this.form.interior_number
-      );
-    },
-
-    formatNumber() {
-      this.form.number = this.cleanNonNumericChars(this.form.number);
-      this.v$?.form.number.$touch();
-    },
-
-    formatPostalCode() {
-      this.v$?.form.postal_code.$touch();
-      this.form.postal_code = this.cleanNonNumericChars(this.form.postal_code);
-    },
-
-    formatPhoneNumber() {
-      this.v$?.form.phone_number.$touch();
-
-      this.form.phone_number = this.cleanNonNumericChars(
-        this.form.phone_number
-      );
-
-      if (this.form.phone_number.length > 12) {
-        this.form.phone_number = this.form.phone_number.slice(0, 12);
+        this.card = elements.create("card", { style });
+        this.card.mount("#card-element");
+      } catch (error) {
+        console.error("Error during Stripe initialization:", error);
       }
     },
-
-    cleanNonNumericChars(str) {
-      return str.replace(/[^0-9]/g, "");
+    scrollToShippingAddress() {
+      const section = this.$refs.shippingAddressSection;
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
     },
-
-    cleanNonChars(str) {
-      return str.replace(/[^a-zA-Z\s]/g, "");
-    },
-
+    
     async submitForm() {
       const result = await this.v$.$validate();
-      if (!result) {return;}
+      if (!result) {
+        return;
+      }
+      this.cleanErrors();
 
       try {
-        
-        this.cleanErrors();        
-        const { token, error } = await this.stripe.createToken(this.card);        
+        const { token, error } = await this.stripe.createToken(this.card);
         if (error) {
-          this.stripe_message_error = error.message          
+          this.stripe_message_error = error.message;
           return;
         }
-        this.stripe_message_error = '';  
+
+        this.stripe_message_error = "";
         this.form.stripe_token = token.id;
         await this.processPayment();
-
       } catch (error) {
-        debugger;
-        /*
-        if (error.response && error.response.data) {
-          this.errors = error.response.data;
-        }
-        */
-        
+        console.log(error);
       }
     },
     async processPayment() {
-
       try {
-
         this.form.products = this.$store.getters.getProductsFromCart;
         const response = await this.$axios.post("orden/compra/", this.form);
         this.nextToSaveOrder(response);
-
       } catch (error) {
-        debugger;
+        console.error("Error during payment processing:", error);
         if (error.response && error.response.data) {
           this.errors = error.response.data;
         }
-        
-        
       }
     },
     async fetchStates() {
@@ -529,33 +451,24 @@ export default {
         const response = await this.$axios.get("estado");
         this.states = response.data;
       } catch (error) {
-        //console.error("Error fetching estados list:", error);
+        console.error("Error fetching estados list:", error);
       }
     },
-    formatError(error) {
-      return error[0];
-    },
-    cleanErrors() {
-      Object.keys(this.errors).forEach((field) => {
-        this.errors[field] = "";
-      });
-    },
-    cleanFields() {
-      Object.keys(this.form).forEach((field) => {
-        if (field != "products") {
-          this.form[field] = "";
-        } else {
-          this.form[field] = [];
-        }
-      });
-
-      this.cleanErrors("clearCart");
-    },
-    nextToSaveOrder(response) {
-      debugger;
+    
+    async nextToSaveOrder(response) {
       if (response.status === 201) {
         this.cleanFields();
-        this.$store.commit("clearCart");
+
+        const clearCartPromise = new Promise((resolve) => {
+          this.$store.commit("clearCart");
+          resolve();
+        });
+
+        await clearCartPromise;
+        let order_id = response.data.id;
+        this.$router.push({ name: "order-detail", params: { id: order_id } });
+      } else {
+        this.stripe_message_error = response.data.stripe_error;
       }
     },
   },

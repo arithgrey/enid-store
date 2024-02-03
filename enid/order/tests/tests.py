@@ -60,7 +60,7 @@ class TestsOrderViewSet(TestCase):
             
             mock_response_data = {
                 'status': 'Failed',
-                'message': f'Falla en el cargo',
+                'stripe_error': f'Falla en el cargo',
             }
             mock_stripe_charge.return_value = mock_response_data
             user = {"email": self.fake.email(), "name": self.fake.name()}
@@ -70,7 +70,7 @@ class TestsOrderViewSet(TestCase):
             
             response = self.client.post(
                 '/api/orden/compra/', data, format='json')  
-                                    
+                        
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
@@ -136,9 +136,7 @@ class TestsOrderViewSet(TestCase):
         postal_code = self.fake.postcode()
         street = self.fake.street_address()
         number = self.fake.random_int(min=1, max=10000)
-        while number < 1:
-            number = self.fake.random_int(min=2, max=100)
-
+        interior_number = self.fake.random_int(min=1, max=9999)          
         colony = self.fake.city_prefix()
         delegation_or_municipality = self.fake.city()
         city = self.fake.city()
@@ -150,6 +148,7 @@ class TestsOrderViewSet(TestCase):
             "postal_code": postal_code,
             "street": street,
             "number": number,
+            "interior_number":interior_number,
             "colony": colony,
             "delegation_or_municipality": delegation_or_municipality,
             "city": city,
@@ -220,6 +219,7 @@ class TestsOrderViewSet(TestCase):
     def test_mark_error_when_minor_the_min_value_address(self):
 
         address_min_values = self.min_values_address
+        
 
         invalid_data = {key: (value - 1)
                         for key, value in address_min_values.items()}
@@ -421,7 +421,6 @@ class TestsOrderViewSet(TestCase):
 
         user_errors = self.make_the_type_of_error(invalid_data)
         user_errors_api = self.filter_errors(
-            rule, rules_expecteds, user_errors)
-
+            rule, rules_expecteds, user_errors)        
         keys = list(rules_expecteds.keys())
-        self.assertEqual(keys, user_errors_api, "Las listas no son iguales.")
+        self.assertCountEqual(keys, user_errors_api, "Las listas no son iguales.")
