@@ -1,0 +1,10 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100;200;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.input-cart{
+    @apply text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform  bg-gray-50 focus:bg-white  focus:outline-none ring ring-offset-current ring-offset-2 ring-gray-300;
+}
