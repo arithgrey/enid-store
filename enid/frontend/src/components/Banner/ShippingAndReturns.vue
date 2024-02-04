@@ -94,7 +94,7 @@
                           />
                           {{ item.name }}
                         </a>
-                        <p aria-hidden="true" class="mt-1">Shop now</p>
+                        
                       </div>
                     </div>
                     <div
@@ -246,7 +246,7 @@
                                   />
                                   {{ item.name }}
                                 </a>
-                                <p aria-hidden="true" class="mt-1">Shop now</p>
+                                
                               </div>
                             </div>
                             <div
@@ -370,67 +370,59 @@ const navigation = {
       name: "LO MÁS BUSCADO",
       featured: [
         {
-          name: "Nuevos lanzamientos",
-          href: "#",
+          name: "Ya sabes... los top Sellers",
+          href: "/#top-sellers",
           imageSrc: "https://enidservices.com/imgs/04.jpg",
           imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
+            "Las fotos de referencias, nuestros clientes",
         },
         {
-          name: "Basic Tees",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
+          name: "Las referencias",
+          href: "referencias",
+          imageSrc:"https://enidservices.com/imgs/05.jpg",
           imageAlt:
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
         },
       ],
       sections: [
         {
-          id: "clothing",
-          name: "Clothing",
+          id: "sports",
+          name: "Deporte en casa!",
           items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
+            { name: "Kits deportivos", href: "/#top-sellers" },
+            //{ name: "Dresses", href: "#" },
+            
           ],
         },
         {
-          id: "accessories",
-          name: "Accessories",
+          id: "ayuda",
+          name: "Ayuda!",
           items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
+
+            { name: "Rastrea tu pedido", href:"rastreo"},            
+            { name: "Tiempos de entrega", href:"/#tiempos-entrega"},            
+            { name: "Atención al cliente", href:"/#atencion-al-cliente"},            
+            { name: "Cambios y devoluciones", href:"/#cambios-y-devoluciones"},            
+            
           ],
         },
+        /*
         {
           id: "brands",
           name: "Brands",
           items: [
             { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
+           
           ],
         },
+        */
       ],
     },    
   ],
   pages: [
-    
-    { name: "RASTREO", href: "rastreo" },    
+
     { name: "REFERENCIAS", href: "referencias" },    
+    { name: "RASTREO", href: "rastreo" },        
     { name: "CAMBIOS", href: "cambios-y-devoluciones" },
     
   ],
@@ -454,6 +446,12 @@ export default {
     event: 'open_cart'
   },
   methods: {
+    pushSectionPage(seccion){
+
+      alert(2)
+      //this.$router.push({ path: `#/${seccion}/`});
+
+    },
     openShoppingCart() {
       this.$emit("open_shopping_cart");
 

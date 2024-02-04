@@ -1,5 +1,5 @@
 <template>
-  <div class="border-t ">
+  <div class="border-t" id="tiempos-entrega">
     <div
       class="grid min-h-[140px] w-full place-items-center overflow-x-scroll rounded-lg p-6 lg:overflow-visible"
     >
@@ -55,7 +55,7 @@
 
         <!-- customer Grid Card -->
 
-        <div class="">
+        <div class="" id="atencion-al-cliente">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

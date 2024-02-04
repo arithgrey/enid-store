@@ -66,6 +66,7 @@ export default {
     };
   },
   mounted() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     this.fetchOrder();
   },
   methods: {

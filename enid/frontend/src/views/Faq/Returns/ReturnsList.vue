@@ -1,6 +1,7 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-5 md:w-1/2 mx-auto mt-5 mb-5">
-    <h2 class="font-bold text-gray-900 sm:text-3xl sm:tracking-tight">
+  <div class="mt-10">
+  <div class="bg-white p-5 w-full md:w-1/2 mx-auto mt-10 mb-10">
+    <h2 class="font-bold text-gray-900 text-3xl sm:tracking-tight">
       Cambios y devoluciones
     </h2>
 
@@ -22,6 +23,7 @@
       </div>
     </section>
   </div>
+  </div>
 </template>
 
 <script>
@@ -30,6 +32,9 @@ export default {
   components: {
     ReturnsList,
   },
+  mounted(){
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 };
 </script>
 

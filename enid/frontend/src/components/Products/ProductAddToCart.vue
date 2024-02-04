@@ -120,9 +120,10 @@ export default {
     return {
       reviews: { href: "#", average: 4, totalCount: 1209 },
     };
-  },
+  },  
   computed: {
-    normalizedPrice() {
+    
+    normalizedPrice() {      
       return (this.product.price * 1.2).toFixed(2);
     },
   },
@@ -132,7 +133,8 @@ export default {
       this.$emit("open_shopping_cart_product");
       return this.$store.commit("addToCart", this.product);
       
-    },
+    },    
   },
+  
 };
 </script>

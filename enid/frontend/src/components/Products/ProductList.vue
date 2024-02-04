@@ -9,7 +9,7 @@
         Los populares
       </h3>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-2 lg:gap-y-0">
+    <div  id="top-sellers" class="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-2 lg:gap-y-0">
       <div
         v-for="(item, index) in products"
         :key="index"
