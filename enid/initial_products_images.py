@@ -11,6 +11,14 @@ class ImagesLoader(Images):
     def load_products_images(self, products):
         base_path = 'initial_images/'
         base = [
+            {"id": 8, "path": 'IMG_kit_42kg_acero_1.jpeg','is_main':True},
+            {"id": 8, "path": 'IMG_kit_42kg_acero_2.jpeg','is_main':False},
+            {"id": 8, "path": 'IMG_kit_42kg_acero_3.jpeg','is_main':False},            
+            {"id": 7, "path": 'IMG_barras_1.jpeg','is_main':False},
+            {"id": 7, "path": 'IMG_barras_2.jpeg','is_main':False},
+            {"id": 7, "path": 'IMG_barras_3.jpeg','is_main':False},
+            {"id": 7, "path": 'IMG_barras_4.jpeg','is_main':False},
+            {"id": 7, "path": 'IMG_barras_5.jpeg','is_main':True},
             {"id": 6, "path": '10_kg_acero.jpeg','is_main':True},
             {"id": 6, "path": '10_kg_acero_1.jpeg','is_main':False},
             {"id": 6, "path": '10_kg_acero_2.jpeg','is_main':False},

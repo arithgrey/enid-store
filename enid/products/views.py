@@ -13,7 +13,7 @@ class ProductVuewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        top_sellers = Product.objects.filter(top_seller=True)[:6]
+        top_sellers = Product.objects.filter(top_seller=True)[:10]
         serializer = ProductSerializer(top_sellers, many=True)
         
         return Response(serializer.data)

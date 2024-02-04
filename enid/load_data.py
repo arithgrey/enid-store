@@ -122,8 +122,13 @@ class EnidLoader:
                 "id":1,
                 "name": '''Pesas y barras''',
             },            
-           {
+            {
                 "id":2,
+                "name": '''Calistenia''',
+                
+            },             
+           {
+                "id":3,
                 "name": '''Accesorios''',
                 
             },             
@@ -138,7 +143,7 @@ class EnidLoader:
             {
                 "id":1,
                 "name": '''PARA LOS QUE VAN INICIANDO''',                 
-                "price": 1550,                
+                "price": 1699,                
                 "weight": 34,
                 "count_discs": True,
                 "top_seller": True,
@@ -150,7 +155,7 @@ class EnidLoader:
                 "price": 1499,                
                 "weight": 10,
                 "top_seller": True,
-                "category":1,
+                "category":2,
             },
             {
                 "id":4,
@@ -179,7 +184,21 @@ class EnidLoader:
                 "top_seller": True,
                 "category":1,
             },
-             
+            {
+                "id":7,
+                "name": '''PARA LOS QUE HACEN CALISTENIA''',                 
+                "price": 1499,                                
+                "top_seller": True,
+                "category":2,
+            },             
+            {
+                "id":8,
+                "name": '''PARA QUIEN QUIERE LO NECESARIO, SIN ESPACIO''',
+                "price": 3800,                                
+                "weight": 52,
+                "top_seller": True,
+                "category":1,
+            },             
                                              
         ]
         
@@ -243,8 +262,7 @@ class EnidLoader:
             {
                 "id":9,
                 "name": '''Seguro (collarin para ajustar los disos) ''',
-                "weight": .2
-                
+                "weight": .2                
             },
             {
                 "id":10,
@@ -264,8 +282,60 @@ class EnidLoader:
                 "id":12,
                 "name": '''+ seguros adicionales de regalo''',
                 "weight": .2
-                
+
             },
+            {
+                "id":13,
+                "name": '''Barra para calistenia '''                                
+            },
+            {
+                "id":14,
+                "name": ''' Gancho para box '''                                
+            },
+            {
+                "id":15,
+                "name": '''Taquetes expansivos '''                                
+            },
+            {
+                "id":16,
+                "name": '''Disco de 5KG''',                                 
+                "weight": 5, 
+                "disc": True,               
+                "material":'Acero'
+            },                                                        
+            {
+                "id":17,
+                "name": '''Disco de 10KG''',                                 
+                "weight": 10, 
+                "disc": True,               
+                "material":'Acero'
+            },
+            {
+                "id":18,
+                "name": '''Disco de 1KG''',                                 
+                "weight": 1, 
+                "disc": True,               
+                "material":'Acero'
+            },
+            {
+                "id":19,
+                "name": '''Disco de 4KG''',                                 
+                "weight": 4, 
+                "disc": True,               
+                "material":'Acero'
+            }, 
+            {
+                "id":20,
+                "name": '''Disco de .5KG''',                                 
+                "weight": .5, 
+                "disc": True,               
+                "material":'Acero'
+            },
+            {
+                "id":21,
+                "name": '''Seguro (collarin para ajustar los disos, acero) ''',
+                "weight": .3                
+            },  
                                             
         ]
 
@@ -313,13 +383,33 @@ class EnidLoader:
         loader.load_product_variant(product_id=5, variant_id=6,pieces=1)
         loader.load_product_variant(product_id=5, variant_id=9,pieces=10)    
         
-        #par de 10kg
+        #par de 10kg acero
 
         loader.load_product_variant(product_id=6, variant_id=10,pieces=4)    
         loader.load_product_variant(product_id=6, variant_id=11,pieces=4)    
         loader.load_product_variant(product_id=6, variant_id=9,pieces=4) 
         loader.load_product_variant(product_id=6, variant_id=12,pieces=2)    
         loader.load_product_variant(product_id=6, variant_id=8,pieces=2)    
+        
+        #Barras calistenia
+
+        loader.load_product_variant(product_id=7, variant_id=13,pieces=1)
+        loader.load_product_variant(product_id=7, variant_id=14,pieces=1)
+        loader.load_product_variant(product_id=7, variant_id=15,pieces=8)
+        
+        #KIT 52 kg acero        
+        loader.load_product_variant(product_id=8, variant_id=16,pieces=2)
+        loader.load_product_variant(product_id=8, variant_id=19,pieces=4)
+        loader.load_product_variant(product_id=8, variant_id=10,pieces=4)                
+        loader.load_product_variant(product_id=8, variant_id=11,pieces=4)        
+        loader.load_product_variant(product_id=8, variant_id=18,pieces=4)
+        loader.load_product_variant(product_id=8, variant_id=20,pieces=4)
+
+        loader.load_product_variant(product_id=8, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=8, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=8, variant_id=6,pieces=1)
+        loader.load_product_variant(product_id=8, variant_id=8,pieces=2)        
+        loader.load_product_variant(product_id=8, variant_id=21,pieces=10)
 
 
     def load_base(self):
