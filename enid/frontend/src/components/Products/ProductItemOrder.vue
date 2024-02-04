@@ -3,8 +3,18 @@
     <div
       class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
     >
-      <img class="h-full w-full object-cover object-center" v-if="product.images" 
-      :src="getMainImage(product)"/>
+    <router-link
+          :to="{
+            name: 'product-detail',
+            params: {
+              categorySlug: product.category.slug,
+              productSlug: product.slug,
+            },
+          }"
+        >
+        <img class="h-full w-full object-cover object-center" v-if="product.images" 
+        :src="getMainImage(product)"/>
+    </router-link>
     </div>
 
     <div class="ml-4 flex flex-1 flex-col">

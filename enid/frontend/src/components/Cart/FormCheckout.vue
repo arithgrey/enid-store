@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="mt-8" @submit.prevent="submitForm">
+    <form class="mt-8" @submit.prevent="submitForm" :disabled="loading">
       <div>
         <h5 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-10">
           Contacto
@@ -11,10 +11,12 @@
             <input
               v-model="form.email"
               name="floating_email"
-              @input="v$?.form.email.$touch()"
+              @input="formatEmail"
               id="floating_email"
               class="peer input-cart"
               placeholder="Correo electrónico*"
+              type="email"
+              inputmode="email"
             />
 
             <span
@@ -135,6 +137,7 @@
                 placeholder="Número exterior*"
                 @input="formatNumber"
                 required
+                inputmode="numeric"
               />
 
               <span
@@ -151,12 +154,14 @@
             <div class="relative z-0 w-full mb-5 mt-5 group">
               <input
                 v-model="form.interior_number"
-                type="interior_number"
+                type="text"
                 name="interior_number"
                 id="floating_interior_number"
                 class="peer input-cart"
                 placeholder="Número interior*"
                 @input="formatInteriorNumber"
+                required
+                inputmode="numeric"
               />
 
               <span
@@ -280,16 +285,21 @@
         </div>
 
         <div id="card-element" class="input-cart placeholder-gray-900"></div>
-        <div v-if="this.stripe_message_error" class="text-red-500 mt-3 font-bold">
+        <div
+          v-if="this.stripe_message_error"
+          class="text-red-500 mt-3 font-bold"
+        >
           {{ this.stripe_message_error }} Intenta de nuevo!
         </div>
         <div
           class="text-red-500 text-sm mt-3 font-bold"
           v-if="this.errors && this.errors.stripe_error"
-          >{{ this.errors.stripe_error }} Intenta de nuevo!</div
         >
+          {{ this.errors.stripe_error }} Intenta de nuevo!
+        </div>
 
         <button
+          :disabled="loading"
           type="submit"
           class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
@@ -307,10 +317,10 @@ import { loadStripe } from "@stripe/stripe-js";
 import { rules } from "@/rules/checkout/formCheckout.js";
 import * as utilities from "@/rules/checkout/utilities.js";
 
-
 export default {
   data() {
     return {
+      loading: false,
       states: [],
       stripe: null,
       card: null,
@@ -371,7 +381,6 @@ export default {
       if (status) {
         this.$nextTick(() => {
           this.initializeStripe();
-          this.scrollToShippingAddress();
         });
       }
       return status;
@@ -406,16 +415,12 @@ export default {
         console.error("Error during Stripe initialization:", error);
       }
     },
-    scrollToShippingAddress() {
-      const section = this.$refs.shippingAddressSection;
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    
+
     async submitForm() {
+      this.loading = true;
       const result = await this.v$.$validate();
       if (!result) {
+        this.loading = false;
         return;
       }
       this.cleanErrors();
@@ -424,6 +429,7 @@ export default {
         const { token, error } = await this.stripe.createToken(this.card);
         if (error) {
           this.stripe_message_error = error.message;
+          this.loading = false;
           return;
         }
 
@@ -432,6 +438,8 @@ export default {
         await this.processPayment();
       } catch (error) {
         console.log(error);
+      } finally {
+        this.loading = false;
       }
     },
     async processPayment() {
@@ -444,6 +452,8 @@ export default {
         if (error.response && error.response.data) {
           this.errors = error.response.data;
         }
+      } finally {
+        this.loading = false;
       }
     },
     async fetchStates() {
@@ -454,7 +464,7 @@ export default {
         console.error("Error fetching estados list:", error);
       }
     },
-    
+
     async nextToSaveOrder(response) {
       if (response.status === 201) {
         this.cleanFields();

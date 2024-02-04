@@ -1,3 +1,10 @@
+export function formatEmail() {
+    
+    this.v$?.form.email.$touch()
+    this.form.email = this.form.email.toLowerCase();
+}
+
+
 export function formatName() {
     this.v$?.form.name.$touch();
     this.form.name = this.cleanNonChars(this.form.name);
@@ -49,7 +56,9 @@ export function cleanNonNumericChars(str) {
 }
 
 export function cleanNonChars(str) {
-    return str.replace(/[^a-zA-Z\s]/g, "");
+    
+    let currentStr = str.replace(/[^a-zA-Z\s]/g, "");
+    return currentStr.toLowerCase();
 }
 
 export function formatError(error) {

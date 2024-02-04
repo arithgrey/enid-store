@@ -1,8 +1,8 @@
 <template>
   <div class="flex h-screen">
-    <div class="m-auto w-1/3 p-5">
+    <div class="m-auto  xs:w-full md:w-1/3 p-5">
       <div id="busqueda">
-        <h2 class="font-bold text-gray-900 sm:text-3xl sm:tracking-tight">
+        <h2 class="font-bold text-gray-900 text-3xl sm:tracking-tight">
           Rastrea tu pedido
         </h2>
 
@@ -31,3 +31,12 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {  
+  mounted() {    
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  },
+  
+};
+</script>

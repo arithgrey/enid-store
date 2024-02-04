@@ -8,7 +8,7 @@
     <p
       class="h-5 text-center bg-gray-100 px-4 text-sm sm:px-6 lg:px-8"
     >
-      Pide y recibe hoy y hasta 12 Meses sin intereses <a>COMPRAR AHORA</a>
+      Pide y recibe hoy y hasta 12 Meses sin intereses 
     </p>
   </div>
 </template>

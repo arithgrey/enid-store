@@ -8,10 +8,20 @@
       <div
         class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
       >
-        <img
-          :src="getMainImage(product)"
-          class="h-full w-full object-cover object-center"
-        />
+        <router-link
+          :to="{
+            name: 'product-detail',
+            params: {
+              categorySlug: product.category.slug,
+              productSlug: product.slug,
+            },
+          }"
+        >
+          <img
+            :src="getMainImage(product)"
+            class="h-full w-full object-cover object-center"
+          />
+        </router-link>
       </div>
 
       <div class="ml-4 flex flex-1 flex-col">
@@ -43,16 +53,12 @@
 </template>
 
 <script>
-
 export default {
-  components: {    
-  },
+  components: {},
   data() {
-    return {
-      
-    };
+    return {};
   },
-  methods: {    
+  methods: {
     getMainImage(product) {
       const mainImage = product.images.find((img) => img.is_main);
       return mainImage ? mainImage.get_image_url : "";
