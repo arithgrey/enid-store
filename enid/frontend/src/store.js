@@ -2,10 +2,19 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
+    token: localStorage.getItem('token') || null, 
     cart: JSON.parse(localStorage.getItem('cart')) || [],    
     showDialog: false,
   },
   mutations: {
+    setToken(state, token) {
+      state.token = token; 
+      localStorage.setItem('token', token);
+    },
+    clearToken(state) {
+      state.token = null; 
+      localStorage.removeItem('token'); 
+    },
     addToCart(state, product) {
       const existingItem = state.cart.find(item => item.product.id === product.id);
       if (existingItem) {
@@ -32,6 +41,9 @@ export default createStore({
     },
   },
   getters: {
+    isAuthenticated(state) {
+      return state.token !== null;
+    },
     totalItemsInCart: (state) => {
       return state.cart.reduce((total, item) => total + item.quantity, 0);
     },

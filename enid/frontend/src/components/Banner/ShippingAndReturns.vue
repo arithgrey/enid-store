@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <TransitionRoot as="template" :show="open">
       <Dialog as="div" class="relative z-40 lg:hidden" @close="open = false">
         <TransitionChild
@@ -94,7 +93,6 @@
                           />
                           {{ item.name }}
                         </a>
-                        
                       </div>
                     </div>
                     <div
@@ -165,23 +163,19 @@
 
             <!-- Logo -->
             <div class="ml-4 flex lg:ml-0">
-              <router-link 
-                        
-                       
-                        to="/">
-                  
-                          <span class="sr-only">Delivery Service</span>
-                <img
-                  class="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
+              <router-link to="/">
+                <div class="md:border-b p-0 md:px-2 border-black">
+                  <span class="font-bold"> Enid </span>
+                  service
+                </div>
               </router-link>
-              
             </div>
 
             <!-- Flyout menus -->
-            <PopoverGroup class="hidden lg:ml-8 lg:block lg:self-stretch navegacion" v-if="showMenu">
+            <PopoverGroup
+              class="hidden lg:ml-8 lg:block lg:self-stretch navegacion"
+              v-if="showMenu"
+            >
               <div class="flex h-full space-x-8">
                 <Popover
                   v-for="category in navigation.categories"
@@ -246,7 +240,6 @@
                                   />
                                   {{ item.name }}
                                 </a>
-                                
                               </div>
                             </div>
                             <div
@@ -310,23 +303,69 @@
               <!-- Cart -->
 
               <div class="ml-4 flow-root lg:ml-6">
-                <a class="group -m-2 flex items-center p-2 "
-                @click="openShoppingCart">
+                <a
+                  class="group -m-2 flex items-center p-2"
+                  @click="openShoppingCart"
+                >
                   <ShoppingBagIcon
-                  :class="[
-                          totalItemsCart > 0
-                            ? 'font-bold text-gray-950 border-b border-black group-hover:text-blue-700'
-                            : 'text-gray-400 group-hover:text-gray-500',
-                            'h-6 w-6 flex-shrink-0  cursor-pointer'                          
-                        ]"
-                  
-                  aria-hidden="true"/>
+                    :class="[
+                      totalItemsCart > 0
+                        ? 'font-bold text-gray-950 border-b border-black group-hover:text-blue-700'
+                        : 'text-gray-400 group-hover:text-gray-500',
+                      'h-6 w-6 flex-shrink-0  cursor-pointer',
+                    ]"
+                    aria-hidden="true"
+                  />
 
                   <span
                     class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800"
                     >{{ totalItemsCart }}
                   </span>
                   <span class="sr-only">items in cart, view bag</span>
+                </a>
+              </div>
+              <!-- Login -->
+              <div class="ml-4 flow-root lg:ml-6" v-if="!isAuthenticated">
+                <a
+                  class="group -m-2 flex items-center cursor-pointer p-2"
+                  @click="openSeccionLogin"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                    />
+                  </svg>
+                </a>
+              </div>
+
+              <div class="ml-4 flow-root lg:ml-6" v-if="isAuthenticated">
+                <a
+                  class="group -m-2 flex items-center cursor-pointer p-2"
+                  @click="logout"
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+                  />
+                </svg>
                 </a>
               </div>
             </div>
@@ -373,13 +412,12 @@ const navigation = {
           name: "Ya sabes... los top Sellers",
           href: "/#top-sellers",
           imageSrc: "https://enidservices.com/imgs/04.jpg",
-          imageAlt:
-            "Las fotos de referencias, nuestros clientes",
+          imageAlt: "Las fotos de referencias, nuestros clientes",
         },
         {
           name: "Las referencias",
           href: "referencias",
-          imageSrc:"https://enidservices.com/imgs/05.jpg",
+          imageSrc: "https://enidservices.com/imgs/05.jpg",
           imageAlt:
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
         },
@@ -391,19 +429,19 @@ const navigation = {
           items: [
             { name: "Kits deportivos", href: "/#top-sellers" },
             //{ name: "Dresses", href: "#" },
-            
           ],
         },
         {
           id: "ayuda",
           name: "Ayuda!",
           items: [
-
-            { name: "Rastrea tu pedido", href:"rastreo"},            
-            { name: "Tiempos de entrega", href:"/#tiempos-entrega"},            
-            { name: "Atención al cliente", href:"/#atencion-al-cliente"},            
-            { name: "Cambios y devoluciones", href:"/#cambios-y-devoluciones"},            
-            
+            { name: "Rastrea tu pedido", href: "rastreo" },
+            { name: "Tiempos de entrega", href: "/#tiempos-entrega" },
+            { name: "Atención al cliente", href: "/#atencion-al-cliente" },
+            {
+              name: "Cambios y devoluciones",
+              href: "/#cambios-y-devoluciones",
+            },
           ],
         },
         /*
@@ -417,14 +455,12 @@ const navigation = {
         },
         */
       ],
-    },    
+    },
   ],
   pages: [
-
-    { name: "REFERENCIAS", href: "referencias" },    
-    { name: "RASTREO", href: "rastreo" },        
+    { name: "REFERENCIAS", href: "referencias" },
+    { name: "RASTREO", href: "rastreo" },
     { name: "CAMBIOS", href: "cambios-y-devoluciones" },
-    
   ],
 };
 
@@ -437,40 +473,44 @@ const open = ref(false);
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      showMenu: true
-    }
+      showMenu: true,
+    };
   },
-  model: {    
-    event: 'open_cart'
+  model: {
+    event: "open_cart",
   },
   methods: {
-    pushSectionPage(seccion){
-
-      alert(2)
-      //this.$router.push({ path: `#/${seccion}/`});
-
-    },
     openShoppingCart() {
       this.$emit("open_shopping_cart");
+    },
+    openSeccionLogin() {
+      this.$emit("open_seccion_login");
+    },
+    logout(){
 
+      this.$store.commit('setToken', null); 
+      
     }
   },
+
   computed: {
     totalItemsCart() {
       return this.$store.getters.totalItemsInCart;
-    },    
-  },
-  watch: {    
-    '$route'(newVal, oldVal) {
-      this.showMenu = true; 
-      if(newVal.path.includes('checkout')){
-        this.showMenu = false; 
-      }
-      
-    }
-  },    
+    },
 
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+  watch: {
+    $route(newVal, oldVal) {
+      this.showMenu = true;
+      if (newVal.path.includes("checkout")) {
+        this.showMenu = false;
+      }
+    },
+  },
 };
 </script>
