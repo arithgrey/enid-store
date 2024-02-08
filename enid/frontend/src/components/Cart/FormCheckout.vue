@@ -315,7 +315,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { loadStripe } from "@stripe/stripe-js";
 import { rules } from "@/rules/checkout/formCheckout.js";
-import * as utilities from "@/rules/checkout/utilities.js";
+import * as utilities from "@/rules/utilities.js";
 
 export default {
   data() {

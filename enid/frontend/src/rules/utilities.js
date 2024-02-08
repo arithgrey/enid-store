@@ -1,3 +1,12 @@
+export function formatPassword() {
+    
+    this.v$?.form.password.$touch()
+}
+export function formatPasswordConfirm() {
+    
+    this.v$?.form.password_confirm.$touch()    
+}
+
 export function formatEmail() {
     
     this.v$?.form.email.$touch()

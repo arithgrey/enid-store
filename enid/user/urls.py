@@ -1,13 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from user import views
+from user.views import UserValidatorViewSet
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'', views.userViewSet,basename="user")
-
-urlpatterns = router.urls
 
 urlpatterns = [
-    path('', include(router.urls)),       
+    path('exists/<str:email>', UserValidatorViewSet.as_view({'get': 'user_exists'}), name='exists'),
+    path('', include(router.urls)),
 ]
