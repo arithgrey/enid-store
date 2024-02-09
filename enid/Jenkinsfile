@@ -2,33 +2,49 @@ pipeline {
     agent any
 
     stages {
+        stage('Install Python and pip') {
+            steps {
+                sh 'apt-get update && apt-get install -y python3 python3-pip'
+            }
+        }
+
         stage('Checkout') {
             steps {
-                checkout scm
+                git url: 'https://github.com/arithgrey/enid-store.git', branch: 'main', dir: 'enid'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                script {
-                    sh 'pip install -r requirements.txt'
+                sh 'python3 -m venv venv && . venv/bin/activate && pip install -r requirements.txt'
+            }
+        }
+
+        stage('Install Vue.js Dependencies') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
                 }
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Django Tests') {
             steps {
-                script {
-                    sh 'python manage.py test'
+                sh 'python3 manage.py test'
+            }
+        }
+
+        stage('Run Vue.js Tests') {
+            steps {
+                dir('frontend') {
+                    sh 'npm run test'
                 }
             }
         }
-        
     }
 
     post {
         always {
-        
             junit '**/test-results.xml'
         }
     }
