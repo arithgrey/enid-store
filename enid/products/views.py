@@ -5,15 +5,23 @@ from products.models import Product
 from products.serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from categories.models import Category
+from search.views import CustomPageNumberPagination
 
 class ProductVuewSet(viewsets.ModelViewSet):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    pagination_class = CustomPageNumberPagination
+
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        top_sellers = Product.objects.filter(top_seller=True)[:10]
+        top_sellers = Product.objects.filter(top_seller=True)
+        page = self.paginate_queryset(top_sellers)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = ProductSerializer(top_sellers, many=True)
         
         return Response(serializer.data)

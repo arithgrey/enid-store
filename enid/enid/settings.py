@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'order',
     'item_order',
     'login',
+    'search',
 ]
 
 REST_FRAMEWORK = {

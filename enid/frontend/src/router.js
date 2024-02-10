@@ -9,6 +9,8 @@ import Checkout from '@/views/checkout/Checkout.vue'
 import ProductDetail from '@/views/Product/ProductDetail.vue'
 import References from '@/views/References/ReferencesList.vue'
 import OrderDetail from '@/views/Order/OrderDetail.vue'
+import UserArea from '@/views/UserArea/Area.vue'
+import SeachProducts from '@/views/Search/SeachProducts.vue';
 
 const routes = [
   {
@@ -66,6 +68,17 @@ const routes = [
         name: 'order-detail',
         component: OrderDetail,        
       },
+      {
+        path: '/user-area/',
+        name: 'user-area',
+        component: UserArea,        
+      },
+      {
+        path: '/search/products/:q',
+        name: 'search-product',
+        component: SeachProducts,        
+      },
+      
       
     ],
    

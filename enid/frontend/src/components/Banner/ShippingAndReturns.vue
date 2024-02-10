@@ -294,10 +294,14 @@
             <div class="ml-auto flex items-center navegacion">
               <!-- Search -->
               <div class="flex lg:ml-6">
-                <a href="#" class="p-2 text-gray-400 hover:text-gray-500">
-                  <span class="sr-only">Search</span>
-                  <MagnifyingGlassIcon class="h-6 w-6" aria-hidden="true" />
-                </a>
+                 <div class="flex lg:ml-6">
+                  
+                  <a @click="openSearchProducts" class="p-2 cursor-pointer text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Search</span>
+                    <MagnifyingGlassIcon class="h-6 w-6" aria-hidden="true" />
+                  </a>
+                  
+                </div>
               </div>
 
               <!-- Cart -->
@@ -476,12 +480,17 @@ export default {
   data() {
     return {
       showMenu: true,
+      
+
     };
   },
   model: {
     event: "open_cart",
   },
   methods: {
+    openSearchProducts(){
+      this.$emit("open_search_products");
+    },
     openShoppingCart() {
       this.$emit("open_shopping_cart");
     },
@@ -489,10 +498,9 @@ export default {
       this.$emit("open_seccion_login");
     },
     logout(){
-
-      this.$store.commit('setToken', null); 
-      
-    }
+      this.$store.commit('clearToken');       
+    },
+    
   },
 
   computed: {
