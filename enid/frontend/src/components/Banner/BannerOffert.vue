@@ -9,7 +9,7 @@
         >
           <div>
             <p class="text-3xl xl:text-4xl font-semibold leading-9 text-white">
-              OFERTAS FESTIVAS: HASTA 50% + DESCUENTOS EXTRA 🎅🏻
+              OFERTAS FESTIVAS: HASTA 50% + DESCUENTOS EXTRA
             </p>
           </div>
         </div>

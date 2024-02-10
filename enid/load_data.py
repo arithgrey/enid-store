@@ -182,7 +182,7 @@ class EnidLoader:
             {
                 "id":6,
                 "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''',                 
-                "specific_name":"KIT 80KG MANCUERNAS, BARRA ROMANA, BARRA Z, BARRA RECTA | ENVíO GRATIS",
+                "specific_name":"PAR DE MANCUERNAS DE ACERO CON 10KG CADA UNA PESO TOTAL 20KG",
                 "price": 1450,                
                 "weight": 20,
                 "count_discs": True,
@@ -192,7 +192,7 @@ class EnidLoader:
             {
                 "id":7,
                 "name": '''PARA LOS QUE HACEN CALISTENIA''',  
-                "specific_name":"PAR DE MANCUERNAS DE ACERO CON 10KG CADA UNA PESO TOTAL 20KG",
+                "specific_name":"BARRAS 8 EN 1 SUPER REFORZADAS ENVÍO GRATIS",
                 "price": 1499,                                
                 "top_seller": True,
                 "category":2,
@@ -200,7 +200,7 @@ class EnidLoader:
             {
                 "id":8,
                 "name": '''PARA QUIEN QUIERE LO NECESARIO, SIN ESPACIO''',
-                "specific_name":"KIT DE PESAS CON 42KG DISCOS DE ACERO PARA PASAR AL SIGUIENTE NIVEL | ENVíO GRATIS",
+                "specific_name":"KIT DE PESAS CON 52KG DISCOS DE ACERO PARA PASAR AL SIGUIENTE NIVEL | ENVíO GRATIS",
                 "price": 3800,                                
                 "weight": 52,
                 "top_seller": True,
