@@ -4,7 +4,11 @@
     <div class="fixed top-0 left-0 right-0 z-50 bg-white ">
       
       <!-- Contenido del menú aquí -->
-      <ShippingAndReturns @open_shopping_cart="handleOpenCart" @open_seccion_login="handleOpenLogin"/>
+      <ShippingAndReturns 
+      @open_shopping_cart="handleOpenCart" 
+      @open_seccion_login="handleOpenLogin"
+      @open_search_products ="handleOpenSearchProducts"
+      />
 
     </div>
     <div class="relative mt-32 mb-8">
@@ -14,6 +18,7 @@
       </div>
       <ShoppingCartList ref="shoppingCartList" />
       <LoginForm ref="loginForm"/>
+      <SearchFormProduct ref="searchFormProduct"/>
       <div class="flex-shrink-0">
         <Footer v-if="display_footer" />
       </div>
@@ -25,6 +30,7 @@
 import ShippingAndReturns from "@/components/Banner/ShippingAndReturns.vue";
 import ShoppingCartList from "@/components/Cart/ShoppingCartList.vue";
 import LoginForm from "@/components/Login/LoginForm.vue";
+import SearchFormProduct from "@/components/Search/ProductsForm.vue";
 import Footer from "@/layouts/Footer.vue";
 
 export default {
@@ -33,6 +39,7 @@ export default {
     ShoppingCartList,
     LoginForm,
     Footer,
+    SearchFormProduct,
   },
   data(){
     return {
@@ -40,6 +47,9 @@ export default {
     }
   },
   methods: {
+    handleOpenSearchProducts(){
+      this.$refs.searchFormProduct.openSearch(); 
+    },
     handleOpenCart() {      
       this.$refs.shoppingCartList.openCart(); 
     },

@@ -1,51 +1,43 @@
 <template>
   <div class="bg-white py-10 sm:px-10 mt-3 md:mt-5">
-    <div class="grid">
-      <h3 class="text-5xl font-semibold leading-5 text-gray-900 uppercase">
-        {{ title }}
-      </h3>
-
-      <h3 class="text-5xl font-semibold text-gray-900 uppercase mt-5">
-        Los populares
-      </h3>
-    </div>
     <div
       id="top-sellers"
-      class="grid grid-cols-1 lg:grid-cols-2 gap-x-2 gap-y-2 lg:gap-y-0"
+      class="grid grid-cols-1 lg:grid-cols-4 gap-x-2 gap-y-2 lg:gap-y-0"
     >
       <ProductCart
+        v-if="api"
         :api="api"
         @open_shopping_cart_product_list="handlerOpenShoppingCart"
+        :key="api" 
       />
     </div>
-    <div></div>
   </div>
 </template>
 
 <script>
 import ProductCart from "@/components/Products/ProductCart.vue";
-
 export default {
   components: {
     ProductCart,
-  },
-  props: {
-    title: {
-      type: String,
-      default: "Ya sabes..",
-    },
-  },
+  },  
   data() {
     return {
-      open: false,
-      api: "productos/top-sellers",
+      open: false,      
+      api: null
     };
   },
-
-  methods: {
+  watch: {
+    '$route.params.q': function(newQ, oldQ) {
+      this.api = `search/product/${newQ}/`;
+    }
+  },
+  mounted() {
+    this.api = `search/product/${this.$route.params.q}/`;
+  },
+  methods: {    
     handlerOpenShoppingCart() {
       this.$emit("open_shopping_cart_product_list");
     },
-  },
+  },  
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <footer v-if="show">
+  <footer v-if="show && !isAuthenticated">
     <div
       class="flex flex-col items-center bg-neutral-950 text-center text-white"
     >
@@ -216,6 +216,11 @@ export default {
       show:true,
     }
   },  
+  computed:{
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
   watch: {
     '$route'(newVal, oldVal) {
       this.show = true;

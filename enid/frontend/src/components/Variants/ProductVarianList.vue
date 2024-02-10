@@ -1,9 +1,12 @@
 <template>
   <div>
     <div>
-      <p class="tracking-tight text-xs leading-3 text-gray-800">
-        Codigo: {{ product.code }}
+      <p        
+        class="tracking-tight  text-gray-800 mb-2 font-bold"
+      >
+        {{ product.specific_name }}
       </p>
+     
     </div>
     <div class="mt-2 mb-2">
       <p
@@ -12,11 +15,15 @@
       >
         Peso total {{ product.formatted_weight }}
       </p>
+      
       <p
         v-if="formattedTotalWeight > 0"
         class="tracking-tight text-base font-medium leading-4 text-gray-800"
       >
         Peso total de los discos {{ formattedTotalWeight.toFixed(2) }} Kg
+      </p>
+       <p class="tracking-tight text-xs leading-3 text-gray-800 mt-3">
+        Codigo: {{ product.code }}
       </p>
     </div>
     <div v-if="products_variant.length > 0">

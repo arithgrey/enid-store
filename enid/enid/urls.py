@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/image/', include('image.urls')),
     path('', include('faqs.urls')),
     path('api/user/', include('user.urls')),    
+    path('api/search/', include('search.urls')),    
     path('uploads/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
 
     

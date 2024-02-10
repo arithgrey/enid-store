@@ -3,6 +3,7 @@
     <h1 class="sm: text-2xl font-bold text-gray-900 sm:text-3xl">
       {{ product.name }}
     </h1>
+    <p class="mt-1 text-sm">{{product.specific_name}}</p>
     <div class="mt-6">
       <h3 class="sr-only">Reviews</h3>
       <div class="flex items-center">

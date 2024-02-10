@@ -14,6 +14,7 @@ class Product(models.Model):
     count_discs = models.BooleanField(default=False)
     top_seller = models.BooleanField(default=False)
     slug = AutoSlugField(unique=True, populate_from='name')
+    specific_name = models.CharField(max_length=100)
     images = GenericRelation(Image)
     
     def __str__(self):
