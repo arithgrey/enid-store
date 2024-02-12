@@ -10,7 +10,12 @@ class ImagesLoader(Images):
     
     def load_products_images(self, products):
         base_path = 'initial_images/'
-        base = [
+        base = [                        
+            {"id": 10, "path": 'IMG_50kg_1_z_b_m_1.jpeg','is_main':True},
+            {"id": 10, "path": 'IMG_50kg_1_z_b_m_2.jpeg','is_main':False},
+            {"id": 10, "path": 'IMG_50kg_1_z_b_m_3.jpeg','is_main':False},
+            {"id": 9, "path": 'IMG_42kg_1_z_b_m_1.jpeg','is_main':True},
+            {"id": 9, "path": 'IMG_42kg_1_z_b_m.jpeg','is_main':False},            
             {"id": 8, "path": 'IMG_kit_42kg_acero_1.jpeg','is_main':True},
             {"id": 8, "path": 'IMG_kit_42kg_acero_2.jpeg','is_main':False},
             {"id": 8, "path": 'IMG_kit_42kg_acero_3.jpeg','is_main':False},            
@@ -32,7 +37,8 @@ class ImagesLoader(Images):
             {"id": 1, "path": 'IMG_34kg_1.jpeg','is_main':False},
             {"id": 3, "path": 'barras_parlelas.jpg','is_main':True},
             {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False},
-            {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False},            
+            {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False}, 
+                       
         ]        
         
         for product in products:

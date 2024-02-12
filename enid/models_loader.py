@@ -15,6 +15,7 @@ from product_variant.models import ProductVariant
 from categories.models import Category
 from state.models import State
 from business.models import Business
+from product_group.models import ProductGroup
 
 class DataLoader:
     def __init__(self, model, data, slug=0):
@@ -31,6 +32,11 @@ class DataLoader:
             if not self.model.objects.filter(**item).exists():
                 self.model.objects.create(**item)
 
+
+
+class ProductGroupLoader(DataLoader):
+    def __init__(self, data):
+        super().__init__(ProductGroup, data)
 
 class BusinessLoader(DataLoader):
     def __init__(self, data):
@@ -68,7 +74,12 @@ class ProductLoader:
         category_id = item["category"]
         category = Category.objects.get(id=category_id)
         item["category"]=category
-
+        
+        if "product_group" in item:
+            product_group_id = item["product_group"]
+            product_group =  ProductGroup.objects.get(id=product_group_id)
+            item["product_group"]=product_group
+        
         # Crear el producto con la instancia de Category
         if not Product.objects.filter(**item).exists():
             product = Product.objects.create(**item) 
@@ -77,7 +88,6 @@ class ProductLoader:
     return products
 
         
-
 class ProductVariantLoader:
 
     def load_product_variant(self, product_id, variant_id, pieces):

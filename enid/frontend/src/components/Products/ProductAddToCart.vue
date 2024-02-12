@@ -61,7 +61,11 @@
   Añadir al carrito
 </button>
     </div>
-
+    
+    <div>
+      <SelectItems v-if="product.product_group > 0" :product_group="product.product_group"/>
+    </div>
+  
     <ul class="mt-8 space-y-2">
       <li class="flex items-center text-left text-sm font-medium text-gray-600">
         <svg
@@ -109,8 +113,9 @@
 </template>
 <script>
 import { StarIcon } from "@heroicons/vue/20/solid";
+import SelectItems from "@/components/ProductGroup/SelectItems.vue";
 export default {
-  components: { StarIcon },
+  components: { StarIcon, SelectItems },
   props: {
     product: {
       type: Object,

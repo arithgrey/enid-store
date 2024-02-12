@@ -72,5 +72,8 @@ export default {
       this.$emit("open_shopping_cart_product");
     }
   },
+  watch: {
+    '$route': 'fetchProduct'
+  },
 };
 </script>

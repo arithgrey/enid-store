@@ -1,6 +1,6 @@
 import os
 from models_loader import BusinessLoader, FaqsLoader, ReturnsLoader, VariantLoader
-from models_loader import ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader
+from models_loader import ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader, ProductGroupLoader
 from initial_products_images import ImagesLoader
 from initial_business_images import ImagesBusinessLoader
 
@@ -116,6 +116,18 @@ class EnidLoader:
         ]
         ReturnsLoader(data).load_data()            
 
+    def load_product_group(self):
+        data = [
+            {
+                "id":1,
+                "name": '''Kit de pesas con barra z, recta y mancuernas''',
+                "category":"Peso",
+            },                                   
+        ]
+
+        ProductGroupLoader(data).load_data()
+
+
     def load_categories(self):
         data = [
             {
@@ -131,8 +143,7 @@ class EnidLoader:
                 "id":3,
                 "name": '''Accesorios''',
                 
-            },             
-                                             
+            },                                                          
         ]
         CategoriesLoader(data,1).load_data()
 
@@ -149,6 +160,8 @@ class EnidLoader:
                 "count_discs": True,
                 "top_seller": True,
                 "category": 1,
+                "product_group":1,
+                "name_product_group":"34KG con 16 Discos"
             },            
            {
                 "id":3,
@@ -205,7 +218,31 @@ class EnidLoader:
                 "weight": 52,
                 "top_seller": True,
                 "category":1,
-            },             
+            },  
+            {
+                "id":9,
+                "name": '''PARA LOS QUE VAN INICIANDO 42kg''', 
+                "specific_name":"KIT DE PESAS 16 DISCOS 42KG EN TOTAL, BARRA Z, BARRA RECTA Y MANCUERNAS | ENVÍO GRATIS",
+                "price": 1850,                
+                "weight": 42,
+                "count_discs": True,
+                "top_seller": False,
+                "category": 1,
+                "product_group":1,
+                "name_product_group":"42KG con 16 Discos"
+            },                
+            {
+                "id":10,
+                "name": '''PARA LOS QUE VAN INICIANDO 50kg''', 
+                "specific_name":"KIT DE PESAS 20 DISCOS 50KG EN TOTAL, BARRA Z, BARRA RECTA Y MANCUERNAS | ENVÍO GRATIS",
+                "price": 2100,                
+                "weight": 50,
+                "count_discs": True,
+                "top_seller": False,
+                "category": 1,
+                "product_group":1,
+                "name_product_group":"50KG con 20 Discos"
+            },                
                                              
         ]
         
@@ -420,11 +457,12 @@ class EnidLoader:
 
 
     def load_base(self):
+        self.load_product_group()
         self.load_business()
         self.load_states()
         self.load_Faqs()
         self.load_Returns()
-        self.load_categories()
+        self.load_categories()    
         self.load_products()
         self.load_variant()
         self.load_product_variant()
