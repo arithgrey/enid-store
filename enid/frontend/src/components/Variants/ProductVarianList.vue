@@ -93,7 +93,10 @@ export default {
   methods: {
     async fetch_products_variant() {
       try {
-              
+        if (!this.product.id) {
+          console.error("Error: Product ID is undefined");
+          return;
+        }      
         const response = await this.$axios.get(
           `/producto-variante/producto/${this.product.id}/variantes/`
         );
