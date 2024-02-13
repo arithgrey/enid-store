@@ -121,7 +121,17 @@ class EnidLoader:
             {
                 "id":1,
                 "name": '''Kit de pesas con barra z, recta y mancuernas''',
-                "category":"Peso",
+                "category":"Pesos disponibles",
+            },                                   
+            {
+                "id":2,
+                "name": '''Kit de pesas con barra z, Romana, recta y mancuernas''',
+                "category":"Pesos disponibles",
+            },  
+            {
+                "id":3,
+                "name": '''Solo mancuernas''',
+                "category":"Peso del par",
             },                                   
         ]
 
@@ -181,6 +191,8 @@ class EnidLoader:
                 "count_discs": True,
                 "top_seller": True,
                 "category":1,
+                "product_group":2,
+                "name_product_group":"42KG con 16 Discos"
             },            
             {
                 "id":5,
@@ -191,6 +203,8 @@ class EnidLoader:
                 "count_discs": True,
                 "top_seller": True,
                 "category":1,
+                "product_group":2,
+                "name_product_group":"80KG con 28 Discos"
             },
             {
                 "id":6,
@@ -242,7 +256,104 @@ class EnidLoader:
                 "category": 1,
                 "product_group":1,
                 "name_product_group":"50KG con 20 Discos"
-            },                
+            },     
+            {
+                "id":11,
+                "name": '''PARA LOS QUE DISFRUTAN DE INTERCAMBIAR PESOS''', 
+                "specific_name":"KIT DE 2 SEGUROS PARA BARRAS Y MANCUERNAS STANDARD DE UNA PULGADA, DE METAL, PARA EL INTERCAMBIO RÁPIDO Y PRÁCTICO DE DISCOS | ENVÍO GRATIS",
+                "price": 169,                
+                "weight": .5,
+                "count_discs": False,
+                "top_seller": False,
+                "category": 3,                                
+            },   
+            {
+                "id":12,
+                "name": '''PARA LOS QUE QUIEREN HACER REMO CON PESAS''', 
+                "specific_name":"BARRA ROMANA ESTÁNDAR DE UNA PULGADA 15KG ACERO BLACK | ENVÍO GRATIS",
+                "price": 999,                
+                "weight": 15,
+                "count_discs": False,
+                "top_seller": False,
+                "category": 3,                                
+            },     
+            {
+                "id":13,
+                "name": '''PARA LOS QUE QUIEREN HACER EL PREDICADOR EN CASA''', 
+                "specific_name":"BARRA Z SOLIDA DE ACERO CON SEGUROS, 12KG EN TOTAL SOPORTA 350KG PARA DISCOS DE UNA PULGADA ESTáNDAR | ENVíO GRATIS",
+                "price": 999,                
+                "weight": 12,
+                "count_discs": False,
+                "top_seller": False,
+                "category": 3,                                
+            },     
+            {
+                "id":14,
+                "name": '''PARA LOS QUE QUIEREN HACER EL PREDICADOR EN CASA SIN EXCEDERSE''', 
+                "specific_name":"BARRA Z CON 2 SEGUROS PARA DISCOS STANDARD DE UNA PULGADA, SOPORTA 60KG | ENVÍO GRATIS",
+                "price": 499,                
+                "weight": 1,
+                "count_discs": False,
+                "top_seller": False,
+                "category": 3,                                
+            },     
+            {
+                "id":15,
+                "name": '''PARA LOS QUE QUIEREN HACER REMO CON PESAS SIN EXCEDERSE''', 
+                "specific_name":"BARRA Z CON 2 SEGUROS PARA DISCOS STANDARD DE UNA PULGADA, SOPORTA 60KG | ENVÍO GRATIS",
+                "price": 499,                
+                "weight": 1,
+                "count_discs": False,
+                "top_seller": False,
+                "category": 3,                                
+            },     
+            {
+                "id":16,
+                "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''', 
+                "specific_name":"PAR DE MANCUERNAS DE 10KG EN TOTAL 20 KG SON 2 PIEZAS | ENVíO GRATIS",
+                "price": 899,
+                "weight": 20,
+                "count_discs": True,
+                "top_seller": False,
+                "category": 1,         
+                "product_group":3,
+                "name_product_group":"10Kg C/U total 20kg"
+            },     
+            {
+                "id":17,
+                "name": '''PARA LOS QUE OCUPAN MANCUERNAS y BARRA''', 
+                "specific_name":"BARRA 22KG + PAR MANCUERNAS 10KG EN TOTAL 42KG A DOMICILIO PAGAS A TU ENTREGA 16 DISCOS | ENVíO GRATIS",
+                "price": 1700,                
+                "weight": 42,
+                "count_discs": True,
+                "top_seller": True,
+                "category": 1,                         
+            },     
+            {
+                "id":18,
+                "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''', 
+                "specific_name":"PAR DE MANCUERNAS DE 6KG EN TOTAL 12 KG SON 2 PIEZAS | ENVíO GRATIS",
+                "price": 750,                
+                "weight": 12,
+                "count_discs": True,
+                "top_seller": True,
+                "category": 1,         
+                "product_group":3,
+                "name_product_group":"6Kg C/U total 12kg"
+            },     
+            {
+                "id":19,
+                "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''', 
+                "specific_name":"PAR DE MANCUERNAS DE 8KG EN TOTAL 16 KG SON 2 PIEZAS | ENVíO GRATIS",
+                "price": 799,                
+                "weight": 16,
+                "count_discs": True,
+                "top_seller": False,
+                "category": 1,         
+                "product_group":3,
+                "name_product_group":"8Kg C/U total 16kg"
+            },     
+
                                              
         ]
         
@@ -399,7 +510,29 @@ class EnidLoader:
         loader.load_product_variant(product_id=1, variant_id=7,pieces=1)
         loader.load_product_variant(product_id=1, variant_id=5,pieces=1)
         loader.load_product_variant(product_id=1, variant_id=9,pieces=6)
-        
+
+        #42Kg z,recta, mancuernas
+        loader.load_product_variant(product_id=9, variant_id=1,pieces=2)
+        loader.load_product_variant(product_id=9, variant_id=2,pieces=6)    
+        loader.load_product_variant(product_id=9, variant_id=3,pieces=6)
+        loader.load_product_variant(product_id=9, variant_id=4,pieces=2)
+
+        loader.load_product_variant(product_id=9, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=9, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=9, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=9, variant_id=9,pieces=6)
+
+        #50Kg z,recta, mancuernas
+        loader.load_product_variant(product_id=10, variant_id=1,pieces=2)
+        loader.load_product_variant(product_id=10, variant_id=2,pieces=8)    
+        loader.load_product_variant(product_id=10, variant_id=3,pieces=8)        
+
+        loader.load_product_variant(product_id=10, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=10, variant_id=7,pieces=1)
+        loader.load_product_variant(product_id=10, variant_id=5,pieces=1)
+        loader.load_product_variant(product_id=10, variant_id=9,pieces=6)
+
+
         #42Kg 2100 
 
         loader.load_product_variant(product_id=4, variant_id=1,pieces=2)
@@ -454,6 +587,35 @@ class EnidLoader:
         loader.load_product_variant(product_id=8, variant_id=6,pieces=1)
         loader.load_product_variant(product_id=8, variant_id=8,pieces=2)        
         loader.load_product_variant(product_id=8, variant_id=21,pieces=10)
+
+        #par 10kg 
+        
+        loader.load_product_variant(product_id=16, variant_id=2,pieces=4)    
+        loader.load_product_variant(product_id=16, variant_id=3,pieces=4)        
+        loader.load_product_variant(product_id=16, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=16, variant_id=9,pieces=4)
+        
+        #par 6kg         
+        loader.load_product_variant(product_id=18, variant_id=4,pieces=4)    
+        loader.load_product_variant(product_id=18, variant_id=3,pieces=4)        
+        loader.load_product_variant(product_id=18, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=18, variant_id=9,pieces=4)
+        
+        #par 8kg         
+         
+        loader.load_product_variant(product_id=19, variant_id=3,pieces=8)        
+        loader.load_product_variant(product_id=19, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=19, variant_id=9,pieces=4)
+
+        #42Kg recta, mancuernas
+        loader.load_product_variant(product_id=17, variant_id=1,pieces=2)
+        loader.load_product_variant(product_id=17, variant_id=2,pieces=6)    
+        loader.load_product_variant(product_id=17, variant_id=3,pieces=6)
+        loader.load_product_variant(product_id=17, variant_id=4,pieces=2)
+
+        loader.load_product_variant(product_id=17, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=17, variant_id=7,pieces=1)        
+        loader.load_product_variant(product_id=17, variant_id=9,pieces=6)
 
 
     def load_base(self):
