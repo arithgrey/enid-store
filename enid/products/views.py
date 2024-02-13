@@ -9,19 +9,13 @@ from search.views import CustomPageNumberPagination
 
 class ProductVuewSet(viewsets.ModelViewSet):
 
-    queryset = Product.objects.all()
+    queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     pagination_class = CustomPageNumberPagination
 
-    def get_queryset(self):
-        queryset = super().get_queryset()        
-        queryset = queryset.order_by('id')
-        return queryset
-
-
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        top_sellers = Product.objects.filter(top_seller=True)
+        top_sellers = Product.objects.filter(top_seller=True).order_by('id')
         page = self.paginate_queryset(top_sellers)
         
         if page is not None:
