@@ -10,6 +10,7 @@
             :src="getMainImage(product)"
             alt=""
           />
+          
           <img
             v-if="selectedImage"
             class="h-full w-full max-w-full object-cover"
@@ -59,6 +60,15 @@ export default {
       this.selectedImage = imageUrl;
     },
   },
+  watch: {    
+    product: {
+      handler(newVal, oldVal) {        
+        this.selectedImage = null;
+      },
+      deep: true,
+    },
+  },
 };
+
 </script>
 

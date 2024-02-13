@@ -326,7 +326,7 @@ class EnidLoader:
                 "price": 1700,                
                 "weight": 42,
                 "count_discs": True,
-                "top_seller": True,
+                "top_seller": False,
                 "category": 1,                         
             },     
             {
@@ -353,7 +353,18 @@ class EnidLoader:
                 "product_group":3,
                 "name_product_group":"8Kg C/U total 16kg"
             },     
-
+            {
+                "id":20,
+                "name": '''PARA LOS QUE SOLO OCUPAN MANCUERNAS''', 
+                "specific_name":"PAR DE MANCUERNAS DE 4KG EN TOTAL 8 KG SON 2 PIEZAS | ENVíO GRATIS",
+                "price": 530,                
+                "weight": 8,
+                "count_discs": True,
+                "top_seller": False,
+                "category": 1,         
+                "product_group":3,
+                "name_product_group":"4Kg C/U total 8kg"
+            },     
                                              
         ]
         
@@ -606,6 +617,13 @@ class EnidLoader:
         loader.load_product_variant(product_id=19, variant_id=3,pieces=8)        
         loader.load_product_variant(product_id=19, variant_id=8,pieces=2)
         loader.load_product_variant(product_id=19, variant_id=9,pieces=4)
+
+        #par 4kg         
+         
+        loader.load_product_variant(product_id=20, variant_id=4,pieces=8)        
+        loader.load_product_variant(product_id=20, variant_id=8,pieces=2)
+        loader.load_product_variant(product_id=20, variant_id=9,pieces=4)
+
 
         #42Kg recta, mancuernas
         loader.load_product_variant(product_id=17, variant_id=1,pieces=2)
