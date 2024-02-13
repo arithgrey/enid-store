@@ -63,7 +63,7 @@
     </div>
     
     <div>
-      <SelectItems v-if="product.product_group > 0" :product_group="product.product_group"/>
+      <SelectItems v-if="product.product_group > 0" :product_group="product.product_group" :currentProduct="product.id"/>
     </div>
   
     <ul class="mt-8 space-y-2">
