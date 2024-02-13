@@ -95,7 +95,7 @@
                 <ul class="list-none p-0 m-0">
                   <li>
                     <a
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/rastrea-paquete/"
+                      href="rastreo"
                       rel="noreferrer"
                       class="md:text-center block py-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition"
                     >
@@ -104,7 +104,7 @@
                   </li>
                   <li>
                     <a
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/forma_pago/?info=1"
+                      href="/#atencion-al-cliente"
                       rel="noreferrer"
                       class="md:text-center block py-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition"
                     >
@@ -113,22 +113,14 @@
                   </li>
                   <li>
                     <a
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/clientes/"
+                      href="referencias"
                       rel="noreferrer"
                       class="md:text-center block py-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition"
                     >
                       Las referencias
                     </a>
                   </li>
-                  <li>
-                    <a
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/distribuidores_autorizados/"
-                      rel="noreferrer"
-                      class="md:text-center block py-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition"
-                    >
-                      Seguridad para pago contra entrega
-                    </a>
-                  </li>
+                  
                 </ul>
               </div>
               <div class="w-6/12 pt-6 md:px-4 md:pt-0 xl:w-3/12">
@@ -140,7 +132,7 @@
                     <a
                       rel="noreferrer"
                       class="block md:text-center pb-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition-colors hover:text-primary"
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/search/?q2=0&q=&order=1"
+                      href="/"
                       >Novedades</a
                     >
                   </li>
@@ -148,18 +140,11 @@
                     <a
                       rel="noreferrer"
                       class="block md:text-center pb-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition-colors hover:text-primary"
-                      href="https://enidservices.com/kits-pesas-barras-discos-mancuernas-fit/search/?q2=0&q=&order=2&order=4"
+                      href="/#top-sellers"
                       >Lo más pedido</a
                     >
                   </li>
-                  <li>
-                    <a
-                      rel="noreferrer"
-                      class="block md:text-center pb-2 text-sm leading-relaxed text-gray-600 hover:text-primary hover:bg-black hover:text-white transition-colors hover:text-primary"
-                      href="https://enidservices.com/sports/"
-                      >Blog</a
-                    >
-                  </li>
+                 
                 </ul>
               </div>
               <div class="w-6/12 pt-6 md:px-4 md:pt-0 xl:w-3/12">
