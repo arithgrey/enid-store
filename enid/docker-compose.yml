@@ -17,18 +17,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: enid_service_vue:0.1
+    #image: enid_service_vue:0.1
     ports:
-      - "5173:5173"  
+      - "5173:5173"      
+    command: npm run dev
     env_file:
-      - .env
-  
-  jenkins:
-    image: jenkins/jenkins:lts
-    ports:
-      - "8080:8080"
-    volumes:
-      - jenkins_data:/var/jenkins_home
-
-volumes:
-  jenkins_data:
+      - frontend/.env
+    environment:
+      - NODE_ENV=development
+        
