@@ -17,8 +17,7 @@ class ProductVuewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
         
-        top_sellers = cache.get('top_sellers')     
-        print(top_sellers)
+        top_sellers = cache.get('top_sellers')        
         if not top_sellers:            
             top_sellers = Product.objects.filter(top_seller=True).order_by('id')
             cache.set('top_sellers', top_sellers, timeout=3600)
