@@ -6,6 +6,7 @@ from products.serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from categories.models import Category
 from search.views import CustomPageNumberPagination
+from django.core.cache import cache
 
 class ProductVuewSet(viewsets.ModelViewSet):
 
@@ -15,9 +16,16 @@ class ProductVuewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        top_sellers = Product.objects.filter(top_seller=True).order_by('id')
-        page = self.paginate_queryset(top_sellers)
         
+        top_sellers = cache.get('top_sellers')     
+        print(top_sellers)
+        if not top_sellers:            
+            top_sellers = Product.objects.filter(top_seller=True).order_by('id')
+            cache.set('top_sellers', top_sellers, timeout=3600)
+        
+        
+        page = self.paginate_queryset(top_sellers)        
+
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
