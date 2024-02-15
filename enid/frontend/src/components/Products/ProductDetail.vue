@@ -63,6 +63,7 @@ export default {
           `productos/${categorySlug}/${productSlug}/`
         );
         this.product = response.data;
+        this.mainImagePreview()
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -70,7 +71,20 @@ export default {
     handle_open_shoping_cart(){
       
       this.$emit("open_shopping_cart_product");
-    }
+    },
+    mainImagePreview() {
+      
+      const mainImage = this.product.images.find((img) => img.is_main);
+      const imageURL = mainImage ? mainImage.get_image_url : "https://enidservices.com/imgs/04.jpg";
+      const ogImageMetaTag = document.querySelector('meta[property="og:image"]');  
+      
+      const specific_name = this.product.specific_name;
+      document.title = specific_name;
+      if (ogImageMetaTag) {
+        ogImageMetaTag.setAttribute('content', imageURL);
+      }
+    
+    },
   },
   watch: {
     '$route': 'fetchProduct'
