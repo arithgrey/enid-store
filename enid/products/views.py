@@ -41,8 +41,17 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'])    
     def get_by_slug(self, request, category_slug, product_slug):
         
+        cache_key = f"product_{category_slug}_{product_slug}"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:            
+            return Response(cached_data)
+
         category = get_object_or_404(Category, slug=category_slug)
         product = get_object_or_404(Product, category=category, slug=product_slug)
 
         serializer = ProductSerializer(product)
-        return Response(serializer.data)
+        serializer_data= serializer.data
+        cache.set(cache_key, serializer_data, timeout=3600)
+
+        return Response(serializer_data)
