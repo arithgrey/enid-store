@@ -1,12 +1,13 @@
-# Dockerfile
-
-FROM node:16.13.2
+FROM node:21.6.0
 
 WORKDIR /frontend
 
 COPY package*.json ./
+
 RUN npm install
 
 COPY . .
+
+EXPOSE 5173
 
 CMD ["npm", "run", "dev"]
