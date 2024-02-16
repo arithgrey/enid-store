@@ -36,4 +36,4 @@ jobs:
     - name: Run Tests
       run: |
         cd enid
-        python manage.py test --settings=enid.settings_dev
+        python manage.py test --settings=settings_dev
