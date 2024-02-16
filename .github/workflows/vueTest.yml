@@ -42,4 +42,4 @@ jobs:
     - name: Install dependencies for Vue.js
       run: npm install
     - name: Run unit tests for Vue.js
-      run: npm run test:unit
+      run: npm run test
