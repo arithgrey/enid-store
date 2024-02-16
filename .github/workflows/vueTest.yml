@@ -46,5 +46,7 @@ jobs:
       run: cd enid/frontend
     - name: Install dependencies for Vue.js
       run: npm install
+      working-directory: enid/frontend  
     - name: Run unit tests for Vue.js
       run: npm run test
+      working-directory: enid/frontend  
