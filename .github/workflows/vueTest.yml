@@ -22,9 +22,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'    
-    - name: Install Dependencies
+    - name: Install Dependencies      
+      working-directory: enid/frontend 
       run: npm ci
-      working-directory: enid/frontend  
+       
     - name: Build
       run: npm run build --if-present
       working-directory: enid/frontend  
