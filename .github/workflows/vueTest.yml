@@ -22,16 +22,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'    
-    - name: Install Dependencies      
-      working-directory: enid/frontend 
-      run: npm ci
-       
+    - name: Install Dependencies
+      run: |
+        cd enid/frontend
+        npm ci
     - name: Build
-      run: npm run build --if-present
-      working-directory: enid/frontend  
+      run: |
+        cd enid/frontend
+        npm run build --if-present
     - name: Run Tests
-      run: npm test
-      working-directory: enid/frontend  
+      run: |
+        cd enid/frontend
+        npm test
 
   vue-tests:
     needs: build
@@ -47,7 +49,5 @@ jobs:
       run: cd enid/frontend
     - name: Install dependencies for Vue.js
       run: npm install
-      working-directory: enid/frontend  
     - name: Run unit tests for Vue.js
       run: npm run test
-      working-directory: enid/frontend  
