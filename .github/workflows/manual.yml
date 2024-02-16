@@ -29,6 +29,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Set up environment variables
+      run: echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+
     - name: Run Tests
       run: |
         cd enid
