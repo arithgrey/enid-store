@@ -1,41 +1,31 @@
-name: Node.js CI
+name: Vue.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'    
+    - uses: actions/checkout@v2
 
-  vue-tests:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Use Node.js 16.x
+    - name: Use Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '16.x'
-    - name: Change directory to frontend
-      run: cd enid/frontend
-    - name: Install dependencies for Vue.js
-      run: npm install
-    - name: Run unit tests for Vue.js
+
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ~/enid/frontend
+
+    - name: Build application
+      run: npm run build
+      working-directory: ~/enid/frontend
+
+    - name: Run tests
       run: npm run test
+      working-directory: ~/enid/frontend
