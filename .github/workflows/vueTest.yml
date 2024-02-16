@@ -22,18 +22,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'    
-    - name: Install Dependencies
-      run: |
-        cd enid/frontend
-        npm ci
-    - name: Build
-      run: |
-        cd enid/frontend
-        npm run build --if-present
-    - name: Run Tests
-      run: |
-        cd enid/frontend
-        npm test
 
   vue-tests:
     needs: build
