@@ -30,9 +30,10 @@ jobs:
         pip install -r requirements.txt
 
     - name: Set up environment variables
-      run: echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+      run: |
+        echo "SECRET_KEY=your_secret_key_here" >> $GITHUB_ENV
 
     - name: Run Tests
       run: |
         cd enid
-        python manage.py test
+        python manage.py test --settings=enid.settings_dev
