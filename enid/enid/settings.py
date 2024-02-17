@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'returns',   
     'product_group',
     'products',                        
+    'product_category_search',
     'variants',  
     'product_variant',  
     'state',
