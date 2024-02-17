@@ -1,34 +1,33 @@
 <template>
-  <div class="container mx-auto px-4">
-
+<div class="container mx-auto px-4">
   <div class="bg-white py-10 sm:px-10 mt-3 md:mt-5">
-        <nav aria-label="Breadcrumb">
+    <nav aria-label="Breadcrumb">
       <ol role="list" class="flex max-w-2xl items-center space-x-2 mb-3 w-full">
         <li>
           <div class="flex items-center">
             <h1
               class="mr-2 font-medium text-gray-900 uppercase"
-              v-if="q"
+              v-if="categoryName"
             >
-              {{ q }}</h1
+              {{ categoryName }}</h1
             >            
           </div>
         </li>      
       </ol>
     </nav>
     <div
-      id="top-sellers"
+      id="product-categoryes"
       class="grid grid-cols-1 lg:grid-cols-3 gap-x-2 gap-y-2 lg:gap-y-0"
     >
       <ProductCart
         v-if="api"
         :api="api"
         @open_shopping_cart_product_list="handlerOpenShoppingCart"
-        :key="api" 
+        :key="api"
       />
     </div>
   </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -36,28 +35,29 @@ import ProductCart from "@/components/Products/ProductCart.vue";
 export default {
   components: {
     ProductCart,
-  },  
+  },
   data() {
     return {
-      open: false,      
+      open: false,
       api: null,
-      q:null
+      categoryName:null,
     };
   },
   watch: {
-    '$route.params.q': function(newQ, oldQ) {
-      this.api = `search/product/${newQ}/`;
-      this.q = newQ;
-    }
+    "$route.params.categorySlug": function (newQ, oldQ) {
+      this.api = `product-category/${newQ}/`;      
+      this.categoryName = newQ.replace(/-/g, " ");
+    },
   },
   mounted() {
-    this.api = `search/product/${this.$route.params.q}/`;
-    this.q = this.$route.params.q;
+    this.api = `product-category/${this.$route.params.categorySlug}/`;
+    this.categoryName = this.$route.params.categorySlug.replace(/-/g, " ");
+    
   },
-  methods: {    
+  methods: {
     handlerOpenShoppingCart() {
       this.$emit("open_shopping_cart_product_list");
     },
-  },  
+  },
 };
 </script>

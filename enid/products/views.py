@@ -20,7 +20,7 @@ class ProductVuewSet(viewsets.ModelViewSet):
         top_sellers = cache.get('top_sellers')        
         if not top_sellers:            
             top_sellers = Product.objects.filter(top_seller=True).order_by('id')
-            cache.set('top_sellers', top_sellers, timeout=3600)
+            cache.set('top_sellers', top_sellers, timeout=86400)
         
         
         page = self.paginate_queryset(top_sellers)        
@@ -44,7 +44,7 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
         cache_key = f"product_{category_slug}_{product_slug}"
         cached_data = cache.get(cache_key)
 
-        if cached_data:            
+        if cached_data:             
             return Response(cached_data)
 
         category = get_object_or_404(Category, slug=category_slug)
@@ -52,6 +52,6 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
 
         serializer = ProductSerializer(product)
         serializer_data= serializer.data
-        cache.set(cache_key, serializer_data, timeout=3600)
+        cache.set(cache_key, serializer_data, timeout=86400)
 
         return Response(serializer_data)

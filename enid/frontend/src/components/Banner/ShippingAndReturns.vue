@@ -245,6 +245,42 @@
                             <div
                               class="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm"
                             >
+
+                              <div>
+                                <p class="font-medium text-gray-900">
+                                  Deporte en casa!
+                                </p>
+                                <ul
+                                  role="list"
+                                  :aria-labelledby="`sport-in-house-heading`"
+                                  class="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                                >
+                                  <li
+                                    v-for="item in product_categories"
+                                    :key="item.name"
+                                    class="flex"
+                                  >
+                                   <router-link
+                                    :to="{
+                                      name: 'products-by-category',
+                                      params: {
+                                        categorySlug: item.slug,                                        
+                                      },
+                                    }"                                    
+                                  >
+                                  <span                                      
+                                      class="hover:text-gray-800"
+                                      >{{ item.name }}
+                                      </span
+                                    >
+                                   </router-link>
+                                   
+                                  </li>
+                                </ul>
+                              </div>
+
+
+
                               <div
                                 v-for="section in category.sections"
                                 :key="section.name"
@@ -264,6 +300,7 @@
                                     v-for="item in section.items"
                                     :key="item.name"
                                     class="flex"
+                                    
                                   >
                                     <a
                                       :href="item.href"
@@ -294,13 +331,14 @@
             <div class="ml-auto flex items-center navegacion">
               <!-- Search -->
               <div class="flex lg:ml-6">
-                 <div class="flex lg:ml-6">
-                  
-                  <a @click="openSearchProducts" class="p-2 cursor-pointer text-gray-400 hover:text-gray-500">
+                <div class="flex lg:ml-6">
+                  <a
+                    @click="openSearchProducts"
+                    class="p-2 cursor-pointer text-gray-400 hover:text-gray-500"
+                  >
                     <span class="sr-only">Search</span>
                     <MagnifyingGlassIcon class="h-6 w-6" aria-hidden="true" />
                   </a>
-                  
                 </div>
               </div>
 
@@ -356,20 +394,20 @@
                   class="group -m-2 flex items-center cursor-pointer p-2"
                   @click="logout"
                 >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-                  />
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
+                    />
+                  </svg>
                 </a>
               </div>
             </div>
@@ -426,15 +464,7 @@ const navigation = {
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
         },
       ],
-      sections: [
-        {
-          id: "sports",
-          name: "Deporte en casa!",
-          items: [
-            { name: "Kits deportivos", href: "/#top-sellers" },
-            //{ name: "Dresses", href: "#" },
-          ],
-        },
+      sections: [        
         {
           id: "ayuda",
           name: "Ayuda!",
@@ -448,16 +478,6 @@ const navigation = {
             },
           ],
         },
-        /*
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-           
-          ],
-        },
-        */
       ],
     },
   ],
@@ -472,23 +492,26 @@ const generateRoute = (path) => {
   return path.startsWith("/") ? path : `/${path}`;
 };
 
+
 const open = ref(false);
 </script>
 
 <script>
+
 export default {
   data() {
     return {
       showMenu: true,
-      
-
+      product_categories: {},
     };
   },
   model: {
     event: "open_cart",
   },
+  mounted() {this.fetchProductCategories()},
   methods: {
-    openSearchProducts(){
+    
+    openSearchProducts() {
       this.$emit("open_search_products");
     },
     openShoppingCart() {
@@ -497,12 +520,24 @@ export default {
     openSeccionLogin() {
       this.$emit("open_seccion_login");
     },
-    logout(){
-      this.$store.commit('clearToken');       
+    logout() {
+      this.$store.commit("clearToken");
     },
-    
+    async fetchProductCategories() {
+      try {
+        
+        const response = await this.$axios.get("categorias");        
+        this.product_categories = response.data.map((category) => ({ 
+          ...category,
+          href:`${category.slug}`, 
+          
+        }));
+                
+      } catch (error) {
+        console.error("Error products  list:", error);
+      }
+    },
   },
-
   computed: {
     totalItemsCart() {
       return this.$store.getters.totalItemsInCart;

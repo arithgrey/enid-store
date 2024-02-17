@@ -11,6 +11,7 @@ import References from '@/views/References/ReferencesList.vue'
 import OrderDetail from '@/views/Order/OrderDetail.vue'
 import UserArea from '@/views/UserArea/Area.vue'
 import SeachProducts from '@/views/Search/SeachProducts.vue';
+import ProductsSearchByCategory from '@/views/Search/ProductsSearchByCategory.vue';
 
 const routes = [
   {
@@ -47,6 +48,11 @@ const routes = [
         name: 'product-list',
         component: ProductList,
       },
+      { 
+        path: '/:categorySlug/',
+        name: 'products-by-category',
+        component: ProductsSearchByCategory,       
+      },  
       {
         path: '/:categorySlug/:productSlug',
         name: 'product-detail',
