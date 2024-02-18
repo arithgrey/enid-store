@@ -22,7 +22,7 @@ class ProducByCategorySlugViewSet(viewsets.ModelViewSet):
             return Response(cache_data)
 
         category = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(category=category)
+        products = Product.objects.filter(category=category).order_by("id")
 
         page = self.paginate_queryset(products)
         if page is not None:
