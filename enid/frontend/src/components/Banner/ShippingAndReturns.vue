@@ -95,6 +95,16 @@
                         </a>
                       </div>
                     </div>
+
+                    <div>
+                      <p
+                        :id="`sports--heading`"
+                        class="font-medium text-gray-900"
+                      >
+                        Deporte en casa!
+                      </p>
+                      <CategoryList />
+                    </div>
                     <div
                       v-for="section in category.sections"
                       :key="section.name"
@@ -245,41 +255,15 @@
                             <div
                               class="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm"
                             >
-
                               <div>
-                                <p class="font-medium text-gray-900">
+                                <p
+                                  :id="`sports--heading`"
+                                  class="font-medium text-gray-900"
+                                >
                                   Deporte en casa!
                                 </p>
-                                <ul
-                                  role="list"
-                                  :aria-labelledby="`sport-in-house-heading`"
-                                  class="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                >
-                                  <li
-                                    v-for="item in product_categories"
-                                    :key="item.name"
-                                    class="flex"
-                                  >
-                                   <router-link
-                                    :to="{
-                                      name: 'products-by-category',
-                                      params: {
-                                        categorySlug: item.slug,                                        
-                                      },
-                                    }"                                    
-                                  >
-                                  <span                                      
-                                      class="hover:text-gray-800"
-                                      >{{ item.name }}
-                                      </span
-                                    >
-                                   </router-link>
-                                   
-                                  </li>
-                                </ul>
+                                <CategoryList />
                               </div>
-
-
 
                               <div
                                 v-for="section in category.sections"
@@ -300,7 +284,6 @@
                                     v-for="item in section.items"
                                     :key="item.name"
                                     class="flex"
-                                    
                                   >
                                     <a
                                       :href="item.href"
@@ -464,7 +447,7 @@ const navigation = {
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
         },
       ],
-      sections: [        
+      sections: [
         {
           id: "ayuda",
           name: "Ayuda!",
@@ -492,25 +475,25 @@ const generateRoute = (path) => {
   return path.startsWith("/") ? path : `/${path}`;
 };
 
-
 const open = ref(false);
 </script>
 
 <script>
+import CategoryList from "@/components/Category/CategoryList.vue";
 
 export default {
+  components: {
+    CategoryList,
+  },
   data() {
     return {
-      showMenu: true,
-      product_categories: {},
+      showMenu: true,      
     };
   },
   model: {
     event: "open_cart",
   },
-  mounted() {this.fetchProductCategories()},
   methods: {
-    
     openSearchProducts() {
       this.$emit("open_search_products");
     },
@@ -522,20 +505,6 @@ export default {
     },
     logout() {
       this.$store.commit("clearToken");
-    },
-    async fetchProductCategories() {
-      try {
-        
-        const response = await this.$axios.get("categorias");        
-        this.product_categories = response.data.map((category) => ({ 
-          ...category,
-          href:`${category.slug}`, 
-          
-        }));
-                
-      } catch (error) {
-        console.error("Error products  list:", error);
-      }
     },
   },
   computed: {
