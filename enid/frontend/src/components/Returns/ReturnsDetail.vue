@@ -1,4 +1,5 @@
 <template>
+  <div class="p-5">
   <h2 class="font-bold text-gray-900 sm:text-3xl sm:tracking-tight">
     {{ returnItem.ask }}
   </h2>
@@ -58,6 +59,7 @@
       entre 1 y 2 días después de tu solicitud
     </li>
   </ul>
+  </div>
 </template>
 <script>
 export default {

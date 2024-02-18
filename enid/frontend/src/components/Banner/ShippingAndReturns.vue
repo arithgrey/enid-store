@@ -67,35 +67,8 @@
                     v-for="category in navigation.categories"
                     :key="category.name"
                     class="space-y-10 px-4 pb-8 pt-10"
-                  >
-                    <div class="grid grid-cols-2 gap-x-4">
-                      <div
-                        v-for="item in category.featured"
-                        :key="item.name"
-                        class="group relative text-sm"
-                      >
-                        <div
-                          class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75"
-                        >
-                          <img
-                            :src="item.imageSrc"
-                            :alt="item.imageAlt"
-                            class="object-cover object-center"
-                          />
-                        </div>
-                        <a
-                          :href="item.href"
-                          class="mt-6 block font-medium text-gray-900"
-                        >
-                          <span
-                            class="absolute inset-0 z-10"
-                            aria-hidden="true"
-                          />
-                          {{ item.name }}
-                        </a>
-                      </div>
-                    </div>
-
+                  >                                          
+                    <Currents/>                    
                     <div>
                       <p
                         :id="`sports--heading`"
@@ -137,18 +110,11 @@
                 </TabPanels>
               </TabGroup>
 
-              <div class="space-y-6 border-t border-gray-200 px-4 py-6">
-                <div
-                  v-for="page in navigation.pages"
-                  :key="page.name"
-                  class="flow-root"
-                >
-                  <router-link
-                    :to="generateRoute(page.href)"
-                    class="-m-2 block p-2 font-medium text-gray-900"
-                    >{{ page.name }}</router-link
-                  >
-                </div>
+              <div class="space-y-6 border-t border-gray-200 px-4 py-6">            
+                <router-link v-for="page in navigation.pages" :key="page.name" :to="generateRoute(page)"
+                  class="flex items-center text-sm font-medium text-gray-950 hover:text-gray-800">
+                  {{ page.name }}
+                </router-link>
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -225,32 +191,8 @@
                       <div class="relative bg-stone-100">
                         <div class="mx-auto max-w-7xl px-8">
                           <div class="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                            <div class="col-start-2 grid grid-cols-2 gap-x-8">
-                              <div
-                                v-for="item in category.featured"
-                                :key="item.name"
-                                class="group relative text-base sm:text-sm"
-                              >
-                                <div
-                                  class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75"
-                                >
-                                  <img
-                                    :src="item.imageSrc"
-                                    :alt="item.imageAlt"
-                                    class="object-cover object-center"
-                                  />
-                                </div>
-                                <a
-                                  :href="item.href"
-                                  class="mt-6 block font-medium text-gray-900"
-                                >
-                                  <span
-                                    class="absolute inset-0 z-10"
-                                    aria-hidden="true"
-                                  />
-                                  {{ item.name }}
-                                </a>
-                              </div>
+                            <div class="col-start-2 gap-x-8">
+                              <Currents/>                             
                             </div>
                             <div
                               class="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm"
@@ -299,15 +241,11 @@
                       </div>
                     </PopoverPanel>
                   </transition>
-                </Popover>
-
-                <router-link
-                  v-for="page in navigation.pages"
-                  :key="page.name"
-                  :to="generateRoute(page.href)"
-                  class="flex items-center text-sm font-medium text-gray-950 hover:text-gray-800"
-                  >{{ page.name }}</router-link
-                >
+                </Popover>              
+               <router-link v-for="page in navigation.pages" :key="page.name" :to="generateRoute(page)"
+                  class="flex items-center text-sm font-medium text-gray-950 hover:text-gray-800">
+                  {{ page.name }}
+                </router-link>                              
               </div>
             </PopoverGroup>
 
@@ -426,39 +364,20 @@ import {
 } from "@heroicons/vue/24/outline";
 
 import BannerAcion from "@/components/Banner/BannerAction.vue";
+import Currents from "@/components/Banner/Currents.vue";
 
 const navigation = {
   categories: [
     {
       id: "lo_mas_buscado",
-      name: "LO MÁS BUSCADO",
-      featured: [
-        {
-          name: "Ya sabes... los top Sellers",
-          href: "/#top-sellers",
-          imageSrc: "https://enidservices.com/imgs/04.jpg",
-          imageAlt: "Las fotos de referencias, nuestros clientes",
-        },
-        {
-          name: "Las referencias",
-          href: "referencias",
-          imageSrc: "https://enidservices.com/imgs/05.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
+      name: "LO MÁS BUSCADO",      
       sections: [
         {
           id: "ayuda",
           name: "Ayuda!",
-          items: [
-            { name: "Rastrea tu pedido", href: "rastreo" },
+          items: [            
             { name: "Tiempos de entrega", href: "/#tiempos-entrega" },
-            { name: "Atención al cliente", href: "/#atencion-al-cliente" },
-            {
-              name: "Cambios y devoluciones",
-              href: "/#cambios-y-devoluciones",
-            },
+            { name: "Atención al cliente", href: "/#atencion-al-cliente" },            
           ],
         },
       ],
@@ -467,13 +386,10 @@ const navigation = {
   pages: [
     { name: "REFERENCIAS", href: "referencias" },
     { name: "RASTREO", href: "rastreo" },
-    { name: "CAMBIOS", href: "cambios-y-devoluciones" },
+    { name: "CAMBIOS", href: "cambios-y-devoluciones" , id:1},
   ],
 };
 
-const generateRoute = (path) => {
-  return path.startsWith("/") ? path : `/${path}`;
-};
 
 const open = ref(false);
 </script>
@@ -494,6 +410,20 @@ export default {
     event: "open_cart",
   },
   methods: {
+    generateRoute(page) {
+    if (page.id) {
+      return {
+        name: page.href,
+        params: {
+          id: page.id
+        }
+      };
+    } else {
+      return {
+        name: page.href
+      };
+    }
+    },
     openSearchProducts() {
       this.$emit("open_search_products");
     },

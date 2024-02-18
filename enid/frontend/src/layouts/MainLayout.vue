@@ -8,6 +8,7 @@
       @open_shopping_cart="handleOpenCart" 
       @open_seccion_login="handleOpenLogin"
       @open_search_products ="handleOpenSearchProducts"
+
       />
 
     </div>
