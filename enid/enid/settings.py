@@ -121,7 +121,7 @@ LOCAL = config('LOCAL', default=False, cast=bool)
 DOMAIN = config('DOMAIN', default='')
 
 if LOCAL:
-
+    
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -130,8 +130,11 @@ if LOCAL:
     }
 
 else:
-    DATABASES = {'default': dj_database_url.config(default=config('DATABASE_URL'))}    
 
+    config_db =config('DATABASE_URL')    
+    DATABASES = {'default': dj_database_url.config(default=config_db)}    
+    
+    
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
