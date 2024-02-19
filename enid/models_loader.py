@@ -50,10 +50,6 @@ class ReturnsLoader(DataLoader):
     def __init__(self, data):
         super().__init__(Returns, data)
 
-class CategoriesLoader(DataLoader):
-    def __init__(self, data,slug=0):
-        super().__init__(Category, data, slug)
-
 class VariantLoader(DataLoader):
     def __init__(self, data):
         super().__init__(Variant, data)
@@ -61,6 +57,21 @@ class VariantLoader(DataLoader):
 class StateLoader(DataLoader):
     def __init__(self, data):
         super().__init__(State, data)
+
+
+
+class CategoriesLoader:
+
+    def categories(self, data):
+        categories = []
+        for item in data:            
+            slug = slugify(item["name"])
+            item["slug"] = slug
+            if not Category.objects.filter(**item).exists():
+                category = Category.objects.create(**item)
+                categories.append(category)
+        
+        return categories
 
 class ProductLoader:
     

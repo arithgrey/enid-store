@@ -1,6 +1,6 @@
 import os
 from models_loader import BusinessLoader, FaqsLoader, ReturnsLoader, VariantLoader
-from models_loader import ProductVariantLoader, CategoriesLoader, ProductLoader, StateLoader, ProductGroupLoader
+from models_loader import ProductVariantLoader,  ProductLoader, CategoriesLoader, StateLoader, ProductGroupLoader
 from initial_products_images import ImagesLoader
 from initial_business_images import ImagesBusinessLoader
 
@@ -89,9 +89,7 @@ class EnidLoader:
             {"ask": "¿No le gustaron nuestras FAQ a su señoría? 🤴🫅", 
             "answer": "Disculpe por no usar la hipocresía que se emplea cada que le venden funkibasuras 😎, puede retirarse👋", 
             "url_img": "https://media.giphy.com/media/26ufcVAp3AiJJsrIs/giphy.gif"
-            },
-            
-
+            }            
         ]
         FaqsLoader(data).load_data()
 
@@ -99,20 +97,16 @@ class EnidLoader:
         data = [
             {
                 "ask": "¿Cómo es el proceso de devolución de un pedido?",                 
-                "short_answer": '''Recuerda que cuentas con 15 días a partir de la entrega de tu pedido para iniciar un proceso de devolución.''',
+                "short_answer": "Recuerda que cuentas con 15 días a partir de la entrega de tu pedido para iniciar un proceso de devolución.",
                 "call_to_action":"Checa los pasos aquí"
-
-            },
-            
+            },            
             {
                 "ask": "¿Cuánto tardará en llegar mi pedido?",                
-                "short_answer": '''- En Ciudad de México, ¡recibe tu pedido el mismo día!, en los estados, 
-                el tiempo de entrega es de uno a dos días hábiles''',
+                "short_answer": "- En Ciudad de México, ¡recibe tu pedido el mismo día!, en los estados, el tiempo de entrega es de uno a dos días hábiles",
                 "call_to_action":"Rastrea aquí tu equipo!",
                 "path_seccion":"rastreo"
 
-             },   
-                                             
+            }                                             
         ]
         ReturnsLoader(data).load_data()            
 
@@ -139,28 +133,19 @@ class EnidLoader:
 
 
     def load_categories(self):
-        data = [
-            {
-                "id":1,
-                "name": '''Pesas y barras''',
-            },            
-            {
-                "id":2,
-                "name": '''Calistenia''',
-                
-            },             
-           {
-                "id":3,
-                "name": '''Accesorios''',
-                
-            },                                                          
+        data = [            
+            {"id":1,"name": '''Pesas y barras'''},            
+            {"id":2,"name": '''Calistenia'''},             
+            {"id":3,"name": '''Accesorios'''},                                                        
         ]
-        CategoriesLoader(data,1).load_data()
-
+        
+        loader = CategoriesLoader()
+        loader.categories(data)
 
 
     def load_products(self):
         data = [
+
             {
                 "id":1,
                 "name": '''PARA LOS QUE VAN INICIANDO''', 
@@ -171,9 +156,9 @@ class EnidLoader:
                 "top_seller": True,
                 "category": 1,
                 "product_group":1,
-                "name_product_group":"34KG con 16 Discos"
+                "name_product_group":"34KG con 16 Discos",
             },            
-           {
+            {
                 "id":3,
                 "name": '''PARA LOS QUE VAN RÁPIDO ''',                 
                 "specific_name":"SOPORTE DE INMERSIóN PARA ENTRENAMIENTO FíSICO, BARRA DE INMERSIóN | ENVÍO GRATIS",
@@ -192,7 +177,7 @@ class EnidLoader:
                 "top_seller": True,
                 "category":1,
                 "product_group":2,
-                "name_product_group":"42KG con 16 Discos"
+                "name_product_group":"42KG con 16 Discos",
             },            
             {
                 "id":5,
@@ -204,7 +189,7 @@ class EnidLoader:
                 "top_seller": True,
                 "category":1,
                 "product_group":2,
-                "name_product_group":"80KG con 28 Discos"
+                "name_product_group":"80KG con 28 Discos",
             },
             {
                 "id":6,
@@ -243,7 +228,7 @@ class EnidLoader:
                 "top_seller": False,
                 "category": 1,
                 "product_group":1,
-                "name_product_group":"42KG con 16 Discos"
+                "name_product_group":"42KG con 16 Discos",
             },                
             {
                 "id":10,
@@ -255,7 +240,7 @@ class EnidLoader:
                 "top_seller": False,
                 "category": 1,
                 "product_group":1,
-                "name_product_group":"50KG con 20 Discos"
+                "name_product_group":"50KG con 20 Discos",
             },     
             {
                 "id":11,
@@ -265,7 +250,7 @@ class EnidLoader:
                 "weight": .5,
                 "count_discs": False,
                 "top_seller": False,
-                "category": 3,                                
+                "category": 3,
             },   
             {
                 "id":12,
@@ -275,7 +260,7 @@ class EnidLoader:
                 "weight": 15,
                 "count_discs": False,
                 "top_seller": False,
-                "category": 3,                                
+                "category": 3,                               
             },     
             {
                 "id":13,
@@ -285,7 +270,7 @@ class EnidLoader:
                 "weight": 12,
                 "count_discs": False,
                 "top_seller": False,
-                "category": 3,                                
+                "category": 3,                               
             },     
             {
                 "id":14,
@@ -295,7 +280,7 @@ class EnidLoader:
                 "weight": 1,
                 "count_discs": False,
                 "top_seller": False,
-                "category": 3,                                
+                "category": 3,
             },     
             {
                 "id":15,
@@ -305,7 +290,7 @@ class EnidLoader:
                 "weight": 1,
                 "count_discs": False,
                 "top_seller": False,
-                "category": 3,                                
+                "category": 3,                       
             },     
             {
                 "id":16,
@@ -317,7 +302,7 @@ class EnidLoader:
                 "top_seller": False,
                 "category": 1,         
                 "product_group":3,
-                "name_product_group":"10Kg C/U total 20kg"
+                "name_product_group":"10Kg C/U total 20kg",
             },     
             {
                 "id":17,
@@ -327,7 +312,7 @@ class EnidLoader:
                 "weight": 42,
                 "count_discs": True,
                 "top_seller": False,
-                "category": 1,                         
+                "category": 1,
             },     
             {
                 "id":18,
@@ -339,7 +324,7 @@ class EnidLoader:
                 "top_seller": True,
                 "category": 1,         
                 "product_group":3,
-                "name_product_group":"6Kg C/U total 12kg"
+                "name_product_group":"6Kg C/U total 12kg",
             },     
             {
                 "id":19,
@@ -351,7 +336,7 @@ class EnidLoader:
                 "top_seller": False,
                 "category": 1,         
                 "product_group":3,
-                "name_product_group":"8Kg C/U total 16kg"
+                "name_product_group":"8Kg C/U total 16kg",
             },     
             {
                 "id":20,
@@ -363,8 +348,8 @@ class EnidLoader:
                 "top_seller": False,
                 "category": 1,         
                 "product_group":3,
-                "name_product_group":"4Kg C/U total 8kg"
-            },     
+                "name_product_group":"4Kg C/U total 8kg",
+            },
                                              
         ]
         
@@ -637,17 +622,18 @@ class EnidLoader:
 
 
     def load_base(self):
+        self.load_categories()        
         self.load_product_group()
         self.load_business()
         self.load_states()
         self.load_Faqs()
-        self.load_Returns()
-        self.load_categories()    
+        self.load_Returns()        
         self.load_products()
         self.load_variant()
         self.load_product_variant()
         image_business = ImagesBusinessLoader()
         image_business.add_business_images()
+        
         
 
 if __name__ == "__main__":
