@@ -49,15 +49,19 @@ export default {
     };
   },
   mounted() {
+    
     this.fetchProduct();
   },
   methods: {
     async fetchProduct() {
+    
       try {
         const response = await this.$axios.get(
           `productos/${this.item_order.product}`
         );
+    
         this.product = response.data;
+
       } catch (error) {
         console.error("Error Order list:", error);
       }

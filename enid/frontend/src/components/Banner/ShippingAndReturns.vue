@@ -242,10 +242,10 @@
                     </PopoverPanel>
                   </transition>
                 </Popover>              
-               <router-link v-for="page in navigation.pages" :key="page.name" :to="generateRoute(page)"
-                  class="flex items-center text-sm font-medium text-gray-950 hover:text-gray-800">
-                  {{ page.name }}
-                </router-link>                              
+               <router-link  v-for="page in navigation.pages"   :key="page.name" :to="generateRoute(page)"
+                class="flex items-center text-sm font-medium text-gray-950 hover:text-gray-800">
+                {{ page.name }}
+              </router-link>
               </div>
             </PopoverGroup>
 
@@ -384,9 +384,9 @@ const navigation = {
     },
   ],
   pages: [
-    { name: "REFERENCIAS", href: "referencias" },
-    { name: "RASTREO", href: "rastreo" },
-    { name: "CAMBIOS", href: "cambios-y-devoluciones" , id:1},
+    { name: "REFERENCIAS", href: "referencias",  authenticated: false},
+    { name: "RASTREO", href: "rastreo",  authenticated: true },
+    { name: "CAMBIOS", href: "cambios-y-devoluciones", authenticated: true, id:1  },
   ],
 };
 
@@ -434,7 +434,19 @@ export default {
       this.$emit("open_seccion_login");
     },
     logout() {
-      this.$store.commit("clearToken");
+      
+      const refresh_token  = localStorage.getItem('refresh_token');
+      
+      this.$axios.post(`/logout/`,{refresh_token:refresh_token})
+        .then(response => {
+      
+          this.$store.commit("clearToken");
+        })
+        .catch(error => {
+      
+          console.error("Error al realizar la solicitud de logout:", error);
+        });
+      
     },
   },
   computed: {

@@ -12,12 +12,12 @@ import OrderDetail from '@/views/Order/OrderDetail.vue'
 import UserArea from '@/views/UserArea/Area.vue'
 import SeachProducts from '@/views/Search/SeachProducts.vue';
 import ProductsSearchByCategory from '@/views/Search/ProductsSearchByCategory.vue';
+import AccountEcommerce from '@/views/Account/Ecommerce.vue';
 
 const routes = [
-  {
-   
+  {   
     path: '/',
-    component: MainLayout,
+    component: MainLayout,    
     children: [
       {
         path: 'faq',
@@ -56,18 +56,12 @@ const routes = [
       {
         path: '/:categorySlug/:productSlug',
         name: 'product-detail',
-        component: ProductDetail,
-        meta: {
-          title: '/:categorySlug/:productSlug',
-        },
+        component: ProductDetail,        
       },
       {
         path: 'referencias',
         name: 'referencias',
-        component: References,
-        meta: {
-          title: 'Enid service - Referencias',
-        },
+        component: References,        
       },
       {
         path: '/orden-compra/:id',
@@ -84,8 +78,14 @@ const routes = [
         name: 'search-product',
         component: SeachProducts,        
       },
-      
-      
+      {
+        path: '/account',
+        name: 'ecommerce-user',
+        component: AccountEcommerce,
+        meta:{requiresAuth: true}
+        
+      },
+    
     ],
    
   },
