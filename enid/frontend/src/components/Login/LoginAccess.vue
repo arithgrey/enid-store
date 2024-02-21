@@ -148,11 +148,28 @@ export default {
       if(response.status === 200){
         
         const token = response.data.token;
+        const refresh_token = response.data.refresh_token;        
+        const user = response.data.user;
+
+        this.$store.commit('setUser', user); 
         this.$store.commit('setToken', token); 
+        this.$store.commit('setRefreshToken', refresh_token); 
+        this.$store.commit('setProfile', user.profile); 
         
+         switch (profile) {
+          case 'ecommerce':
+            this.$router.push({name:"ecommerce-user"});
+            break;
+          case 'administrador':
+            this.$router.push({name:"admin-user"});
+            break;
+         
+          default:        
+            this.$router.push({name:"product-list"});
+            break;
+        }
 
       }
-
     }
   },
 };

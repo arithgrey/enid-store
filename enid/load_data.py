@@ -3,6 +3,7 @@ from models_loader import BusinessLoader, FaqsLoader, ReturnsLoader, VariantLoad
 from models_loader import ProductVariantLoader,  ProductLoader, CategoriesLoader, StateLoader, ProductGroupLoader
 from initial_products_images import ImagesLoader
 from initial_business_images import ImagesBusinessLoader
+from django.contrib.auth.models import Group
 
 class EnidLoader:
 
@@ -141,6 +142,10 @@ class EnidLoader:
         
         loader = CategoriesLoader()
         loader.categories(data)
+    
+    def load_groups(self):
+        Group.objects.get_or_create(name="admin")
+        Group.objects.get_or_create(name="ecommerce")
 
 
     def load_products(self):
@@ -622,6 +627,7 @@ class EnidLoader:
 
 
     def load_base(self):
+        self.load_groups()
         self.load_categories()        
         self.load_product_group()
         self.load_business()

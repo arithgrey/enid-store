@@ -10,7 +10,7 @@ from login.serializers import  UserSingInValidatorSerializer
 from user.serializers.user_validator_serializers import UserValidatorSerializer
 from share_test.tests import ValidatorTest
 from django.contrib.auth.hashers import make_password
-
+from django.contrib.auth.models import Group
 
 class TestUserSigin(ValidatorTest):
     serializer_class = UserSingInValidatorSerializer
@@ -29,7 +29,7 @@ class TestUserSigin(ValidatorTest):
             email="arithgrey@gmail.com", 
             password="test_password_1",
             first_name="Jonathan")
-    
+
     
     def test_sigin_with_empty_credentials(self):
         
@@ -53,12 +53,16 @@ class TestUserSigin(ValidatorTest):
         
 
     def test_success_sigin(self):
-                
+
+        group= Group.objects.create(name="ecommerce")
+        self.user.groups.add(group)
+
         data = {"email":self.user.email,"password":"test_password_1"}  
         response = self.client.post(
             '/api/login/sigin/', data, format='json')  
-        
+                
         self.assertIn('token', response.data)
+        self.assertEqual('ecommerce', response.data["profile"])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
 
@@ -87,11 +91,12 @@ class TestUserRegistration(ValidatorTest):
 
     def test_success_singup(self):
 
+        Group.objects.create(name="ecommerce")
         data = self.faker_user()
         response = self.client.post(
                 '/api/login/signup/', data, format='json')  
         
-        self.assertEqual(User.objects.count(),1)        
+        self.assertEqual(User.objects.count(),1)                
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
     def test_400_singup(self):

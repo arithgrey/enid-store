@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/orden/', include('order.urls')),
     path('api/compra/', include('order_management.urls')),
     path('api/login/', include('login.urls')),
+    path('api/', include('logout.urls')),
     path('api/item-order/', include('item_order.urls')),
     path('api/faq/', include('faqs.urls')),
     path('api/devoluciones/', include('returns.urls')),
