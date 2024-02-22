@@ -16,6 +16,7 @@ from categories.models import Category
 from state.models import State
 from business.models import Business
 from product_group.models import ProductGroup
+from lead_type.models import LeadType
 
 class DataLoader:
     def __init__(self, model, data, slug=0):
@@ -33,6 +34,10 @@ class DataLoader:
                 self.model.objects.create(**item)
 
 
+
+class LeadTypeLoader(DataLoader):
+    def __init__(self, data):
+        super().__init__(LeadType, data)
 
 class ProductGroupLoader(DataLoader):
     def __init__(self, data):
