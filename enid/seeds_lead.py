@@ -5,18 +5,9 @@ class LeadType:
     def load(self):
             
         data = [
-            {
-                "id":1,
-                "name": '''Kit de pesas con barra z, recta y mancuernas''',                    
-            },                                   
-            {
-                "id":2,
-                "name": '''Kit de pesas con barra z, Romana, recta y mancuernas''',                    
-            },  
-            {
-                "id":3,
-                "name": '''Solo mancuernas''',                    
-            },                                   
+            {'id': 1, 'name': 'Al hacer seguir en contacto'},
+            {'id': 2, 'name': 'Al registrar orden'},
+            {'id': 3, 'name': 'Al hacer registro'},            
         ]
 
         LeadTypeLoader(data).load_data()

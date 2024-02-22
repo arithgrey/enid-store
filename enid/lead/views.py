@@ -19,6 +19,7 @@ class LeadViewSet(viewsets.ModelViewSet):
             name = data.get('name')
             phone_number = data.get('phone_number')
             lead_type =  data.get('lead_type')
+            products_interest_ids = data.get('products_interest', [])
             
             defaults = {
                 'lead_type': LeadType.objects.get(id=lead_type),
@@ -28,7 +29,9 @@ class LeadViewSet(viewsets.ModelViewSet):
                 }
 
             lead, created = Lead.objects.get_or_create(email=email, defaults=defaults)
-            if created:            
+            if created:     
+                
+                lead.products_interest.add(*products_interest_ids)                
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
                         
             else:
@@ -44,11 +47,11 @@ class LeadViewSet(viewsets.ModelViewSet):
         
         if obj_lead.lead_type.id != new_lead_type:            
             new_lead = Lead.objects.create(**data)
-            serializer = LeadSerializer(new_lead)
+            serializer = LeadSerializer(new_lead)            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         else:            
-
+                        
             for key, value in data.items():
                 setattr(obj_lead, key, value)
                 
