@@ -21,7 +21,7 @@ from stripe.error import StripeError
 
 
 
-class TestsOrderViewSet(TestCase):
+class LeadViewSet(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='jonathan')
         self.fake = Faker('es_MX')
