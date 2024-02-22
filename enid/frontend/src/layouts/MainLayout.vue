@@ -24,7 +24,7 @@
       <LoginForm ref="loginForm"/>
       <SearchFormProduct ref="searchFormProduct"/>
       <div class="flex-shrink-0">
-        <Footer v-if="display_footer" />
+        <Footer v-if="display_footer" @open_seccion_login="handleOpenLogin"/>
       </div>
     </div>
   </div>

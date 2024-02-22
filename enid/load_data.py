@@ -4,6 +4,7 @@ from models_loader import ProductVariantLoader,  ProductLoader, CategoriesLoader
 from initial_products_images import ImagesLoader
 from initial_business_images import ImagesBusinessLoader
 from django.contrib.auth.models import Group
+from seeds_lead import LeadType
 
 class EnidLoader:
 
@@ -13,7 +14,7 @@ class EnidLoader:
             {"name":"Enid Service"},            
         ]
         BusinessLoader(data).load_data()
-
+    
     def load_states(self):
 
         data = [
@@ -132,7 +133,7 @@ class EnidLoader:
 
         ProductGroupLoader(data).load_data()
 
-
+    
     def load_categories(self):
         data = [            
             {"id":1,"name": '''Pesas y barras'''},            
@@ -142,6 +143,7 @@ class EnidLoader:
         
         loader = CategoriesLoader()
         loader.categories(data)
+    
     
     def load_groups(self):
         Group.objects.get_or_create(name="admin")
@@ -626,7 +628,10 @@ class EnidLoader:
         loader.load_product_variant(product_id=17, variant_id=9,pieces=6)
 
 
-    def load_base(self):
+    def load_base(self):        
+        leadType = LeadType()
+        leadType.load()
+
         self.load_groups()
         self.load_categories()        
         self.load_product_group()
@@ -637,9 +642,9 @@ class EnidLoader:
         self.load_products()
         self.load_variant()
         self.load_product_variant()
+
         image_business = ImagesBusinessLoader()
         image_business.add_business_images()
-        
         
 
 if __name__ == "__main__":
