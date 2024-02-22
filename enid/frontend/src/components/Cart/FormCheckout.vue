@@ -316,10 +316,12 @@ import { useVuelidate } from "@vuelidate/core";
 import { loadStripe } from "@stripe/stripe-js";
 import { rules } from "@/rules/checkout/formCheckout.js";
 import * as utilities from "@/rules/utilities.js";
+import * as utilitiesLeads from "@/components/Cart/js/leads.js";
 
 export default {
   data() {
-    return {
+    return {      
+      sendUserLead: false,
       loading: false,
       states: [],
       stripe: null,
@@ -367,6 +369,7 @@ export default {
     this.fetchStates().then(() => {
       this.form.state = 7;
     });
+    
   },
   watch: {},
   computed: {
@@ -379,16 +382,29 @@ export default {
         this.form.name.length > 0 &&
         this.form.phone_number.length > 0;
       if (status) {
-        this.$nextTick(() => {
+       
+       this.$nextTick(() => {
           this.initializeStripe();
         });
+
+        if(!this.sendUserLead){
+          this.chargeUserLead()          
+        }
+        
       }
+      
       return status;
     },
   },
   methods: {
     ...utilities,
+
+    ...utilitiesLeads,
+
     async initializeStripe() {
+      if(this.cardStripeLoader){
+        return;
+      }
       try {
         this.stripe = await loadStripe(import.meta.env.VITE_APP_STRIPE);
         const elements = this.stripe.elements();
@@ -411,6 +427,7 @@ export default {
 
         this.card = elements.create("card", { style });
         this.card.mount("#card-element");
+        
       } catch (error) {
         console.error("Error during Stripe initialization:", error);
       }

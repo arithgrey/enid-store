@@ -643,6 +643,4 @@ class EnidLoader:
         
 
 if __name__ == "__main__":
-    EnidLoader().load_base()
-            
-    
+    EnidLoader().load_base()            
