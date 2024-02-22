@@ -6,3 +6,6 @@ class LeadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lead
         fields = '__all__'
+        extra_kwargs = {
+            'products_interest': {'required': False},
+        }

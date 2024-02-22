@@ -5,21 +5,24 @@ from rest_framework.test import APIClient
 from lead.models import Lead
 from lead_type.models import LeadType
 from faker import Faker
+from products.models import Product
+from categories.models import Category
 # Create your tests here.
 class TestsLeadViewSet(TestCase):
     def setUp(self):
         self.fake = Faker('es_MX')
         self.client = APIClient()
         self.lead_type = LeadType.objects.create(name="En intento de compra")
-        
+
+    
     def fake_user(self, create_object=False):
         lead_type_id = self.lead_type.id
-        
+
         user = {
             "email": self.fake.email(), 
             "name": self.fake.name(),
             "phone_number": self.fake.phone_number().split('x')[0].strip(),
-            "lead_type": lead_type_id 
+            "lead_type": lead_type_id            
         }
         
         if not create_object:
@@ -30,12 +33,27 @@ class TestsLeadViewSet(TestCase):
         obj = Lead.objects.create(**user)
         return obj
 
+    def test_success_create_lead_with_interest_products(self):
+        
+        category = Category.objects.create(name="equipos deportivos")
+        product = Product.objects.create(name="Product 1",category=category, price=2100)
+        second_product = Product.objects.create(name="Product 2",category=category,price=2100)
+        
+        fake_lead = self.fake_user()
+        fake_lead['products_interest'] = [product.id, second_product.id]
+               
+        response = self.client.post('/api/lead/existence/', fake_lead, format='json')        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Lead.objects.count(), 1)
+        self.assertEqual(response.data["products_interest"], [product.id, second_product.id])
 
+    
     def test_success_create_lead(self):
                         
         response = self.client.post(
             '/api/lead/existence/', self.fake_user(), format='json')          
-                                
+
+        
         self.assertEqual(response.status_code, 201)        
         self.assertEqual(Lead.objects.count(),1)
 
