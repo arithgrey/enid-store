@@ -14,6 +14,7 @@
     config => {
       
       const requiresToken = config.url.includes('/api/');        
+      config.headers['X-Store-Id'] = 1;
 
       if (requiresToken) {
 
@@ -23,7 +24,8 @@
           config.headers.Authorization = `Bearer ${token}`;
         }
       }
-  
+    
+      
       return config;
     },
     error => {
@@ -38,6 +40,7 @@
       return response;
     },
     async error => {
+      debugger;
       const originalRequest = error.config;
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;

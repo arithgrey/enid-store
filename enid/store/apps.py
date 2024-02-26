@@ -1,10 +1,8 @@
 from django.apps import AppConfig
 
 
-class StateConfig(AppConfig):
+class StorerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'state'
-    
+    name = 'store'
     def ready(self):
-        import state.signals
-    
+        import store.signals

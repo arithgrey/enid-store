@@ -1,11 +1,12 @@
 import { createStore } from 'vuex';
 
 export default createStore({
-  state: {
+  state: {    
     user: localStorage.getItem('user') || null,
     token: localStorage.getItem('token') || null,
     refresh_token: localStorage.getItem('refresh_token') || null,
     profile: localStorage.getItem('profile') || null,
+    storeId:1,
     cart: JSON.parse(localStorage.getItem('cart')) || [],
     showDialog: false,
   },
@@ -56,6 +57,9 @@ export default createStore({
     },
   },
   getters: {
+    storeId(state){
+      return state.storeId;
+    },
     user(state) {
       return state.user;
     },

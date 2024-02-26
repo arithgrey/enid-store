@@ -18,8 +18,8 @@ import random
 from order.models import Order
 import re
 from stripe.error import StripeError
-
-
+from store.models import Store
+from share_test.commons import CommonsTest
 
 class LeadViewSet(TestCase):
     def setUp(self):
@@ -28,7 +28,7 @@ class LeadViewSet(TestCase):
         self.client = APIClient()
         self.view = OrderViewSet()
         self.state = State.objects.create(name="CDMX")
-        self.category = Category.objects.create(name="test category")
+        self.category = CommonsTest().create_fake_category()
         self.required_fields = UserValidatorSerializer.Meta.required_fields
         self.not_allow_blank = UserValidatorSerializer.Meta.not_allow_blank
         self.max_lengths = UserValidatorSerializer.Meta.max_lengths
@@ -168,8 +168,11 @@ class LeadViewSet(TestCase):
 
             product_name = self.fake.word()
             price = round(random.uniform(1.0, 1000.0), 2)
+            store = Store.objects.create(name="my Face store")
+
             product, created = Product.objects.get_or_create(
                 name=product_name,
+                store=store,
                 price=price,
                 category=self.category
             )

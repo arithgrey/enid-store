@@ -1,7 +1,8 @@
 from django.db import models
 
-class LeadType(models.Model):
-    name = models.CharField(max_length=100)
+class Store(models.Model):
+
+    name = models.CharField(max_length=50)
     status = models.IntegerField(default=1)
 
     def __str__(self):

@@ -1,10 +1,6 @@
 import os
-import django
 from django.core.files import File
 from image.models import Image 
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "enid.settings")
-django.setup()
 
 class Images:    
         

@@ -30,7 +30,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
-
+CORS_ALLOW_HEADERS = [ 
+    'X-Store-Id',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django_seed',
     'corsheaders',    
     'rest_framework',
+    'store',
     'rest_framework_simplejwt.token_blacklist',
     'share_test',
     'business',

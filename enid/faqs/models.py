@@ -6,7 +6,7 @@ class Faq(models.Model):
     answer = models.TextField()
     is_visible = models.BooleanField(default=True)
     url_img = models.URLField(default=False)
-    we_mean = models.TextField(null=True, default=None)
+    we_mean = models.TextField(null=True, default=None)    
     
     def __str__(self):
         return self.ask

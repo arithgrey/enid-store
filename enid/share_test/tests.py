@@ -64,3 +64,5 @@ class ValidatorTest(TestCase):
             self.assertFalse(serializer.is_valid())
             self.assertIn(field, serializer.errors)            
             self.assertEqual(serializer.errors[field][0].code, 'max_value')
+
+
