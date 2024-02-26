@@ -25,4 +25,9 @@ services:
       - frontend/.env
     environment:
       - NODE_ENV=development
-        
+
+  redis:
+    container_name: redis-stack-server
+    image: redis/redis-stack-server:latest
+    ports:
+      - "6379:6379"

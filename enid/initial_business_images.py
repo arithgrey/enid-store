@@ -1,10 +1,10 @@
 import os
 import django
-from business.models import Business
-from initial_images import Images
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "enid.settings")
 django.setup()
+from business.models import Business
+from initial_images import Images
 
 class ImagesBusinessLoader(Images):    
             

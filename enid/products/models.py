@@ -4,9 +4,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 from image.models import Image
 from autoslug import AutoSlugField
 from product_group.models import ProductGroup  
-
+from store.models import Store
 class Product(models.Model):
-
+    
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
     category = models.ForeignKey(Category,related_name='products',on_delete=models.CASCADE,default=None)
     name = models.CharField(max_length=250)
     price = models.DecimalField(max_digits=10, decimal_places=2)

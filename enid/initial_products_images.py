@@ -1,10 +1,4 @@
-import os
-import django
-from django.core.files import File
-from image.models import Image 
 from initial_images import Images
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "enid.settings")
-django.setup()
 
 class ImagesLoader(Images):            
     

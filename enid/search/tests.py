@@ -4,48 +4,46 @@ from django.http import Http404
 from rest_framework import status
 from faker import Faker
 from products.models import Product
-from categories.models import Category
+from share_test.commons import CommonsTest
+from django.urls import reverse
+
 
 class TestProductSeachByQViewSet(TestCase):
  
     def setUp(self):
         self.fake = Faker('es_MX')
         self.client = APIClient()
-        
-    def create_fake_product(self):
-        category = Category.objects.create(name="equipos deportivos")
-        product = Product.objects.create(
-            name="Producto que tiene la palabra pesas en algun momento",
-            category=category,
-            price=2100
-            )
-        return product
-        
+        self.commons = CommonsTest()
+            
 
     def test_find_produc_by_name(self):
         
-        product = self.create_fake_product()
+        q='pesas'   
+        product = self.commons.create_fake_product(name=q)
         if isinstance(product,Product):            
-            q='pesas'   
-            response = self.client.get(
-                    f'/api/search/product/{q}/', format='json')              
+            
+            headers = {'HTTP_X_STORE_ID': str(product.store.id)}            
+            url = reverse('get_by_q', kwargs={'q': q})            
+            response = self.client.get(url, format='json', **headers)            
+
                         
             response_product = response.data["results"]
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response_product),1)    
             self.assertEqual(response_product[0]['name'], product.name)
     
-    def test_find_produc_category(self):
-        
-        product = self.create_fake_product()        
+    def test_find_produc_category_name(self):
+        q='deportivos'
+        product = self.commons.create_fake_product(name=q)
         if isinstance(product,Product):                        
-            q='deportivos'            
-            response = self.client.get(
-                    f'/api/search/product/{q}/', format='json')  
                         
-            category_product_name = product.category.name                        
+            headers = {'HTTP_X_STORE_ID': str(product.store.id)}            
+            url = reverse('get_by_q', kwargs={'q': q})
             
-            response_product = response.data["results"]
+            response = self.client.get(url, format='json', **headers)                        
+            category_product_name = product.category.name                                    
+            
+            response_product = response.data["results"]                        
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response_product),1)                
             self.assertEqual(response_product[0]['category']['name'], category_product_name)            
