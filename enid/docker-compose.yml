@@ -1,6 +1,37 @@
 version: '3'
 
 services:
+  redis:
+    container_name: redis-stack-server
+    image: redis/redis-stack-server:latest
+    ports:
+      - "6379:6379"    
+  postgres:
+    container_name: postgres_server
+    image: postgres:latest
+    ports:
+      - "5432:5432"    
+    env_file:
+      - .env
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-scripts:/docker-entrypoint-initdb.d
+    
+
+  vuejs:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    ports:
+      - "5173:5173"      
+    command: npm run dev
+    env_file:
+      - frontend/.env
+    environment:
+      - NODE_ENV=development
+  
   django:
     build:
       context: .
@@ -12,22 +43,6 @@ services:
       - .env
     depends_on:
       - vuejs
-
-  vuejs:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    #image: enid_service_vue:0.1
-    ports:
-      - "5173:5173"      
-    command: npm run dev
-    env_file:
-      - frontend/.env
-    environment:
-      - NODE_ENV=development
-
-  redis:
-    container_name: redis-stack-server
-    image: redis/redis-stack-server:latest
-    ports:
-      - "6379:6379"
+    
+volumes:
+  postgres_data:
