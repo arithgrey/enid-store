@@ -2,10 +2,11 @@ import os
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 from faqs.models import Faq
+from decouple import config
 
 @receiver(post_migrate)
 def create_stors(sender, **kargs):    
-    if os.environ.get('DJANGO_RUNNING_MIGRATIONS') == 'true':    
+    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):
         if sender.name == "faqs":        
             data = [
                     

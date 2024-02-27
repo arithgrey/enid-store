@@ -7,10 +7,11 @@ from categories.models import Category
 from product_group.models import ProductGroup
 from store.models import Store
 from initial_products_images import ImagesLoader
+from decouple import config
 
 @receiver(post_migrate)
 def create_products(sender, **kwargs):
-    if os.environ.get('DJANGO_RUNNING_MIGRATIONS') == 'true':
+    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):
         if sender.name == 'products':                  
             
             data = [

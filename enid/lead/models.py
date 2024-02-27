@@ -1,6 +1,7 @@
 from django.db import models
 from lead_type.models import LeadType
 from products.models import Product
+from store.models import Store
 
 class Lead(models.Model):
     
@@ -11,6 +12,7 @@ class Lead(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     tryet = models.IntegerField(default=1, null=False)
     products_interest = models.ManyToManyField(Product, related_name='products_interest')
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

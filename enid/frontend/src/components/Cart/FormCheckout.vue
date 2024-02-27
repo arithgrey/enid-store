@@ -383,12 +383,14 @@ export default {
         this.form.phone_number.length > 0;
       if (status) {
        
-       this.$nextTick(() => {
-          this.initializeStripe();
-        });
-
         if(!this.sendUserLead){
+          
           this.chargeUserLead()          
+          
+          this.$nextTick(() => {
+            this.initializeStripe();
+          });
+
         }
         
       }

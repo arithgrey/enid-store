@@ -32,6 +32,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
 CORS_ALLOW_HEADERS = [ 
     'X-Store-Id',
+    'Content-Type',
 ]
 # Application definition
 

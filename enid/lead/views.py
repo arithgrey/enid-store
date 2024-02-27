@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from lead.serializers import LeadSerializer
 from lead.models import Lead
 from lead_type.models import LeadType
+from store.models import Store
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -12,9 +13,15 @@ class LeadViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='existence')
     def existence(self, request):
         data = request.data
-        serializer = LeadSerializer(data=data)
-        if serializer.is_valid():
-            
+        store_id = request.headers.get('X-Store-Id')                
+        
+        if store_id is None:
+            return Response({'error': 'X-Store-Id header is missing'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        data['store'] = store_id
+        serializer = LeadSerializer(data=data)        
+        if serializer.is_valid():            
+        
             email = data.get('email')
             name = data.get('name')
             phone_number = data.get('phone_number')
@@ -25,7 +32,8 @@ class LeadViewSet(viewsets.ModelViewSet):
                 'lead_type': LeadType.objects.get(id=lead_type),
                 'name':name,
                 'phone_number':phone_number,
-                'email':email
+                'email':email,
+                'store_id': store_id,
                 }
 
             lead, created = Lead.objects.get_or_create(email=email, defaults=defaults)
