@@ -4,10 +4,11 @@ from django.dispatch import receiver
 from products.models import Product
 from variants.models import Variant
 from product_variant.models import ProductVariant
+from decouple import config
 
 @receiver(post_migrate)
 def create_base_returns(sender, **kwargs):
-    if os.environ.get('DJANGO_RUNNING_MIGRATIONS') == 'true':
+    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):        
         if sender.name == "product_variant":
             
             #34Kg

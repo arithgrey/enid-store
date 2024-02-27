@@ -1,4 +1,4 @@
-  import axios from 'axios';
+import axios from 'axios';
 
   const apiBaseUrl = import.meta.env.VITE_APP_API;
 
@@ -14,7 +14,7 @@
     config => {
       
       const requiresToken = config.url.includes('/api/');        
-      config.headers['X-Store-Id'] = 1;
+      config.headers['X-Store-Id'] = 1;          
 
       if (requiresToken) {
 
@@ -40,7 +40,7 @@
       return response;
     },
     async error => {
-      debugger;
+      
       const originalRequest = error.config;
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;

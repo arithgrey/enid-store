@@ -2,12 +2,12 @@ import os
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 from lead_type.models import LeadType
-
+from decouple import config
 
 @receiver(post_migrate)
 def create_lead_types(sender, **kwargs):
     
-    if os.environ.get('DJANGO_RUNNING_MIGRATIONS') == 'true':
+    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):
         if sender.name == 'lead_type':        
             lead_types_data = [
                 {'id': 1, 'name': 'Al hacer seguir en contacto'},
