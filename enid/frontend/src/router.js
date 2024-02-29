@@ -13,6 +13,8 @@ import UserArea from '@/views/UserArea/Area.vue'
 import SeachProducts from '@/views/Search/SeachProducts.vue';
 import ProductsSearchByCategory from '@/views/Search/ProductsSearchByCategory.vue';
 import AccountEcommerce from '@/views/Account/Ecommerce.vue';
+import SearchLead from '@/views/Leads/Search.vue';
+
 
 const routes = [
   {   
@@ -83,6 +85,13 @@ const routes = [
         name: 'ecommerce-user',
         component: AccountEcommerce,
         meta:{requiresAuth: true}
+        
+      },
+      {
+        path: '/search-leads/',
+        name: 'search-lead',
+        component: SearchLead,
+        //meta:{requiresAuth: true}
         
       },
     

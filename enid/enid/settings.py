@@ -67,7 +67,8 @@ INSTALLED_APPS = [
     'login',
     'search',
     'lead_type',
-    'lead'
+    'lead',
+    'lead_search'
 ]
 
 REST_FRAMEWORK = {
