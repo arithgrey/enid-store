@@ -9,7 +9,7 @@ from rest_framework.response import Response
 class LeadViewSet(viewsets.ModelViewSet):
     serializer_class =  LeadSerializer
     queryset = Lead.objects.all()
-
+       
     @action(detail=False, methods=['post'], url_path='existence')
     def existence(self, request):
         data = request.data

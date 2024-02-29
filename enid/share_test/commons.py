@@ -9,7 +9,7 @@ class CommonsTest:
 
     def __init__(self):
         self.fake = Faker('es_MX')
-
+    
     def create_fake_lead(self, **kwargs):
         store = self.create_fake_store()
         

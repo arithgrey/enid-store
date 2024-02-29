@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/compra/', include('order_management.urls')),
     path('api/lead-type/', include('lead_type.urls')),
     path('api/lead/', include('lead.urls')),
+    path('api/lead-search/', include('lead_search.urls')),
     path('api/login/', include('login.urls')),
     path('api/', include('logout.urls')),
     path('api/item-order/', include('item_order.urls')),
