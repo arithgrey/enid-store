@@ -1,37 +1,14 @@
 <template>
-  <div class="container mx-auto px-4 flex flex-col items-center h-screen">
+  <div class="container mx-auto px-4 flex flex-col items-center min-h-screen mb-10">
     <div class="mb-5">
       <SearchForm ref="searchForm" @list_leads="handlerLeads" />
     </div>
     <div class="border-t w-full mb-5 flex">
-      <div class="search-leads w-1/4 mr-4 mt-5">
-        <div
-          v-for="item in leads"
-          :key="item.id"
-          @click="selectLead(item)"
-          :class="{ 'border-cyan-700': selectedLead && selectedLead.id === item.id }"
-          class="shadow-md bg w-full border cursor-pointer"
-        >
-          <div class="p-6">
-            <h5
-              class="block mb-2 text-xl font-semibold leading-snug tracking-normal text-blue-gray-900"
-            >
-              {{ item.name }}
-            </h5>
-            <p class="block text-sm">
-              {{ item.phone_number }}              
-            </p>
-            <p class="block text-sm text-right">
-              {{ item.status }}
-            </p>
-            <p class="block text-sm text-right">
-              {{ timePassed(item.created_at) }}
-            </p>
-          </div>
-        </div>
+      <div class="search-leads w-1/4 mr-4 mt-5 overflow-y-auto max-h-90">
+        <ItemListLead :leads="leads"  @selected_lead="handleSelectedLead"/>
       </div>
 
-      <div class="description-lead w-3/4 mt-5 border p-5">
+      <div class="description-lead w-3/4 mt-5 border p-5" ref="descriptionLead">
         <DetailLead :lead="selectedLead"/>
       </div>
     </div>
@@ -41,19 +18,20 @@
 <script>
 import SearchForm from "@/components/Leads/SearchForm.vue";
 import DetailLead from  "@/components/Leads/DetailLead.vue";
+import ItemListLead from "@/components/Leads/ItemListLead.vue";
 import {timePassed}  from "@/helpers/time.js";
 
 
 export default {
   components: {
     SearchForm,
-    DetailLead
+    DetailLead,
+    ItemListLead
   },
   data() {
     return {
-      leads: [],
+      leads: null,
       selectedLead: null,
-
     };
   },
   methods: {
@@ -62,10 +40,12 @@ export default {
         
       this.leads = leads;
     },   
-    selectLead(lead) {
+    handleSelectedLead(lead) {
       
       this.selectedLead = lead;
-    },
+      this.$refs.descriptionLead.scrollIntoView({ behavior: 'smooth' });
+
+    },    
     callSubmitForm() {
       
       this.$refs.searchForm.submitForm();
