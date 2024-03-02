@@ -28,7 +28,8 @@ class LeadViewSet(TestCase):
         self.client = APIClient()
         self.view = OrderViewSet()
         self.state = State.objects.create(name="CDMX")
-        self.category = CommonsTest().create_fake_category()
+        self.commons = CommonsTest()
+        self.category = self.commons.create_fake_category()        
         self.required_fields = UserValidatorSerializer.Meta.required_fields
         self.not_allow_blank = UserValidatorSerializer.Meta.not_allow_blank
         self.max_lengths = UserValidatorSerializer.Meta.max_lengths
@@ -87,10 +88,12 @@ class LeadViewSet(TestCase):
             address = self.create_fake_address(False)
             products = {'products':self.create_fake_products(random.randint(1,10))}
             stripe_token = {'stripe_token':'stripe_token x'}
+            store = self.commons.create_fake_store()
+            headers = self.commons.add_headers_store(store)
             data = {**user, **address,**products, **stripe_token}            
             
             response = self.client.post(
-                '/api/orden/compra/', data, format='json')  
+                '/api/orden/compra/', data, format='json', **headers)  
                         
             self.assertEqual(Order.objects.count(), 1)              
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -358,11 +361,13 @@ class LeadViewSet(TestCase):
     
 
     def create_fake_order(self):
+        store =  self.commons.create_fake_store()
         email = self.fake.email()
         data = {"email": email, "name": self.fake.name()}
         user, _ = self.view.register_user(data)
         address = self.create_fake_address()
-        return self.view.create_order_instance(address=address,user=user)
+        
+        return self.view.create_order_instance(address=address,user=user,store=store)
 
 
     def test_create_order_instance(self):
@@ -395,7 +400,9 @@ class LeadViewSet(TestCase):
     
     def test_register_items_order_failure_product_not_found(self):
         
-        order = Order.objects.create()
+        store = self.commons.create_fake_store()
+        order = Order.objects.create(store=store)
+        
         expected_products = [
             {'id': 1, 'price': 10.0, 'quantity': 2},
             {'id': 2, 'price': 20.0, 'quantity': 3}

@@ -14,6 +14,7 @@ import SeachProducts from '@/views/Search/SeachProducts.vue';
 import ProductsSearchByCategory from '@/views/Search/ProductsSearchByCategory.vue';
 import AccountEcommerce from '@/views/Account/Ecommerce.vue';
 import SearchLead from '@/views/Leads/Search.vue';
+import Searchorders from '@/views/Order/Search.vue';
 
 
 const routes = [
@@ -91,6 +92,13 @@ const routes = [
         path: '/search-leads/',
         name: 'search-lead',
         component: SearchLead,
+        meta:{requiresAuth: true}
+        
+      },
+      {
+        path: '/search-orders/',
+        name: 'search-orders',
+        component: Searchorders,
         //meta:{requiresAuth: true}
         
       },

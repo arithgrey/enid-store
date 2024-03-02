@@ -17,27 +17,32 @@ from order.stripe_payment import StripePayment
 from stripe.error import StripeError
 from django.db import IntegrityError
 from order.error_handling import ErrorResponse
+from store.mixin import StoreIDMixin
 
-class OrderViewSet(viewsets.ModelViewSet):
+class OrderViewSet(StoreIDMixin, viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
     @action(detail=False, methods=['post'], url_path='compra')
     def create_order(self, request):
-                
+                        
         data = request.data
         errors = self.validatorSerializers(data=data)
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)    
 
+        store = self.get_store_or_default(request)      
+        if isinstance(store, Response):
+            return store 
+        
         try:            
             user, _ = self.register_user(data)
             address = self.register_address(data)
             products = data["products"]
 
             with transaction.atomic():
-                order = self.create_order_instance(address, user)
+                order = self.create_order_instance(address, user, store)
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        
@@ -68,10 +73,10 @@ class OrderViewSet(viewsets.ModelViewSet):
    
 
     @transaction.atomic
-    def create_order_instance(self, address, user):
+    def create_order_instance(self, address, user, store):
         try:
             order_instance = Order.objects.create(
-                shipping_address=address, user=user)
+                shipping_address=address, user=user, store=store)
             return order_instance
         
         except IntegrityError as integrity_error:            
