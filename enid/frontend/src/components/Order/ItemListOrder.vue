@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div v-if="leads && leads.length === 0">
+    <div v-if="orders && orders.length === 0">
       <p>No se encontraron resultados.</p>
     </div>
     <div v-else>
       <div
-        v-for="item in leads"
+        v-for="item in orders"
         :key="item.id"
-        @click="selectLead(item)"
+        @click="selectOrder(item)"
         :class="{
-          'border-cyan-700': selectedLead && selectedLead.id === item.id,
+          'border-cyan-700': selectOrder && selectOrder.id === item.id,
         }"
         class="shadow-md bg w-full border cursor-pointer"
       >
@@ -17,11 +17,9 @@
           <h5
             class="block mb-2 text-xl font-semibold leading-snug tracking-normal text-blue-gray-900"
           >
-            {{ item.name }}
+            {{ item.id }}
           </h5>
-          <p class="block text-sm">
-            {{ item.phone_number }}
-          </p>
+          
           <p class="block text-sm text-right">
             {{ item.status }}
           </p>
@@ -38,26 +36,26 @@
 import { timePassed } from "@/helpers/time.js";
 export default {
   props: {
-    leads: {
+    orders: {
       type: Array,
       required: true,
     },
   },
   computed: {
-    reactiveLeads() {      
-      return this.leads.slice();
+    reactiveOrders() {      
+      return this.orders.slice();
     },
   },
   data() {
     return {
-      selectedLead: null,
+      selectedOrder: null,
     };
   },
   methods: {
     timePassed,
-    selectLead(lead) {
-      this.selectedLead = lead;      
-      this.$emit("selected_lead", lead);
+    selectOrder(order) {
+      this.selectedOrder = order;      
+      this.$emit("selected_order", order);
     },
   },
 };

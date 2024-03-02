@@ -1,5 +1,5 @@
 <template>
-  <li v-if="item_order" :key="item_order.id" class="flex py-6">
+  <li v-if="item_order && product" :key="item_order.id" class="flex py-6">
     <div
       class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200"
     >
@@ -45,11 +45,17 @@ export default {
   },
   data() {
     return {
-      product: [],
+      product: null,
     };
   },
+  watch: {
+    item_order: {
+      handler: 'fetchProduct',
+      immediate: true, 
+    },
+  },
   mounted() {
-    
+      
     this.fetchProduct();
   },
   methods: {

@@ -385,14 +385,12 @@ export default {
        
         if(!this.sendUserLead){
           
-          this.chargeUserLead()          
-          
-          this.$nextTick(() => {
-            this.initializeStripe();
-          });
-
+          this.chargeUserLead()                    
         }
         
+        this.$nextTick(() => {
+            this.initializeStripe();
+        });
       }
       
       return status;

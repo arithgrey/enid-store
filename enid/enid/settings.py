@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'state',
     'address',
     'order',
+    'order_search',
     'item_order',
     'login',
     'search',
