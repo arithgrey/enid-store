@@ -42,7 +42,6 @@
 import { timePassed } from "@/helpers/time.js";
 import ProductItem from "@/components/Products/ProductItemOrder.vue";
 import AddressDetail from "@/components/Address/AddressDetail.vue";
-import {totalPriceQuantity} from "@/components/Products/js/utilsProductsCart.js";
 
 export default {
   components: {
@@ -63,9 +62,17 @@ export default {
   },
   computed: {
     totalPriceQuantity() {
-        return totalPriceQuantity(this.order.items)
+      const total = this.items_order.reduce((acc, item_order) => {
+        let total_quantity = item_order.price * item_order.quantity;
+        return acc + total_quantity;
+      }, 0);
+
+      return this.formattedPrice(total);
     },
-  
+    formattedCreatedAt() {
+      moment.locale("es");
+      return moment(this.order.created_at).format("LLLL");
+    },
   },
 };
 </script>
