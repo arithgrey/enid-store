@@ -74,9 +74,12 @@ export function formatError(error) {
     return error[0];
 }
 export function cleanErrors() {
+    
+    this.stripe_message_error = "";
     Object.keys(this.errors).forEach((field) => {
         this.errors[field] = "";
     });
+    
 }
 
 export function cleanFields() {

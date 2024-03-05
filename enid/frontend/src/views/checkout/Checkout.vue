@@ -19,8 +19,9 @@
             </p>
           </div>
 
-          <p class="mt-0.5 text-sm text-gray-900">({{ totalItemsCart }} Productos)</p>
-
+          <p class="mt-0.5 text-sm text-gray-900">
+            ({{ totalItemsCart }} Productos)
+          </p>
           <p class="mt-0.5 text-sm text-gray-900">Envío gratis</p>
         </div>
         <CartList />
@@ -41,8 +42,12 @@
               <span class="font-bold">2 a 4 días hábiles</span>
             </p>
           </div>
+          <div class="mt-5">
+            <AccessButton @click="openSeccionLogin" />
+          </div>
         </div>
       </div>
+
       <div>
         <h2 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-5">
           Información de envío
@@ -50,7 +55,10 @@
         <p class="mt-4 text-sm text-gray-950 bg-gray-50">
           Solo usaremos estos datos para ayudarnos a entregar tu pedido
         </p>
-        <FormCheckout />
+
+        <FormCheckout v-if="!isAuthenticated"/>
+        <FormCheckoutSigned v-if="isAuthenticated"/>
+
       </div>
     </div>
   </div>
@@ -58,48 +66,53 @@
 <script>
 import CartList from "@/components/Cart/CartList.vue";
 import FormCheckout from "@/components/Cart/FormCheckout.vue";
+import FormCheckoutSigned from "@/components/Cart/FormCheckoutSigned.vue";
 import StepsShop from "@/components/Trusth/StepsShop.vue";
+import AccessButton from "@/components/Login/AccessButton.vue";
+import OrderHelper from "@/components/Products/js/OrderHelper.js";
+import OAuthHelper from "@/helpers/OAuth.js";
+
 
 export default {
   components: {
     CartList,
     StepsShop,
     FormCheckout,
+    FormCheckoutSigned,
+    AccessButton,
   },
   data() {
-    return {};
+    return {
+       oauthHelper: new OAuthHelper(this.$store)   
+    };
   },
   mounted() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   },
   methods: {
-    formattedPrice(price) {
-      return price.toLocaleString("es-MX", {
-        style: "currency",
-        currency: "MXN",
-        minimumFractionDigits: 2,
-      });
+    openSeccionLogin() {
+      
+      this.$emit("open_seccion_login");
     },
   },
   computed: {
-    displayedCartProducts() {
-      return this.$store.getters.getProductsFromCart;
-    },
     totalPriceQuantity() {
-      const total = this.displayedCartProducts.reduce((acc, product) => {
-        let total_quantity = product.price * product.quantity;
-        return acc + total_quantity;
-      }, 0);
 
-      return this.formattedPrice(total);
+      const orderHelper = new OrderHelper(
+        this.$store.getters.getProductsFromCart
+      );
+
+      return orderHelper.totalPriceQuantity();
     },
     totalItemsCart() {
       return this.$store.getters.totalItemsInCart;
-    },    
+    },
     showAddToCart() {
       return this.$store.getters.totalItemsInCart > 0;
     },
-
+    isAuthenticated() {
+      return this.oauthHelper.isAuthenticated()
+    },
   },
 };
 </script>

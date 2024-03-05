@@ -21,9 +21,6 @@
     </div>
   </div>
 </template>
-
-
-
 <script>
 import { timePassed } from "@/helpers/time.js";
 import ProductItemId from "@/components/Products/ProductItemId.vue";

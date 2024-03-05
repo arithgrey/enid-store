@@ -104,6 +104,8 @@ export default {
         .catch((error) => {
           console.error("Error al hacer logout:", error);
         });
+        
+        this.$store.commit("clearToken");
     },
 
     toggleMenu() {

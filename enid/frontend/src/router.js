@@ -99,7 +99,7 @@ const routes = [
         path: '/search-orders/',
         name: 'search-orders',
         component: Searchorders,
-        //meta:{requiresAuth: true}
+        meta:{requiresAuth: true}
         
       },
     

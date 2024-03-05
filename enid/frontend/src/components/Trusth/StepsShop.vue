@@ -6,7 +6,7 @@
       <h2
         class="block font-sans text-2xl antialiased font-semibold leading-tight tracking-normal text-inherit mt-10"
       >
-        Ups! aún no haz agregado productos a tu carrito de compras
+        {{message}}
       </h2>
     </div>
     <p v-if="show_buy" class="text-center">
@@ -25,6 +25,10 @@
 <script>
 export default {
   props: {
+    message: {
+      type: String,
+      default: "Ups! aún no haz agregado productos a tu carrito de compras",
+    },
     show_buy: {
       type: Boolean,
       default: false,
