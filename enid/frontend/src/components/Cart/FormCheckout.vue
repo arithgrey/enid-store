@@ -324,15 +324,22 @@ export default {
   },
   computed: {
     isContact() {
-      return (
+      
+      let status = (
         !this.v$?.form.email.$error &&
         !this.v$?.form.name.$error &&
         !this.v$?.form.phone_number.$error &&
         this.form.email.length > 0 &&
         this.form.name.length > 0 &&
-        this.form.phone_number.length > 0 &&
-        !this.sendUserLead
+        this.form.phone_number.length > 0 
       );
+
+      if(status && !this.sendUserLead){
+          
+        this.chargeUserLead()                   
+      }
+      return status;
+
     },
   },
   methods: {
