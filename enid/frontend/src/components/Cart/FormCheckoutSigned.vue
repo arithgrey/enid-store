@@ -4,54 +4,11 @@
       <div>
         <h5 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-10">
           ¿Dónde enviamos tu pedido?
-        </h5>
+        </h5>        
+      </div>
 
-        <div>
-          <div class="relative z-0 w-full mb-5 mt-5 group">
-            <input
-              v-model="form.email"
-              name="floating_email"
-              @input="formatEmail"
-              id="floating_email"
-              class="peer input-cart"
-              placeholder="Correo electrónico*"
-              type="email"
-              inputmode="email"
-            />
-
-            <span
-              class="text-red-500 text-sm"
-              v-if="this.errors && this.errors.email"
-            >
-              {{ formatError(this.errors.email) }}
-            </span>
-            <span class="text-red-500 text-sm" v-if="v$?.form.email.$error">
-              {{ v$?.form.email.$errors[0].$message }}
-            </span>
-          </div>
-
-          <div class="relative z-0 w-full mb-5 mt-5 group">
-            <input
-              v-model="form.name"
-              @input="formatName"
-              type="text"
-              name="name"
-              id="floating_name"
-              class="peer input-cart"
-              placeholder="Nombre"
-              required
-            />
-
-            <span
-              class="text-red-500 text-sm"
-              v-if="this.errors && this.errors.name"
-              >{{ formatError(this.errors.name) }}</span
-            >
-            <span class="text-red-500 text-sm" v-if="v$?.form.name.$error">
-              {{ v$?.form.name.$errors[0].$message }}
-            </span>
-          </div>
-
+      <div ref="shippingAddressSection">        
+        <div>        
           <div class="relative z-0 w-full mb-5 mt-5 group">
             <input
               v-model="form.phone_number"
@@ -76,16 +33,6 @@
             </span>
           </div>
         </div>
-      </div>
-
-      <div
-        :class="{ hidden: !isContact, block: isContact }"
-        ref="shippingAddressSection"
-      >
-        <h5 class="text-2xl font-bold tracking-tight text-gray-900 sm:tc mb-10">
-          Dirección de envío
-        </h5>
-
         <div class="relative z-0 w-full mb-5 mt-5 group">
           <input
             v-model="form.postal_code"
@@ -304,7 +251,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import PaymentHelper from "@/helpers/PaymentHelper.js";
 import { fields } from "@/components/Cart/js/checkoutFields.js";
-import { rules } from "@/rules/checkout/checkoutValidator.js";
+import { rulesSigned } from "@/rules/checkout/checkoutValidator.js";
 import selectState from "@/components/States/selectState.vue";
 import * as utilities from "@/rules/utilities.js";
 import * as utilitiesLeads from "@/components/Cart/js/leads.js";
@@ -319,22 +266,9 @@ export default {
   setup: () => ({ v$: useVuelidate() }),
   validations() {
     return {
-      form: rules,
+      form: rulesSigned,
     };
-  },
-  computed: {
-    isContact() {
-      return (
-        !this.v$?.form.email.$error &&
-        !this.v$?.form.name.$error &&
-        !this.v$?.form.phone_number.$error &&
-        this.form.email.length > 0 &&
-        this.form.name.length > 0 &&
-        this.form.phone_number.length > 0 &&
-        !this.sendUserLead
-      );
-    },
-  },
+  },  
   methods: {
     ...utilities,
     ...utilitiesLeads,
@@ -382,7 +316,7 @@ export default {
     async processPayment() {
       this.cleanErrors();
       this.form.products = this.$store.getters.getProductsFromCart;      
-      return await this.paymentHelper.processPayment(this.form);
+      return await this.paymentHelper.processPayment(this.form, "order/oauth/");
     },
 
     async nextToSaveOrder(response) {

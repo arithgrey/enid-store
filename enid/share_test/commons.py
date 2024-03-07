@@ -42,24 +42,43 @@ class CommonsTest:
         return Category.objects.create(name=self.fake.word(), store=store)
 
 
-    def create_fake_product(self, **kwargs):
-        
-
+    def create_fake_product(self, store=None, **kwargs):
+    
         defaults = {
             'name': self.fake.word(),
             'price': self.fake.random_int(min=100, max=10000)
         }
         
         params = {**defaults, **kwargs}
-
+        
         if 'category' not in params:
-            store = Store.objects.create(name=self.fake.company())
+            if store is None:
+                store = self.create_fake_store()
+            
             params['store'] = store
             params['category'] = self.create_fake_category(store)
 
         product = Product.objects.create(**params)
         
         return product
+    
+
+
+    def create_multiple_fake_products(self, quantity=1, as_dict=False, store=None, **kwargs):
+        products = []
+        for _ in range(quantity):
+            product = self.create_fake_product(store=store,**kwargs)
+            if as_dict:
+                product_dict = {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'quantity': random.randint(1, 100)
+                }
+                products.append(product_dict)
+            else:
+                products.append(product)
+        return products
     
     def create_fake_store(self, **kwargs):
         
@@ -91,7 +110,7 @@ class CommonsTest:
         return State.objects.create(**params)
         
 
-    def create_fake_address(self, **kwargs):
+    def create_fake_address(self, create_object=True, **kwargs):
 
         postal_code = self.fake.postcode()
         street = self.fake.street_address()
@@ -117,8 +136,12 @@ class CommonsTest:
         
         params = {**defaults, **kwargs}      
 
-        return Address.objects.create(**params)
-    
+        if create_object:
+            return Address.objects.create(**params)
+        else:            
+            params["state"] = params["state"].id
+            return params
+
 
     def crear_fake_user(self, **kwargs):
         
