@@ -5,7 +5,7 @@ export default class PaymentHelper {
     this.component = component;
     this.stripe = null;
     this.card = null;
-    this.stripeInitialized = false;
+    this.stripeInitialized = false;    
   }
 
   async initializeStripe() {
@@ -50,8 +50,8 @@ export default class PaymentHelper {
       throw new Error("Error creating card element: " + error.message);
     }
   }
-
-  async processPayment(form) {
+  
+  async processPayment(form, apiUrl) {
     try {
       if (!this.stripeInitialized) {
         await this.initializeStripe();
@@ -67,7 +67,7 @@ export default class PaymentHelper {
       }
 
       form.stripe_token = token.id;
-      const response = await this.component.$axios.post("orden/compra/", form);
+      const response = await this.component.$axios.post(apiUrl, form);
       return { response };
 
     } catch (error) {

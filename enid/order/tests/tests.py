@@ -4,7 +4,6 @@ from functools import reduce
 from rest_framework.test import APIClient
 from django.http import Http404
 from rest_framework import status
-from categories.models import Category
 from order.views import OrderViewSet
 from user.serializers.user_validator_serializers import UserValidatorSerializer
 from address.serializers.address_validator_serializers import AddressValidatorSerializer
@@ -17,18 +16,15 @@ from products.models import Product
 import random
 from order.models import Order
 import re
-from stripe.error import StripeError
 from store.models import Store
-from share_test.commons import CommonsTest
+from share_test.mixin import CommonMixinTest
 
-class LeadViewSet(TestCase):
+class LeadViewSet(CommonMixinTest):
     def setUp(self):
-        self.user = User.objects.create(username='jonathan')
-        self.fake = Faker('es_MX')
-        self.client = APIClient()
+        super().setUp()  
+        self.user = User.objects.create(username='jonathan')        
         self.view = OrderViewSet()
-        self.state = State.objects.create(name="CDMX")
-        self.commons = CommonsTest()
+        self.state = State.objects.create(name="CDMX")        
         self.category = self.commons.create_fake_category()        
         self.required_fields = UserValidatorSerializer.Meta.required_fields
         self.not_allow_blank = UserValidatorSerializer.Meta.not_allow_blank

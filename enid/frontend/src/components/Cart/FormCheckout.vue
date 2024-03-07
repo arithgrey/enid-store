@@ -382,7 +382,7 @@ export default {
     async processPayment() {
       this.cleanErrors();
       this.form.products = this.$store.getters.getProductsFromCart;      
-      return await this.paymentHelper.processPayment(this.form);
+      return await this.paymentHelper.processPayment(this.form,  "orden/compra/");
     },
 
     async nextToSaveOrder(response) {

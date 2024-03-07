@@ -33,6 +33,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 CORS_ALLOW_HEADERS = [ 
     'X-Store-Id',
     'Content-Type',
+    'Authorization',
+    'Access-Control-Allow-Headers',
 ]
 # Application definition
 
@@ -63,6 +65,7 @@ INSTALLED_APPS = [
     'state',
     'address',
     'order',
+    'order_oauth',
     'order_search',
     'item_order',
     'login',
