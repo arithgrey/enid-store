@@ -8,8 +8,6 @@ from lead_type.models import LeadType
 from state.models import State
 from address.models import Address
 from django.contrib.auth.models import User
-from item_order.models import ItemOrder
-from order.models import Order
 import re 
 import random
 
@@ -157,24 +155,6 @@ class CommonsTest:
         return User.objects.create(**params)
             
         
-    def create_fake_order_with_products(self, store=None, num_products=3, **kwargs):
-        
-        if store is None:
-            store = self.create_fake_store()
-
-        address = self.create_fake_address()
-        user = self.crear_fake_user()
+   
     
-        if 'store' not in kwargs:
-            kwargs['store'] = store
-
-        order = Order.objects.create(user=user, shipping_address=address, **kwargs)
-        products = [self.create_fake_product(store=store) for _ in range(num_products)]
-
-        for product in products:
-            quantity = random.randint(1, 10)
-            price = product.price
-            ItemOrder.objects.create(
-                order=order, product=product, quantity=quantity, price=price)
-
-        return order
+   

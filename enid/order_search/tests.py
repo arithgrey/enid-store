@@ -4,12 +4,15 @@ from django.urls import reverse
 from order.models import Order
 from rest_framework import status
 from store.models import Store
+from share_test.orders import OrderCreationHelper
 
 class TestsLeadSearchViewSet(CommonMixinTest,TestCase):
         
     def setUp(self):
         super().setUp()
         self.api = reverse('order_search:order-search')
+        self.orderHelper = OrderCreationHelper()
+        
         
     def test_success_on_requireds_400(self):
             
@@ -19,7 +22,7 @@ class TestsLeadSearchViewSet(CommonMixinTest,TestCase):
     
     def test_filter(self):
 
-        order = self.commons.create_fake_order_with_products()                
+        order = self.orderHelper.create_fake_order_with_products()                
         store = order.store
 
         self.assertIsInstance(order, Order)    
@@ -47,7 +50,7 @@ class TestsLeadSearchViewSet(CommonMixinTest,TestCase):
     def test_success_search_by_10_results(self):
        
        store = self.commons.create_fake_store() 
-       orders = [self.commons.create_fake_order_with_products(store=store) for _ in range(10)]
+       orders = [self.orderHelper.create_fake_order_with_products(store=store) for _ in range(10)]
        self.assertEqual(len(orders),10)
 
        headers = self.commons.add_headers_store(store=store)
@@ -59,7 +62,7 @@ class TestsLeadSearchViewSet(CommonMixinTest,TestCase):
     def test_associated_(self):
        
        store = self.commons.create_fake_store() 
-       orders = [self.commons.create_fake_order_with_products(store=store) for _ in range(10)]
+       orders = [self.orderHelper.create_fake_order_with_products(store=store) for _ in range(10)]
        self.assertEqual(len(orders),10)
 
        headers = self.commons.add_headers_store(store=store)

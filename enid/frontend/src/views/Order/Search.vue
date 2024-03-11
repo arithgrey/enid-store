@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto px-4 flex flex-col items-center min-h-screen mb-10">
     <div class="mb-5">
-      <SearchForm ref="searchForm" @list_orders="handlerOrders" />
+      <SearchForm ref="searchForm" :api="api" @list_orders="handlerOrders" />
     </div>
     <div class="border-t w-full mb-5 flex">
       <div class="search-orders w-1/4 mr-4 mt-5 overflow-y-auto max-h-90">
@@ -31,6 +31,7 @@ export default {
     return {
       orders: null,
       selectedOrder: null,
+      api:'/order-search/',
     };
   },
   methods: {

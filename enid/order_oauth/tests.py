@@ -21,48 +21,19 @@ from store.models import Store
 from django.urls import reverse
 from share_test.tests import ValidatorTest
 from share_test.oauth import OAuthUtilities
+from share_test.helpers.oauth_tests import OAuthTest
 from share_test.mixin import CommonMixinTest
-from order.tests.tests import LeadViewSet as OrderTestHelper
 
-
-
-class OrderViewSetTest(CommonMixinTest, ValidatorTest):
+class OrderViewSetTest(CommonMixinTest):
     
-    serializer_class = AddressValidatorSerializer
-
     def setUp(self):
-        super().setUp()                
-        self.required_fields = AddressValidatorSerializer.Meta.required_fields
-        self.not_allow_blank = AddressValidatorSerializer.Meta.not_allow_blank
-        self.max_lengths = AddressValidatorSerializer.Meta.max_lengths
-        self.min_lengths = AddressValidatorSerializer.Meta.min_lengths
-        self.min_lengths = AddressValidatorSerializer.Meta.min_lengths
-        self.min_values = AddressValidatorSerializer.Meta.min_values
-        self.max_values = AddressValidatorSerializer.Meta.max_values
+        super().setUp()                                      
         self.stripe_token = {'stripe_token':'stripe_token x'}
-        self.api =  reverse("order_oauth-create_order")
-        
-        self.user = self.commons.crear_fake_user()
+        self.api =  reverse("order_oauth-create_order")                
         self.oauthUtilities = OAuthUtilities()
         
-       
-
-    def test_unauthenticated_user(self):
-        
-        response = self.client.post(self.api, {}, format='json')                                
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    
-    def test_authenticated_user(self):
-                
-        _, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
-        response = api_oauth_client.post(self.api, {}, format='json')             
-        self.assertNotEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertNotEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-    def test_create_valid_orders(self):
-        
+            
+    def test_create_valid_orders(self):        
         store = self.commons.create_fake_store()
 
         for _ in range(10):            
@@ -88,3 +59,28 @@ class OrderViewSetTest(CommonMixinTest, ValidatorTest):
                 response = api_oauth_client.post(self.api, data, format='json')                            
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        
+
+class OrderViewSetRequireds(CommonMixinTest, ValidatorTest):
+    '''Test to validate requireds, blanck, min, max lenghts on create order'''
+    serializer_class = AddressValidatorSerializer
+
+    def setUp(self):
+        super().setUp()      
+        self.required_fields = AddressValidatorSerializer.Meta.required_fields
+        self.not_allow_blank = AddressValidatorSerializer.Meta.not_allow_blank
+        self.max_lengths = AddressValidatorSerializer.Meta.max_lengths
+        self.min_lengths = AddressValidatorSerializer.Meta.min_lengths
+        self.min_lengths = AddressValidatorSerializer.Meta.min_lengths
+        self.min_values = AddressValidatorSerializer.Meta.min_values
+        self.max_values = AddressValidatorSerializer.Meta.max_values        
+    
+    
+class AccessUserOrderCreate(OAuthTest):
+    
+    '''Test validate accesss on create order'''
+    def setUp(self):             
+        super().setUp()                                
+        self.api = reverse("order_oauth-create_order")
+        self.method ='post'                
+        
