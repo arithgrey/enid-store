@@ -19,7 +19,7 @@
           >
             Orden: #{{ item.id }}
           </h5>
-          <CartTotal :productsFromCart="item" />
+          <CartTotal :productsFromCart="item.items" />
 
           <div class="flex mt-5 items-end justify-end">
             <p class="block text-sm">
@@ -63,7 +63,7 @@ export default {
   methods: {
     timePassed,
     selectOrder(order) {
-      debugger;
+      
       this.selectedOrder = order;
       this.$emit("selected_order", order);
     },

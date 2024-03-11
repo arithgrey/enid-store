@@ -56,6 +56,12 @@ export const rules = {
 
 export default {
   components: {},
+  props: {
+    api: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       formSubmitted: false,
@@ -76,7 +82,7 @@ export default {
     async submitForm() {
       
       const params = { q: this.form.q };
-      const response = await this.$axios.get(`/order-search/`, {params});
+      const response = await this.$axios.get(this.api, {params});
       this.handlerListOrders(response);
 
     },
