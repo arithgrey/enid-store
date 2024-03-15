@@ -19,7 +19,7 @@
           >
             Orden: #{{ item.id }}
           </h5>
-          <CartTotal :productsFromCart="item.items" />
+          <CartTotal :productsFromCart="item" />
 
           <div class="flex mt-5 items-end justify-end">
             <p class="block text-sm">

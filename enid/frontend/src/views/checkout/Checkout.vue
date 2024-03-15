@@ -69,7 +69,7 @@ import FormCheckout from "@/components/Cart/FormCheckout.vue";
 import FormCheckoutSigned from "@/components/Cart/FormCheckoutSigned.vue";
 import StepsShop from "@/components/Trusth/StepsShop.vue";
 import AccessButton from "@/components/Login/AccessButton.vue";
-import OrderHelper from "@/components/Products/js/OrderHelper.js";
+import CartHelper from "@/components/Products/js/CartOrderHelper.js";
 import OAuthHelper from "@/helpers/OAuth.js";
 
 
@@ -83,7 +83,8 @@ export default {
   },
   data() {
     return {
-       oauthHelper: new OAuthHelper(this.$store)   
+      oauthHelper: new OAuthHelper(this.$store),   
+      CartHelper: new CartHelper(this.$store)
     };
   },
   mounted() {
@@ -93,17 +94,12 @@ export default {
     openSeccionLogin() {
       
       this.$emit("open_seccion_login");
-    },
+    },    
   },
-  computed: {
+  computed: {     
     totalPriceQuantity() {
-
-      const orderHelper = new OrderHelper(
-        this.$store.getters.getProductsFromCart
-      );
-
-      return orderHelper.totalPriceQuantity();
-    },
+      return  this.CartHelper.getTotalPriceQuantity();
+    },   
     totalItemsCart() {
       return this.$store.getters.totalItemsInCart;
     },
