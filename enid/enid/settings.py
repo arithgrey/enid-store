@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_seed',
     'corsheaders',    
     'rest_framework',
+    'drf_yasg',
     'store',
     'rest_framework_simplejwt.token_blacklist',
     'share_test',
@@ -74,6 +75,15 @@ INSTALLED_APPS = [
     'lead',
     'lead_search'
 ]
+
+SWAGGER_SETTINGS = {
+    'DEFAULT_INFO': 'enid.urls.swagger_info', 
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        }
+    }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
