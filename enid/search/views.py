@@ -17,6 +17,7 @@ class CustomPageNumberPagination(pagination.PageNumberPagination):
 class ProductSeachByQViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     pagination_class = CustomPageNumberPagination
+    serializer_class = ProductSerializer
     
     @action(detail=False, methods=['GET'])    
     def get_by_q(self, request, q):
