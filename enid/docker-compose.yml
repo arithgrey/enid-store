@@ -1,16 +1,11 @@
 version: '3'
 
-services:
-  redis:
-    container_name: redis-stack-server
-    image: redis/redis-stack-server:latest
-    ports:
-      - "6379:6379"    
+services:    
   postgres:
     container_name: postgres_server
     image: postgres:latest
     ports:
-      - "5432:5432"    
+      - "5433:5432"    
     env_file:
       - .env
     
@@ -18,7 +13,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres-scripts:/docker-entrypoint-initdb.d
     
-
   vuejs:
     build:
       context: ./frontend

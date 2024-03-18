@@ -213,3 +213,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads/')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default=None)
+
+KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
+KAFKA_ORDER_TOPIC = 'new_order'

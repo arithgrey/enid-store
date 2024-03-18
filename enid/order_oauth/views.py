@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from order.views import OrderViewSet as OrderManager
 from user.oauth_utils import AuthenticationChecker
 
+
 class OrderViewSet(OrderManager, viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
@@ -48,7 +49,9 @@ class OrderViewSet(OrderManager, viewsets.ModelViewSet):
                     charge_result = stripe_payment.stripeCharge(data=data, order=order)                    
                                         
                     if charge_result['status'] == 'success':                                        
-                        return Response(serializer.data, status=status.HTTP_201_CREATED)                    
+                        order_data = serializer.data                        
+                        return Response(order_data, status=status.HTTP_201_CREATED)     
+
                     else:      
                         
                         transaction.set_rollback(True)
