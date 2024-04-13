@@ -46,13 +46,12 @@ urlpatterns = [
     path('api/productos/', include('products.urls')),
     path('api/product-group/', include('product_group.urls')),        
     path('api/producto-variante/', include('product_variant.urls')),  
-    path('api/business/', include('business.urls')),
     path('api/variantes/', include('variants.urls')),        
     path('api/image/', include('image.urls')),
     path('', include('faqs.urls')),
     path('api/user/', include('user.urls')),    
     path('api/search/', include('search.urls')),    
-    path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('uploads/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

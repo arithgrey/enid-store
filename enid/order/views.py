@@ -18,7 +18,6 @@ from stripe.error import StripeError
 from django.db import IntegrityError
 from order.error_handling import ErrorResponse
 from store.mixin import StoreIDMixin
-from order.kafka_producer import KafkaProducer
 from django.conf import settings
 import json
 
@@ -55,7 +54,6 @@ class OrderViewSet(StoreIDMixin, viewsets.ModelViewSet):
                     if charge_result['status'] == 'success':          
                         order_data = serializer.data
                         
-                        self.send_message(order_data)                      
                         return Response(order_data, status=status.HTTP_201_CREATED)                    
                     else:      
                         
@@ -76,13 +74,6 @@ class OrderViewSet(StoreIDMixin, viewsets.ModelViewSet):
             return Response(ErrorResponse.handle_exception(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def send_message(self, order_data):           
-            
-        producer = KafkaProducer()                        
-        message = json.dumps(order_data)
-        producer.produce_message(settings.KAFKA_ORDER_TOPIC, str(order_data['id']), message)        
-        producer.flush()
-        
 
     @transaction.atomic
     def create_order_instance(self, address, user, store):
