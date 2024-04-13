@@ -5,24 +5,32 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: enidservice_service
+    image: ${SERVICENAME}_service
+    container_name: ${SERVICENAME}_service
     ports:
       - "8000:8000"
     env_file:
       - .env
-
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT}
     depends_on:
       - redis
       - postgres
+    volumes:
+      - .:/app
     networks:
       - backend
 
   redis:
+    container_name: ${SERVICENAME}_redis 
     image: redis:alpine
     volumes:
       - redis_data:/data
+    networks:
+      - backend
 
   postgres:
+    container_name: ${SERVICENAME}_postgres
     image: postgres:alpine
     ports:
       - "5432:5432"
