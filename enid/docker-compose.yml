@@ -1,42 +1,47 @@
 version: '3'
 
-services:    
-  postgres:
-    container_name: postgres_server
-    image: postgres:alpine
-    ports:
-      - "5433:5432"    
-    env_file:
-      - .env
-    
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./postgres-scripts:/docker-entrypoint-initdb.d
-    
-  vuejs:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-
-    ports:
-      - "5173:5173"      
-    command: npm run dev
-    env_file:
-      - frontend/.env
-    environment:
-      - NODE_ENV=development
-  
-  django:
+services:
+  microservice_enid:
     build:
       context: .
       dockerfile: Dockerfile
-    image: enid_service:0.1
+    image: enidservice_service
     ports:
       - "8000:8000"
     env_file:
       - .env
+
     depends_on:
-      - vuejs
-    
+      - redis
+      - postgres
+    networks:
+      - backend
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+   
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
 volumes:
+  redis_data:
   postgres_data:
+
+networks:
+  backend:
+    driver: bridge
