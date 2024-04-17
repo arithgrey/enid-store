@@ -55,8 +55,6 @@ INSTALLED_APPS = [
     'user',
     'image',
     'categories',
-    'faqs',
-    'returns',   
     'product_group',
     'products',                        
     'product_category_search',
