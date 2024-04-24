@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'order_oauth',
     'order_search',
     'item_order',
-    'login',
     'search',
     'lead_type',
     'lead',
