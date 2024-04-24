@@ -8,7 +8,7 @@ services:
     image: ${SERVICENAME}_service
     container_name: ${SERVICENAME}_service
     ports:
-      - "8000:8000"
+      - "8085:8080"
     env_file:
       - .env
     environment:

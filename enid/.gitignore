@@ -80,3 +80,4 @@ enid/settings_local.py
 .env
 .env.local
 postgres_data/
+static
