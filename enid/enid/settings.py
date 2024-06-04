@@ -66,10 +66,10 @@ INSTALLED_APPS = [
     'order_oauth',
     'order_search',
     'item_order',
-    'search',
-    'lead_type',
-    'lead',
-    'lead_search'
+    'search'
+    #'lead_type',
+    #'lead',
+    #'lead_search'
 ]
 
 SWAGGER_SETTINGS = {

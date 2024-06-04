@@ -3,8 +3,8 @@ from unittest.mock import patch, Mock, call
 from products.models import Product
 from categories.models import Category
 from store.models import Store
-from lead.models import Lead
-from lead_type.models import LeadType
+#from lead.models import Lead
+#from lead_type.models import LeadType
 from state.models import State
 from address.models import Address
 from django.contrib.auth.models import User
@@ -15,7 +15,7 @@ class CommonsTest:
 
     def __init__(self):
         self.fake = Faker('es_MX')
-    
+    '''
     def create_fake_lead(self, **kwargs):
         store = self.create_fake_store()
         
@@ -30,7 +30,7 @@ class CommonsTest:
         params = {**defaults, **kwargs}       
         return Lead.objects.create(**params)
     
-            
+            '''
 
     def create_fake_category(self, store = None):
 

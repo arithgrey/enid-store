@@ -3,23 +3,19 @@ from rest_framework.response import Response
 from order.models import Order
 from order_search.serializers import OrderSearchSerializer
 from django.db.models import Q
-from store.mixin import StoreAuthenticationMixin
+from store.mixin import StoreIDMixin
 
 
 class OrderSearchViewSet(viewsets.ViewSet):
         
     def search(self, request):
-                        
-        store = StoreAuthenticationMixin.get_store_or_default(request)      
-        
-        if isinstance(store, Response):
-            return store  
-               
+
+        store = StoreIDMixin.get_store_or_default(request=request)
         orders = self.perform_search(request, store=store)        
         serializer = OrderSearchSerializer(orders, many=True)
         return Response(serializer.data)
     
-    
+
     def perform_search(self,request, store):
         
         q = request.query_params.get('q', None)        
