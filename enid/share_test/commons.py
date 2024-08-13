@@ -15,22 +15,6 @@ class CommonsTest:
 
     def __init__(self):
         self.fake = Faker('es_MX')
-    '''
-    def create_fake_lead(self, **kwargs):
-        store = self.create_fake_store()
-        
-        defaults = {
-            "email": self.fake.email(), 
-            "name": self.fake.name(),
-            "phone_number": self.fake.phone_number().split('x')[0].strip(),
-            "lead_type": LeadType.objects.create(name="En intento de compra"),
-            "store":store
-        }
-
-        params = {**defaults, **kwargs}       
-        return Lead.objects.create(**params)
-    
-            '''
 
     def create_fake_category(self, store = None):
 
