@@ -24,6 +24,7 @@ services:
   redis:
     container_name: ${SERVICENAME}_redis 
     image: redis:alpine
+    command: sh -c "rm -rf /data/* && redis-server"
     volumes:
       - redis_data:/data
     networks:

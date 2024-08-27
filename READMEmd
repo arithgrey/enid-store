@@ -1,0 +1,2 @@
+CMD ["sh", "-c", "python manage.py makemigrations image categories product_group products product_category_search variants product_variant state address order order_oauth order_search item_order search "]
+CMD ["sh", "-c", "python manage.py migrate"]
