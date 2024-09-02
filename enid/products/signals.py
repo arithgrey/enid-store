@@ -13,7 +13,6 @@ from decouple import config
 def create_products(sender, **kwargs):
     if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):
         if sender.name == 'products':                  
-            
             data = [
                 {
                     "id":1,
