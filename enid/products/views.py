@@ -16,7 +16,8 @@ class ProductVuewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        store_id = request.headers.get('X-Store-Id')        
+        store_id = request.headers.get('X-Store-Id')
+        #store_id =1        
         cache_key = f'top_sellers_{store_id}'
         top_sellers = cache.get(cache_key)        
         if not top_sellers:            

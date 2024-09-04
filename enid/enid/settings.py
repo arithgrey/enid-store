@@ -30,6 +30,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
 
+FORCE_SCRIPT_NAME = '/api/enid'
+USE_X_FORWARDED_HOST = True
+
 CORS_ALLOW_HEADERS = [ 
     'X-Store-Id',
     'Content-Type',
@@ -67,9 +70,6 @@ INSTALLED_APPS = [
     'order_search',
     'item_order',
     'search'
-    #'lead_type',
-    #'lead',
-    #'lead_search'
 ]
 
 SWAGGER_SETTINGS = {
@@ -138,27 +138,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'enid.wsgi.application'
 
-
 LOCAL = config('LOCAL', default=False, cast=bool)
 DOMAIN = config('DOMAIN', default='')
 
-if LOCAL:
+config_db =config('DATABASE_URL')    
+DATABASES = {'default': dj_database_url.config(default=config_db)}    
     
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
-else:
-
-    config_db =config('DATABASE_URL')    
-    DATABASES = {'default': dj_database_url.config(default=config_db)}    
-    
-    
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
