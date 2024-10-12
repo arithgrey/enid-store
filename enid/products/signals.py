@@ -18,7 +18,7 @@ def create_products(sender, **kwargs):
                     "id":1,
                     "name": '''PARA LOS QUE VAN INICIANDO''', 
                     "specific_name":"KIT DE PESAS 16 DISCOS 34KG EN TOTAL, BARRA Z, BARRA RECTA Y MANCUERNAS | ENVÍO GRATIS",
-                    "price": 1699,                
+                    "price": 1500,                
                     "weight": 34,
                     "count_discs": True,
                     "top_seller": True,
@@ -26,22 +26,24 @@ def create_products(sender, **kwargs):
                     "product_group":1,
                     "name_product_group":"34KG con 16 Discos",                
                     "store_id":1,
+                    "express_payment_link" : "https://buy.stripe.com/3cs4hn6FufSb7wAbKJ"
                 },            
                 {
                     "id":3,
                     "name": '''PARA LOS QUE VAN RÁPIDO ''',                 
-                    "specific_name":"SOPORTE DE INMERSIóN PARA ENTRENAMIENTO FíSICO, BARRA DE INMERSIóN | ENVÍO GRATIS",
-                    "price": 1999,                
+                    "specific_name":"SOPORTE DE INMERSIÓN PARA ENTRENAMIENTO FíSICO, BARRA DE INMERSIóN | ENVÍO GRATIS",
+                    "price": 1599,                
                     "weight": 10,
                     "top_seller": True,
                     "category":2,
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/14kaFLaVK21l3gk8yG",
                 },
                 {
                     "id":4,
                     "name": '''PARA QUIEN QUIERE TODO, SIN ESPACIO''',                 
                     "specific_name":"KIT 16 DISCOS 42KG EN TOTAL MANCUERNAS, BARRA RECTA, BARRA Z BARRA ROMANA | ENVÍO GRATIS",
-                    "price": 2450,                
+                    "price": 2100,                
                     "weight": 42,
                     "count_discs": True,
                     "top_seller": True,
@@ -49,6 +51,8 @@ def create_products(sender, **kwargs):
                     "product_group":2,
                     "name_product_group":"42KG con 16 Discos",
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/6oE9BH7JyfSbcQU2aj",
+
                 },            
                 {
                     "id":5,
@@ -62,6 +66,7 @@ def create_products(sender, **kwargs):
                     "product_group":2,
                     "name_product_group":"80KG con 28 Discos",
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/6oEdRX5BqbBV0484is",
                 },
                 {
                     "id":6,
@@ -73,15 +78,17 @@ def create_products(sender, **kwargs):
                     "top_seller": True,
                     "category":1,
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/dR629f8NC35pcQU9CN",
                 },
                 {
                     "id":7,
                     "name": '''PARA LOS QUE HACEN CALISTENIA''',  
                     "specific_name":"BARRAS 8 EN 1 SUPER REFORZADAS ENVÍO GRATIS",
-                    "price": 1899,                                
+                    "price": 1600,                                
                     "top_seller": True,
                     "category":2,
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/28o15b7JyfSbaIMeX8",
                 },             
                 {
                     "id":8,
@@ -92,6 +99,7 @@ def create_products(sender, **kwargs):
                     "top_seller": True,
                     "category":1,
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/5kA3dj4xm9tNdUY8yL",
                 },  
                 {
                     "id":9,
@@ -105,6 +113,7 @@ def create_products(sender, **kwargs):
                     "product_group":1,
                     "name_product_group":"42KG con 16 Discos",
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/cN2aFL8NC0Xhg368yV",
                 },                
                 {
                     "id":10,
@@ -118,6 +127,7 @@ def create_products(sender, **kwargs):
                     "product_group":1,
                     "name_product_group":"50KG con 20 Discos",
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/6oE7tzd3SgWf4ko6qF",
                 },     
                 {
                     "id":11,
@@ -129,17 +139,19 @@ def create_products(sender, **kwargs):
                     "top_seller": False,
                     "category": 3,
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/8wMbJP9RGcFZ0487uo",
                 },   
                 {
                     "id":12,
                     "name": '''PARA LOS QUE QUIEREN HACER REMO CON PESAS''', 
                     "specific_name":"BARRA ROMANA ESTÁNDAR DE UNA PULGADA 15KG ACERO BLACK | ENVÍO GRATIS",
-                    "price": 999,                
+                    "price": 899,                
                     "weight": 15,
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,                               
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/fZeaFL8NC6hB3gkcP4",
                 },     
                 {
                     "id":13,
@@ -151,6 +163,7 @@ def create_products(sender, **kwargs):
                     "top_seller": False,
                     "category": 3,                               
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/eVabJP5BqdK39EIeXd",
                 },     
                 {
                     "id":14,
@@ -162,17 +175,20 @@ def create_products(sender, **kwargs):
                     "top_seller": False,
                     "category": 3,
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/aEU15b1la5dx9EIcP6",
                 },     
                 {
                     "id":15,
                     "name": '''PARA LOS QUE QUIEREN HACER REMO CON PESAS SIN EXCEDERSE''', 
-                    "specific_name":"BARRA Z CON 2 SEGUROS PARA DISCOS STANDARD DE UNA PULGADA, SOPORTA 60KG | ENVÍO GRATIS",
+                    "specific_name":"BARRA ROMANA CON 2 SEGUROS PARA DISCOS STANDARD DE UNA PULGADA, SOPORTA 60KG | ENVÍO GRATIS",
                     "price": 499,                
                     "weight": 1,
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,                       
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/14kg05aVKgWf2cg3ex",
+
                 },     
                 {
                     "id":16,
@@ -186,17 +202,20 @@ def create_products(sender, **kwargs):
                     "product_group":3,
                     "name_product_group":"10Kg C/U total 20kg",
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/3cs15b1la49t9EI02m",
                 },     
                 {
                     "id":17,
                     "name": '''PARA LOS QUE OCUPAN MANCUERNAS y BARRA''', 
                     "specific_name":"BARRA 22KG + PAR MANCUERNAS 10KG EN TOTAL 42KG A DOMICILIO PAGAS A TU ENTREGA 16 DISCOS | ENVíO GRATIS",
-                    "price": 1700,                
+                    "price": 1580,                
                     "weight": 42,
                     "count_discs": True,
-                    "top_seller": False,
+                    "top_seller": True,
                     "category": 1,
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/6oE7tz4xmaxR0483cd",
+
                 },     
                 {
                     "id":18,
@@ -210,6 +229,8 @@ def create_products(sender, **kwargs):
                     "product_group":3,
                     "name_product_group":"6Kg C/U total 12kg",
                     "store_id":1,
+                    "express_payment_link": "https://buy.stripe.com/00g8xD3tieO7bMQ5mA",
+
                 },     
                 {
                     "id":19,
@@ -223,6 +244,7 @@ def create_products(sender, **kwargs):
                     "product_group":3,
                     "name_product_group":"8Kg C/U total 16kg",
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/fZe4hn1ladK33gk02n"
                 },     
                 {
                     "id":20,
@@ -236,6 +258,8 @@ def create_products(sender, **kwargs):
                     "product_group":3,
                     "name_product_group":"4Kg C/U total 8kg",
                     "store_id":1,
+                    "express_payment_link":"https://buy.stripe.com/7sI3dj0h67lF5osbL6"
+
                 },
                                                 
             ]

@@ -16,9 +16,9 @@ def create_categories(sender, **kwargs):
                 return
             
             data = [            
-                {"id":1,"name": 'Pesas y barras', "store":store},            
-                {"id":2,"name": 'Calistenia', "store":store},             
-                {"id":3,"name": 'Accesorios', "store":store},                                                        
+                {"id":1,"name": 'Pesas y barras', "store":store, 'video_name':'pesas_barras.mp4'},            
+                {"id":2,"name": 'Calistenia', "store":store, 'video_name':'calistenia.mp4'},             
+                {"id":3,"name": 'Accesorios', "store":store, 'video_name':'accesorios.mp4'},                                                        
             ]
             for item in data:
 
