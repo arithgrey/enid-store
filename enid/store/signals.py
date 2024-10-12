@@ -11,8 +11,6 @@ def create_stors(sender, **kargs):
         if sender.name == "store":        
             data = [
                 {"id":1, "name":"Enid Service"},
-                {"id":2, "name":"RIMO"},
-                {"id":3, "name":"Carpas reforzadas"},
                 ]
             
             for item in data:

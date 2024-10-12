@@ -20,6 +20,7 @@ class Product(models.Model):
          ProductGroup, related_name='products', on_delete=models.SET_NULL, default=None, null=True)
     name_product_group = models.CharField(max_length=50, default=None, null=True, blank=True)    
     images = GenericRelation(Image)
+    express_payment_link = models.URLField(max_length=500, null=True, blank=True)
 
     
     def __str__(self):
