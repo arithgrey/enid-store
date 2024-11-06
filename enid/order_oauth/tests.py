@@ -17,7 +17,6 @@ import random
 from order.models import Order
 import re
 from stripe.error import StripeError
-from store.models import Store
 from django.urls import reverse
 from share_test.tests import ValidatorTest
 from share_test.oauth import OAuthUtilities
@@ -34,14 +33,13 @@ class OrderViewSetTest(CommonMixinTest):
         
             
     def test_create_valid_orders(self):        
-        store = self.commons.create_fake_store()
 
         for _ in range(10):            
             address = self.commons.create_fake_address(create_object=False)   
                          
             products = {
                 'products': self.commons.create_multiple_fake_products(
-                quantity=3, as_dict=True, store=store)
+                quantity=3, as_dict=True)
                 }
 
             data = {**address,**products, **self.stripe_token}            
@@ -53,8 +51,7 @@ class OrderViewSetTest(CommonMixinTest):
 
                 mock_stripe_charge.return_value = mock_response_data
         
-                _, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client_with_headers(
-                    store=store)
+                _, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
 
                 response = api_oauth_client.post(self.api, data, format='json')                            
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)

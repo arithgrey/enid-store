@@ -16,7 +16,6 @@ from products.models import Product
 import random
 from order.models import Order
 import re
-from store.models import Store
 from share_test.mixin import CommonMixinTest
 
 class LeadViewSet(CommonMixinTest):
@@ -42,7 +41,7 @@ class LeadViewSet(CommonMixinTest):
         self.max_values_address = AddressValidatorSerializer.Meta.max_values
         self.stripe_token = {'stripe_token':'stripe_token x'}
 
-
+    
     def test_mark_error_on_required_stripe_token(self):
 
         invalid_data = {}
@@ -84,12 +83,10 @@ class LeadViewSet(CommonMixinTest):
             address = self.create_fake_address(False)
             products = {'products':self.create_fake_products(random.randint(1,10))}
             stripe_token = {'stripe_token':'stripe_token x'}
-            store = self.commons.create_fake_store()
-            headers = self.commons.add_headers_store(store)
             data = {**user, **address,**products, **stripe_token}            
             
             response = self.client.post(
-                '/api/orden/compra/', data, format='json', **headers)  
+                '/api/orden/compra/', data, format='json')  
                         
             self.assertEqual(Order.objects.count(), 1)              
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -167,11 +164,9 @@ class LeadViewSet(CommonMixinTest):
 
             product_name = self.fake.word()
             price = round(random.uniform(1.0, 1000.0), 2)
-            store = Store.objects.create(name="my Face store")
 
             product, created = Product.objects.get_or_create(
                 name=product_name,
-                store=store,
                 price=price,
                 category=self.category
             )
@@ -357,13 +352,12 @@ class LeadViewSet(CommonMixinTest):
     
 
     def create_fake_order(self):
-        store =  self.commons.create_fake_store()
         email = self.fake.email()
         data = {"email": email, "name": self.fake.name()}
         user, _ = self.view.register_user(data)
         address = self.create_fake_address()
         
-        return self.view.create_order_instance(address=address,user=user,store=store)
+        return self.view.create_order_instance(address=address,user=user)
 
 
     def test_create_order_instance(self):
@@ -396,8 +390,7 @@ class LeadViewSet(CommonMixinTest):
     
     def test_register_items_order_failure_product_not_found(self):
         
-        store = self.commons.create_fake_store()
-        order = Order.objects.create(store=store)
+        order = Order.objects.create()
         
         expected_products = [
             {'id': 1, 'price': 10.0, 'quantity': 2},

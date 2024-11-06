@@ -10,8 +10,7 @@ class OAuthTest(CommonMixinTest):
         self.api = None
         self.method = None
         self.oauthUtilities = OAuthUtilities()
-        self.store = self.commons.create_fake_store()
-        self.headers =self.commons.add_headers_store(store=self.store)
+
 
     def execute_request(self, api_client ,method, api_url, data=None):
         """
@@ -31,7 +30,7 @@ class OAuthTest(CommonMixinTest):
             raise ValueError(f"Unsupported HTTP method: {method}")
         
         
-        response = request_function(api_url, data, format='json', **self.headers)        
+        response = request_function(api_url, data, format='json')        
 
         return response
 

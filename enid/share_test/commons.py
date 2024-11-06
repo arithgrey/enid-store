@@ -2,9 +2,6 @@ from faker import Faker
 from unittest.mock import patch, Mock, call
 from products.models import Product
 from categories.models import Category
-from store.models import Store
-#from lead.models import Lead
-#from lead_type.models import LeadType
 from state.models import State
 from address.models import Address
 from django.contrib.auth.models import User
@@ -16,15 +13,12 @@ class CommonsTest:
     def __init__(self):
         self.fake = Faker('es_MX')
 
-    def create_fake_category(self, store = None):
+    def create_fake_category(self):
 
-        if not isinstance(store, Store):
-            store = Store.objects.create(name=self.fake.company())
-
-        return Category.objects.create(name=self.fake.word(), store=store)
+        return Category.objects.create(name=self.fake.word())
 
 
-    def create_fake_product(self, store=None, **kwargs):
+    def create_fake_product(self, **kwargs):
     
         defaults = {
             'name': self.fake.word(),
@@ -34,11 +28,8 @@ class CommonsTest:
         params = {**defaults, **kwargs}
         
         if 'category' not in params:
-            if store is None:
-                store = self.create_fake_store()
             
-            params['store'] = store
-            params['category'] = self.create_fake_category(store)
+            params['category'] = self.create_fake_category()
 
         product = Product.objects.create(**params)
         
@@ -46,10 +37,10 @@ class CommonsTest:
     
 
 
-    def create_multiple_fake_products(self, quantity=1, as_dict=False, store=None, **kwargs):
+    def create_multiple_fake_products(self, quantity=1, as_dict=False, **kwargs):
         products = []
         for _ in range(quantity):
-            product = self.create_fake_product(store=store,**kwargs)
+            product = self.create_fake_product(**kwargs)
             if as_dict:
                 product_dict = {
                     'id': product.id,
@@ -62,24 +53,6 @@ class CommonsTest:
                 products.append(product)
         return products
     
-    def create_fake_store(self, **kwargs):
-        
-        defaults = {
-            'name': self.fake.word(),            
-        }
-        
-        params = {**defaults, **kwargs}
-        store = Store.objects.create(**params)
-        
-        return store
-    
-
-    def add_headers_store(self, store):
-
-        if isinstance(store, Store):
-            store_id = store.id
-            return {'HTTP_X_STORE_ID': store_id}
-        
     
     def create_fake_state(self, **kwargs):
         
@@ -137,8 +110,3 @@ class CommonsTest:
         }
         params = {**defaults, **kwargs}      
         return User.objects.create(**params)
-            
-        
-   
-    
-   

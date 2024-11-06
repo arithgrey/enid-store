@@ -1,0 +1,18 @@
+FROM python:3.9-slim
+LABEL "MAINTAINER" "Jonathan Medrano <jmedrano9006@gmail.com>"
+
+# Set the working directory in the container
+WORKDIR /locust
+
+# Install Locust and any other dependencies
+RUN pip install --upgrade pip && pip install locust faker
+RUN pip3 install -U --pre locust
+
+# Copy the local code to the container
+COPY . /locust
+
+# Expose the required Locust ports
+EXPOSE 8089
+
+# Command to run Locust using the locustfile
+CMD ["locust", "-f", "/locust/tests/locustfile.py"]
