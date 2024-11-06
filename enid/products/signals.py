@@ -5,7 +5,6 @@ from products.models import Product
 from django.utils.text import slugify
 from categories.models import Category
 from product_group.models import ProductGroup
-from store.models import Store
 from initial_products_images import ImagesLoader
 from decouple import config
 
@@ -25,7 +24,6 @@ def create_products(sender, **kwargs):
                     "category": 1,
                     "product_group":1,
                     "name_product_group":"34KG con 16 Discos",                
-                    "store_id":1,
                     "express_payment_link" : "https://buy.stripe.com/3cs4hn6FufSb7wAbKJ"
                 },            
                 {
@@ -36,7 +34,6 @@ def create_products(sender, **kwargs):
                     "weight": 10,
                     "top_seller": True,
                     "category":2,
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/14kaFLaVK21l3gk8yG",
                 },
                 {
@@ -50,7 +47,6 @@ def create_products(sender, **kwargs):
                     "category":1,
                     "product_group":2,
                     "name_product_group":"42KG con 16 Discos",
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/6oE9BH7JyfSbcQU2aj",
 
                 },            
@@ -65,7 +61,6 @@ def create_products(sender, **kwargs):
                     "category":1,
                     "product_group":2,
                     "name_product_group":"80KG con 28 Discos",
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/6oEdRX5BqbBV0484is",
                 },
                 {
@@ -77,7 +72,6 @@ def create_products(sender, **kwargs):
                     "count_discs": True,
                     "top_seller": True,
                     "category":1,
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/dR629f8NC35pcQU9CN",
                 },
                 {
@@ -87,7 +81,6 @@ def create_products(sender, **kwargs):
                     "price": 1600,                                
                     "top_seller": True,
                     "category":2,
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/28o15b7JyfSbaIMeX8",
                 },             
                 {
@@ -98,7 +91,6 @@ def create_products(sender, **kwargs):
                     "weight": 52,
                     "top_seller": True,
                     "category":1,
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/5kA3dj4xm9tNdUY8yL",
                 },  
                 {
@@ -112,7 +104,6 @@ def create_products(sender, **kwargs):
                     "category": 1,
                     "product_group":1,
                     "name_product_group":"42KG con 16 Discos",
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/cN2aFL8NC0Xhg368yV",
                 },                
                 {
@@ -126,7 +117,6 @@ def create_products(sender, **kwargs):
                     "category": 1,
                     "product_group":1,
                     "name_product_group":"50KG con 20 Discos",
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/6oE7tzd3SgWf4ko6qF",
                 },     
                 {
@@ -138,7 +128,6 @@ def create_products(sender, **kwargs):
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/8wMbJP9RGcFZ0487uo",
                 },   
                 {
@@ -150,7 +139,6 @@ def create_products(sender, **kwargs):
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,                               
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/fZeaFL8NC6hB3gkcP4",
                 },     
                 {
@@ -162,7 +150,6 @@ def create_products(sender, **kwargs):
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,                               
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/eVabJP5BqdK39EIeXd",
                 },     
                 {
@@ -174,7 +161,6 @@ def create_products(sender, **kwargs):
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/aEU15b1la5dx9EIcP6",
                 },     
                 {
@@ -186,7 +172,6 @@ def create_products(sender, **kwargs):
                     "count_discs": False,
                     "top_seller": False,
                     "category": 3,                       
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/14kg05aVKgWf2cg3ex",
 
                 },     
@@ -201,7 +186,6 @@ def create_products(sender, **kwargs):
                     "category": 1,         
                     "product_group":3,
                     "name_product_group":"10Kg C/U total 20kg",
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/3cs15b1la49t9EI02m",
                 },     
                 {
@@ -213,7 +197,6 @@ def create_products(sender, **kwargs):
                     "count_discs": True,
                     "top_seller": True,
                     "category": 1,
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/6oE7tz4xmaxR0483cd",
 
                 },     
@@ -228,7 +211,6 @@ def create_products(sender, **kwargs):
                     "category": 1,         
                     "product_group":3,
                     "name_product_group":"6Kg C/U total 12kg",
-                    "store_id":1,
                     "express_payment_link": "https://buy.stripe.com/00g8xD3tieO7bMQ5mA",
 
                 },     
@@ -243,7 +225,6 @@ def create_products(sender, **kwargs):
                     "category": 1,         
                     "product_group":3,
                     "name_product_group":"8Kg C/U total 16kg",
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/fZe4hn1ladK33gk02n"
                 },     
                 {
@@ -257,7 +238,6 @@ def create_products(sender, **kwargs):
                     "category": 1,         
                     "product_group":3,
                     "name_product_group":"4Kg C/U total 8kg",
-                    "store_id":1,
                     "express_payment_link":"https://buy.stripe.com/7sI3dj0h67lF5osbL6"
 
                 },
@@ -270,9 +250,6 @@ def create_products(sender, **kwargs):
                 slug = slugify(item["name"])
                 item["slug"] = slug
 
-                store_id = item["store_id"]
-                item["store"] = Store.objects.get(id=store_id)
-                
                 category_id = item["category"]
                 category = Category.objects.get(id=category_id)
                 item["category"]=category

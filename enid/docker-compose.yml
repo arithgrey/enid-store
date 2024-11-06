@@ -9,6 +9,7 @@ services:
     container_name: ${SERVICENAME}_service
     ports:
       - "8085:8080"
+      - "5678:5678"
     env_file:
       - .env
     environment:
@@ -47,6 +48,20 @@ services:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       retries: 5
+      
+  locust:
+    build:
+      context: .
+      dockerfile: Dockerfile.locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./locust:/mnt/locust/test
+    command: ["locust", "-f", "/mnt/locust/test/locustfile.py", "--host", "http://app:8085"]
+    depends_on:
+      - microservice_enid
+    networks:
+      - backend
 
 volumes:
   redis_data:

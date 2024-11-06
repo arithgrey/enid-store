@@ -32,16 +32,13 @@ class OrderViewSet(OrderManager, viewsets.ModelViewSet):
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)    
 
         user = request.user                
-        store = self.get_store_or_default(request)      
-        if isinstance(store, Response): 
-            return store 
         
         try:            
             
             address = self.register_address(data)
             products = data["products"]
             with transaction.atomic():
-                order = self.create_order_instance(address, user, store)
+                order = self.create_order_instance(address, user)
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        

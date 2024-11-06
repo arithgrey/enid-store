@@ -16,12 +16,11 @@ class ProductVuewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
-        store_id = request.headers.get('X-Store-Id')
-        #store_id =1        
-        cache_key = f'top_sellers_{store_id}'
+          
+        cache_key = f'top_sellers_'
         top_sellers = cache.get(cache_key)        
         if not top_sellers:            
-            top_sellers = Product.objects.filter(top_seller=True, store_id=store_id).order_by('id')
+            top_sellers = Product.objects.filter(top_seller=True).order_by('id')
             cache.set(cache_key, top_sellers, timeout=86400)
         
         
@@ -43,8 +42,7 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'])    
     def get_by_slug(self, request, category_slug, product_slug):
         
-        store_id = request.headers.get('X-Store-Id')
-        cache_key = f"product_{category_slug}_{product_slug}_{store_id}"
+        cache_key = f"product_{category_slug}_{product_slug}_"
         cached_data = cache.get(cache_key)
 
         if cached_data:             
@@ -52,7 +50,7 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
 
         category = get_object_or_404(Category, slug=category_slug)
         product = get_object_or_404(
-            Product, category=category, slug=product_slug,store_id=store_id)
+            Product, category=category, slug=product_slug)
 
         serializer = ProductSerializer(product)
         serializer_data= serializer.data

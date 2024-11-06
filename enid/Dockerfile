@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install debugpy
 
 COPY . .
 
@@ -17,7 +18,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 # Asegura que el script tenga permisos de ejecución
 RUN chmod +x /app/entrypoint.sh
 
-EXPOSE 8080
+EXPOSE 8080 5678
 
 # Configura el entrypoint para ejecutar las migraciones y levantar el servidor
 ENTRYPOINT ["/app/entrypoint.sh"]

@@ -16,16 +16,12 @@ class TestUserOrderFilter(TestCase):
         self.oauthUtilities = OAuthUtilities()
 
     def test_filter_order_by_user(self):
-                
-        store = self.orderHelper.create_fake_store()
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client_with_headers(store=store)
-                
-        order = self.orderHelper.create_fake_order_with_products(
-            user=user, store=store)        
-        
-        
+        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
+        order = self.orderHelper.create_fake_order_with_products(user=user)
+            
         self.assertIsInstance(order, Order)
         order_id = order.id
+        
 
         filters = {
             order.shipping_address.phone_number,                    
@@ -35,6 +31,12 @@ class TestUserOrderFilter(TestCase):
         for item in filters:
             
             response = api_oauth_client.get(self.api, {"q":item})
+            
+            print("URL:", self.api)
+            print("Request params:", {"q": item})
+            print("Response content:", response.content)
+            print("Status code:", response.status_code)
+            
             order_by_request = response.data[0]               
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response.data),1)            
@@ -43,11 +45,10 @@ class TestUserOrderFilter(TestCase):
 
     def test_filter_order_by_total(self):
         
-        store = self.orderHelper.create_fake_store()
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client_with_headers(store=store)
+        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
         _ = self.orderHelper.create_n_fake_orders(total_orders=4)
         fake_orders = self.orderHelper.create_n_fake_orders(
-            user=user, store=store, total_orders=10)        
+            user=user, total_orders=10)        
         
         
         self.assertEqual(len(fake_orders),10)
@@ -58,12 +59,10 @@ class TestUserOrderFilter(TestCase):
     
     def test_filter_order_by_status(self):
                 
-        store = self.orderHelper.create_fake_store()
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client_with_headers(
-            store=store)
+        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
         
         fake_orders_shipped = self.orderHelper.create_n_fake_orders(
-            user=user, store=store, total_orders=4, status='shipped')  
+            user=user, total_orders=4, status='shipped')  
                 
         
         response = api_oauth_client.get(self.api,{'status':fake_orders_shipped[0].status})        

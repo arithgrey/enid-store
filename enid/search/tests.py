@@ -22,25 +22,23 @@ class TestProductSeachByQViewSet(TestCase):
         product = self.commons.create_fake_product(name=q)
         if isinstance(product,Product):            
             
-            headers = {'HTTP_X_STORE_ID': str(product.store.id)}            
             url = reverse('get_by_q', kwargs={'q': q})            
-            response = self.client.get(url, format='json', **headers)            
+            response = self.client.get(url, format='json')            
 
-                        
             response_product = response.data["results"]
             self.assertEqual(response.status_code, status.HTTP_200_OK)
             self.assertEqual(len(response_product),1)    
             self.assertEqual(response_product[0]['name'], product.name)
+    
     
     def test_find_produc_category_name(self):
         q='deportivos'
         product = self.commons.create_fake_product(name=q)
         if isinstance(product,Product):                        
                         
-            headers = {'HTTP_X_STORE_ID': str(product.store.id)}            
             url = reverse('get_by_q', kwargs={'q': q})
             
-            response = self.client.get(url, format='json', **headers)                        
+            response = self.client.get(url, format='json')                        
             category_product_name = product.category.name                                    
             
             response_product = response.data["results"]                        
