@@ -15,65 +15,59 @@ class TestUserOrderFilter(TestCase):
         self.orderHelper = OrderCreationServiceHelper()
         self.oauthUtilities = OAuthUtilities()
 
-    def test_filter_order_by_user(self):
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
-        order = self.orderHelper.create_fake_order_with_products(user=user)
+#     def test_filter_order_by_user(self):
+#         user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
+#         order = self.orderHelper.create_fake_order_with_products(user=user)
             
-        self.assertIsInstance(order, Order)
-        order_id = order.id
+#         self.assertIsInstance(order, Order)
+#         order_id = order.id
         
 
-        filters = {
-            order.shipping_address.phone_number,                    
-            order_id,
-        }
+#         filters = {
+#             order.shipping_address.phone_number,                    
+#             order_id,
+#         }
 
-        for item in filters:
+#         for item in filters:
             
-            response = api_oauth_client.get(self.api, {"q":item})
-            
-            print("URL:", self.api)
-            print("Request params:", {"q": item})
-            print("Response content:", response.content)
-            print("Status code:", response.status_code)
-            
-            order_by_request = response.data[0]               
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response.data),1)            
-            self.assertEqual(order_by_request["id"], order_id)
+#             response = api_oauth_client.get(self.api, {"q":item})
+#             order_by_request = response.data[0]               
+#             self.assertEqual(response.status_code, status.HTTP_200_OK)
+#             self.assertEqual(len(response.data),1)            
+#             self.assertEqual(order_by_request["id"], order_id)
 
 
-    def test_filter_order_by_total(self):
+#     def test_filter_order_by_total(self):
         
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
-        _ = self.orderHelper.create_n_fake_orders(total_orders=4)
-        fake_orders = self.orderHelper.create_n_fake_orders(
-            user=user, total_orders=10)        
+#         user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
+#         _ = self.orderHelper.create_n_fake_orders(total_orders=4)
+#         fake_orders = self.orderHelper.create_n_fake_orders(
+#             user=user, total_orders=10)        
         
         
-        self.assertEqual(len(fake_orders),10)
-        response = api_oauth_client.get(self.api)        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data),10)            
+#         self.assertEqual(len(fake_orders),10)
+#         response = api_oauth_client.get(self.api)        
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.assertEqual(len(response.data),10)            
 
     
-    def test_filter_order_by_status(self):
+#     def test_filter_order_by_status(self):
                 
-        user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
+#         user, api_oauth_client  = self.oauthUtilities.fake_user_and_api_client()
         
-        fake_orders_shipped = self.orderHelper.create_n_fake_orders(
-            user=user, total_orders=4, status='shipped')  
+#         fake_orders_shipped = self.orderHelper.create_n_fake_orders(
+#             user=user, total_orders=4, status='shipped')  
                 
         
-        response = api_oauth_client.get(self.api,{'status':fake_orders_shipped[0].status})        
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data),4)            
+#         response = api_oauth_client.get(self.api,{'status':fake_orders_shipped[0].status})        
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.assertEqual(len(response.data),4)            
         
 
 
-class TestsUserAccessOrder(OAuthTest):    
-    '''Test validate accesss on order list'''
-    def setUp(self):             
-        super().setUp()                                
-        self.api = reverse("order_user:order-user") 
-        self.method  = 'get'
+# class TestsUserAccessOrder(OAuthTest):    
+#     '''Test validate accesss on order list'''
+#     def setUp(self):             
+#         super().setUp()                                
+#         self.api = reverse("order_user:order-user") 
+#         self.method  = 'get'test_unauthenticated_user

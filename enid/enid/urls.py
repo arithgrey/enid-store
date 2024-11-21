@@ -29,6 +29,7 @@ urlpatterns = [
     path('order/', include('order_oauth.urls')),
     path('order-search/', include('order_search.urls')),
     path('order-user/', include('order_user.urls')),
+    path('order-payment-on-delivery/', include('order_payment_on_delivery.urls')),
     path('compra/', include('order_management.urls')),
     path('item-order/', include('item_order.urls')),
     path('product-category/', include('product_category_search.urls')),
