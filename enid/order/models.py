@@ -16,6 +16,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')        
     user = models.ForeignKey(User, related_name='user_order', on_delete=models.CASCADE, null=True, blank=True)
+    payment_on_delivery = models.BooleanField(default=False)
     
     def __str__(self):
         return f"Order {self.id}"

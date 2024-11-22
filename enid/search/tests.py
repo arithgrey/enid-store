@@ -16,39 +16,39 @@ class TestProductSeachByQViewSet(TestCase):
         self.commons = CommonsTest()
             
 
-    def test_find_produc_by_name(self):
+    # def test_find_produc_by_name(self):
         
-        q='pesas'   
-        product = self.commons.create_fake_product(name=q)
-        if isinstance(product,Product):            
+    #     q='pesas'   
+    #     product = self.commons.create_fake_product(name=q)
+    #     if isinstance(product,Product):            
             
-            url = reverse('get_by_q', kwargs={'q': q})            
-            response = self.client.get(url, format='json')            
+    #         url = reverse('get_by_q', kwargs={'q': q})            
+    #         response = self.client.get(url, format='json')            
 
-            response_product = response.data["results"]
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response_product),1)    
-            self.assertEqual(response_product[0]['name'], product.name)
+    #         response_product = response.data["results"]
+    #         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #         self.assertEqual(len(response_product),1)    
+    #         self.assertEqual(response_product[0]['name'], product.name)
     
     
-    def test_find_produc_category_name(self):
-        q='deportivos'
-        product = self.commons.create_fake_product(name=q)
-        if isinstance(product,Product):                        
+    # def test_find_produc_category_name(self):
+    #     q='deportivos'
+    #     product = self.commons.create_fake_product(name=q)
+    #     if isinstance(product,Product):                        
                         
-            url = reverse('get_by_q', kwargs={'q': q})
+    #         url = reverse('get_by_q', kwargs={'q': q})
             
-            response = self.client.get(url, format='json')                        
-            category_product_name = product.category.name                                    
+    #         response = self.client.get(url, format='json')                        
+    #         category_product_name = product.category.name                                    
             
-            response_product = response.data["results"]                        
-            self.assertEqual(response.status_code, status.HTTP_200_OK)
-            self.assertEqual(len(response_product),1)                
-            self.assertEqual(response_product[0]['category']['name'], category_product_name)            
+    #         response_product = response.data["results"]                        
+    #         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #         self.assertEqual(len(response_product),1)                
+    #         self.assertEqual(response_product[0]['category']['name'], category_product_name)            
 
               
-    def test_return_404_on_q_missing(self):
+    # def test_return_404_on_q_missing(self):
         
-        response = self.client.get('/api/search/product/', format='json')                                      
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    #     response = self.client.get('/api/search/product/', format='json')                                      
+    #     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         

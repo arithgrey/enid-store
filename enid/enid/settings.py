@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'order',
     'order_oauth',
     'order_search',
+    'order_payment_on_delivery',
     'item_order',
     'search'
 ]
@@ -142,6 +143,12 @@ DOMAIN = config('DOMAIN', default='')
 
 config_db =config('DATABASE_URL')    
 DATABASES = {'default': dj_database_url.config(default=config_db)}    
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
     
 
 AUTH_PASSWORD_VALIDATORS = [
