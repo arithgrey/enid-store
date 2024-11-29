@@ -3,14 +3,14 @@ from rest_framework import serializers
 class AddressSimpleValidatorSerializer(serializers.Serializer):    
         
     street = serializers.CharField(        
-        max_length=100, 
+        max_length=800, 
         min_length=4, 
         required=True, 
         allow_blank=False,
         error_messages={
             'required': 'Hey te falta indica tu calle',
             'blank': 'Hey te falta este dato!',            
-            'max_length': 'La longitud máxima permitida para la calle es de 200 caracteres.',
+            'max_length': 'La longitud máxima permitida para la calle es de 800 caracteres.',
             'min_length': 'La longitud mínima permitida para la calle es de 30 caracteres.'
         }
         )

@@ -9,7 +9,7 @@ class Address(models.Model):
     ('MX', 'Mexico'),        
     )
 
-    street = models.CharField(max_length=255)
+    street = models.TextField()
     colony = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100)    
     postal_code = models.CharField(max_length=10)
