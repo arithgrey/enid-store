@@ -1,11 +1,7 @@
 from rest_framework import serializers
 from order.models import Order
 from item_order.serializer import ItemOrderSerializer
-class OrderSerializer(serializers.ModelSerializer):  
-
-    items = ItemOrderSerializer(many=True, read_only=True) 
-
-    class Meta:
-        model = Order
-        fields = '__all__'
+from order.serializer_status import BaseOrderSerializer
+class OrderSerializer(BaseOrderSerializer):  
+    class Meta(BaseOrderSerializer.Meta):
         ref_name = 'OrderManagementOrder'
