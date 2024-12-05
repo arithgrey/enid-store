@@ -14,9 +14,8 @@ class OrderSearchViewSet(viewsets.ViewSet):
 
     def perform_search(self, request):
         q = request.query_params.get('q', None)        
-        status_param = request.query_params.get('status', '').strip()  # Obtener 'status' y eliminar espacios
-        
-        filter_criteria = Q()
+        status_param = request.query_params.get('status', '').strip()
+        filter_criteria = ~Q(status='canceled')     
         
         if status_param:
             filter_criteria &= Q(status=status_param)
