@@ -15,10 +15,13 @@ class OrderSearchViewSet(viewsets.ViewSet):
     def perform_search(self, request):
         q = request.query_params.get('q', None)        
         status_param = request.query_params.get('status', '').strip()
-        filter_criteria = ~Q(status='canceled')     
         
-        if status_param:
-            filter_criteria &= Q(status=status_param)
+        if status_param and status_param != 'all':
+            # Si se selecciona un estado específico
+            filter_criteria = Q(status=status_param)
+        else:
+            # Si se selecciona "Todos", excluir 'canceled' y 'delivered' ya que solo queremos ver los pendientes  
+            filter_criteria = ~Q(status__in=['canceled', 'delivered'])
         
         if q:
             filter_criteria &= (
