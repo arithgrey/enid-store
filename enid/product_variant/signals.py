@@ -6,135 +6,38 @@ from variants.models import Variant
 from product_variant.models import ProductVariant
 from decouple import config
 
+DATA_MODULES = {
+    0: 'product_variant.gym_variants',
+    1: 'product_variant.clothes_variants',
+    # Agrega más si es necesario
+}
 @receiver(post_migrate)
 def create_base_returns(sender, **kwargs):
-    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):        
-        if sender.name == "product_variant":
-            
-            #34Kg
-            load_product_variant(product_id=1, variant_id=1,pieces=2)
-            load_product_variant(product_id=1, variant_id=2,pieces=2)
-            load_product_variant(product_id=1, variant_id=3,pieces=6)
-            load_product_variant(product_id=1, variant_id=4,pieces=6)
+    if not config('DJANGO_RUNNING_MIGRATIONS', default=False, cast=bool):
+        return
+    
+    if sender.name != 'product_variant':
+        return
 
-            load_product_variant(product_id=1, variant_id=8,pieces=2)
-            load_product_variant(product_id=1, variant_id=7,pieces=1)
-            load_product_variant(product_id=1, variant_id=5,pieces=1)
-            load_product_variant(product_id=1, variant_id=9,pieces=6)
+    
+    store = config('STORE',default=0, cast=int)
+    module_path = DATA_MODULES.get(store, 'product_variant.gym_variants')  
+              
+    try:
+        data_module = __import__(module_path, fromlist=['data'])
+        data = data_module.data
+    except ImportError as e:
+        print(f"Error al importar el módulo de datos: {e}")
+        return
+              
 
-            #42Kg z,recta, mancuernas
-            load_product_variant(product_id=9, variant_id=1,pieces=2)
-            load_product_variant(product_id=9, variant_id=2,pieces=6)    
-            load_product_variant(product_id=9, variant_id=3,pieces=6)
-            load_product_variant(product_id=9, variant_id=4,pieces=2)
+    for entry in data:
+        product_id = entry.get('product_id')
+        variant_id = entry.get('variant_id')
+        pieces = entry.get('pieces', 1)  # Valor por defecto si no se proporciona
 
-            load_product_variant(product_id=9, variant_id=8,pieces=2)
-            load_product_variant(product_id=9, variant_id=7,pieces=1)
-            load_product_variant(product_id=9, variant_id=5,pieces=1)
-            load_product_variant(product_id=9, variant_id=9,pieces=6)
+        load_product_variant(product_id=product_id, variant_id=variant_id, pieces=pieces)
 
-            #50Kg z,recta, mancuernas
-            load_product_variant(product_id=10, variant_id=1,pieces=2)
-            load_product_variant(product_id=10, variant_id=2,pieces=8)    
-            load_product_variant(product_id=10, variant_id=3,pieces=8)        
-
-            load_product_variant(product_id=10, variant_id=8,pieces=2)
-            load_product_variant(product_id=10, variant_id=7,pieces=1)
-            load_product_variant(product_id=10, variant_id=5,pieces=1)
-            load_product_variant(product_id=10, variant_id=9,pieces=6)
-
-
-            #42Kg 2100 
-
-            load_product_variant(product_id=4, variant_id=1,pieces=2)
-            load_product_variant(product_id=4, variant_id=2,pieces=6)
-            load_product_variant(product_id=4, variant_id=3,pieces=6)
-            load_product_variant(product_id=4, variant_id=4,pieces=2)
-
-            load_product_variant(product_id=4, variant_id=8,pieces=2)
-            load_product_variant(product_id=4, variant_id=7,pieces=1)
-            load_product_variant(product_id=4, variant_id=5,pieces=1)
-            load_product_variant(product_id=4, variant_id=6,pieces=1)
-            load_product_variant(product_id=4, variant_id=9,pieces=6)    
-
-            #80Kg 3300
-
-            load_product_variant(product_id=5, variant_id=1,pieces=4)
-            load_product_variant(product_id=5, variant_id=2,pieces=8)
-            load_product_variant(product_id=5, variant_id=3,pieces=12)
-            load_product_variant(product_id=5, variant_id=4,pieces=12)
-
-            load_product_variant(product_id=5, variant_id=8,pieces=2)
-
-            load_product_variant(product_id=5, variant_id=7,pieces=1)
-            load_product_variant(product_id=5, variant_id=5,pieces=1)
-            load_product_variant(product_id=5, variant_id=6,pieces=1)
-            load_product_variant(product_id=5, variant_id=9,pieces=10)    
-            
-            #par de 10kg acero
-
-            load_product_variant(product_id=6, variant_id=10,pieces=4)    
-            load_product_variant(product_id=6, variant_id=11,pieces=4)    
-            load_product_variant(product_id=6, variant_id=9,pieces=4) 
-            load_product_variant(product_id=6, variant_id=12,pieces=2)    
-            load_product_variant(product_id=6, variant_id=8,pieces=2)    
-            
-            #Barras calistenia
-
-            load_product_variant(product_id=7, variant_id=13,pieces=1)
-            load_product_variant(product_id=7, variant_id=14,pieces=1)
-            load_product_variant(product_id=7, variant_id=15,pieces=8)
-            
-            #KIT 52 kg acero        
-            load_product_variant(product_id=8, variant_id=16,pieces=2)
-            load_product_variant(product_id=8, variant_id=19,pieces=4)
-            load_product_variant(product_id=8, variant_id=10,pieces=4)                
-            load_product_variant(product_id=8, variant_id=11,pieces=4)        
-            load_product_variant(product_id=8, variant_id=18,pieces=4)
-            load_product_variant(product_id=8, variant_id=20,pieces=4)
-
-            load_product_variant(product_id=8, variant_id=5,pieces=1)
-            load_product_variant(product_id=8, variant_id=7,pieces=1)
-            load_product_variant(product_id=8, variant_id=6,pieces=1)
-            load_product_variant(product_id=8, variant_id=8,pieces=2)        
-            load_product_variant(product_id=8, variant_id=21,pieces=10)
-
-            #par 10kg 
-            
-            load_product_variant(product_id=16, variant_id=2,pieces=4)    
-            load_product_variant(product_id=16, variant_id=3,pieces=4)        
-            load_product_variant(product_id=16, variant_id=8,pieces=2)
-            load_product_variant(product_id=16, variant_id=9,pieces=4)
-            
-            #par 6kg         
-            load_product_variant(product_id=18, variant_id=4,pieces=4)    
-            load_product_variant(product_id=18, variant_id=3,pieces=4)        
-            load_product_variant(product_id=18, variant_id=8,pieces=2)
-            load_product_variant(product_id=18, variant_id=9,pieces=4)
-            
-            #par 8kg         
-            
-            load_product_variant(product_id=19, variant_id=3,pieces=8)        
-            load_product_variant(product_id=19, variant_id=8,pieces=2)
-            load_product_variant(product_id=19, variant_id=9,pieces=4)
-
-            #par 4kg         
-            
-            load_product_variant(product_id=20, variant_id=4,pieces=8)        
-            load_product_variant(product_id=20, variant_id=8,pieces=2)
-            load_product_variant(product_id=20, variant_id=9,pieces=4)
-
-
-            #42Kg recta, mancuernas
-            load_product_variant(product_id=17, variant_id=1,pieces=2)
-            load_product_variant(product_id=17, variant_id=2,pieces=6)    
-            load_product_variant(product_id=17, variant_id=3,pieces=6)
-            load_product_variant(product_id=17, variant_id=4,pieces=2)
-
-            load_product_variant(product_id=17, variant_id=8,pieces=2)
-            load_product_variant(product_id=17, variant_id=7,pieces=1)        
-            load_product_variant(product_id=17, variant_id=9,pieces=6)
-            
 
 def load_product_variant(product_id, variant_id, pieces):
     

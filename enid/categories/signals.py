@@ -4,21 +4,30 @@ from decouple import config
 from django.dispatch import receiver
 from categories.models import Category
 
+DATA_MODULES = {
+    0: 'categories.gym',
+    1: 'categories.clothes',
+    # Agrega más si es necesario
+}
+
 @receiver(post_migrate)
 def create_categories(sender, **kwargs):
     
-    if config('DJANGO_RUNNING_MIGRATIONS',default=False, cast=bool):        
-        if sender.name == "categories":
-            
-            data = [            
-                {"id":1,"name": 'Pesas y barras', 'video_name':'pesas_barras.mp4'},            
-                {"id":2,"name": 'Calistenia', 'video_name':'calistenia.mp4'},             
-                {"id":3,"name": 'Accesorios', 'video_name':'accesorios.mp4'},                                                        
-            ]
-            for item in data:
-
-                Category.objects.get_or_create(**item)
-
-            
-
-
+    if not config('DJANGO_RUNNING_MIGRATIONS', default=False, cast=bool):
+        return
+    
+    if sender.name != 'categories':
+        return
+    
+    store = config('STORE',default=0, cast=int)
+    module_path = DATA_MODULES.get(store, 'categories.gym')  
+              
+    try:
+        data_module = __import__(module_path, fromlist=['data'])
+        data = data_module.data
+    except ImportError as e:
+        print(f"Error al importar el módulo de datos: {e}")
+        return
+         
+    for item in data:
+        Category.objects.get_or_create(**item)
