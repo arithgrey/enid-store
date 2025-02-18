@@ -4,6 +4,9 @@ from django.contrib.contenttypes.fields import GenericRelation
 from image.models import Image
 from autoslug import AutoSlugField
 from product_group.models import ProductGroup  
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.cache import cache
 
 class Product(models.Model):
     
@@ -27,4 +30,9 @@ class Product(models.Model):
     
     def get_absolute_url(self):
             return f"{self.category.slug}/{self.slug}/"
-        
+
+@receiver(post_save, sender=Product)
+def clear_product_cache(sender, instance, **kwargs):
+    #aplico el delete del indice de deredis para que se actualice el cache
+    cache.delete_pattern("product_*")
+    cache.delete_pattern("top_sellers_*")
