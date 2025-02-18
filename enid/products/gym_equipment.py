@@ -3,7 +3,7 @@ data = [
         "id": 1,
         "name": "PARA LOS QUE VAN INICIANDO",
         "specific_name": "KIT DE PESAS 16 DISCOS 34KG EN TOTAL, BARRA Z, BARRA RECTA Y MANCUERNAS | ENVÍO GRATIS",
-        "price": 1500,
+        "price": 1600,
         "weight": 34,
         "count_discs": True,
         "top_seller": True,
