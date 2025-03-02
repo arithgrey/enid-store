@@ -10,7 +10,8 @@ data = [
         "category": 1,
         "product_group": 1,
         "name_product_group": "34KG con 16 Discos",
-        "express_payment_link": "https://buy.stripe.com/3cs4hn6FufSb7wAbKJ"
+        "express_payment_link": "https://buy.stripe.com/3cs4hn6FufSb7wAbKJ",
+        "cost": 0
     },
     {
         "id": 3,
@@ -21,6 +22,7 @@ data = [
         "top_seller": True,
         "category": 2,
         "express_payment_link": "https://buy.stripe.com/14kaFLaVK21l3gk8yG",
+        "cost": 0
     },
     {
         "id": 4,
@@ -34,6 +36,7 @@ data = [
         "product_group": 2,
         "name_product_group": "42KG con 16 Discos",
         "express_payment_link": "https://buy.stripe.com/6oE9BH7JyfSbcQU2aj",
+        "cost": 0
     },
     {
         "id": 5,
@@ -47,6 +50,7 @@ data = [
         "product_group": 2,
         "name_product_group": "80KG con 28 Discos",
         "express_payment_link": "https://buy.stripe.com/6oEdRX5BqbBV0484is",
+        "cost": 0
     },
     {
         "id": 6,
@@ -58,6 +62,7 @@ data = [
         "top_seller": True,
         "category": 1,
         "express_payment_link": "https://buy.stripe.com/dR629f8NC35pcQU9CN",
+        "cost": 0
     },
     {
         "id": 7,
@@ -67,6 +72,7 @@ data = [
         "top_seller": True,
         "category": 2,
         "express_payment_link": "https://buy.stripe.com/28o15b7JyfSbaIMeX8",
+        "cost": 0
     },
     {
         "id": 8,
@@ -77,6 +83,7 @@ data = [
         "top_seller": True,
         "category": 1,
         "express_payment_link": "https://buy.stripe.com/5kA3dj4xm9tNdUY8yL",
+        "cost": 0
     },
     {
         "id": 9,
@@ -90,6 +97,7 @@ data = [
         "product_group": 1,
         "name_product_group": "42KG con 16 Discos",
         "express_payment_link": "https://buy.stripe.com/cN2aFL8NC0Xhg368yV",
+        "cost": 0
     },
     {
         "id": 10,
@@ -103,6 +111,7 @@ data = [
         "product_group": 1,
         "name_product_group": "50KG con 20 Discos",
         "express_payment_link": "https://buy.stripe.com/6oE7tzd3SgWf4ko6qF",
+        "cost": 0
     },
     {
         "id": 11,
@@ -114,6 +123,7 @@ data = [
         "top_seller": False,
         "category": 3,
         "express_payment_link": "https://buy.stripe.com/8wMbJP9RGcFZ0487uo",
+        "cost": 0
     },
     {
         "id": 12,
@@ -125,6 +135,7 @@ data = [
         "top_seller": False,
         "category": 3,
         "express_payment_link": "https://buy.stripe.com/fZeaFL8NC6hB3gkcP4",
+        "cost": 0
     },
     {
         "id": 13,
@@ -136,6 +147,7 @@ data = [
         "top_seller": False,
         "category": 3,
         "express_payment_link": "https://buy.stripe.com/eVabJP5BqdK39EIeXd",
+        "cost": 0
     },
     {
         "id": 14,
@@ -147,6 +159,9 @@ data = [
         "top_seller": False,
         "category": 3,
         "express_payment_link": "https://buy.stripe.com/aEU15b1la5dx9EIcP6",
+        "primary": True,
+        "cost": 150,
+        "cost": 0
     },
     {
         "id": 15,
@@ -158,6 +173,8 @@ data = [
         "top_seller": False,
         "category": 3,
         "express_payment_link": "https://buy.stripe.com/14kg05aVKgWf2cg3ex",
+        "primary": True,
+        "cost": 250,
     },
     {
         "id": 16,
@@ -171,6 +188,8 @@ data = [
         "product_group": 3,
         "name_product_group": "10Kg C/U total 20kg",
         "express_payment_link": "https://buy.stripe.com/3cs15b1la49t9EI02m",
+        "primary": True,
+        "cost": 450,
     },
     {
         "id": 17,
@@ -182,6 +201,7 @@ data = [
         "top_seller": True,
         "category": 1,
         "express_payment_link": "https://buy.stripe.com/6oE7tz4xmaxR0483cd",
+        "cost": 0
     },
     {
         "id": 18,
@@ -195,6 +215,9 @@ data = [
         "product_group": 3,
         "name_product_group": "6Kg C/U total 12kg",
         "express_payment_link": "https://buy.stripe.com/00g8xD3tieO7bMQ5mA",
+        "primary": True,
+        "cost": 300
+        
     },
     {
         "id": 19,
@@ -207,7 +230,8 @@ data = [
         "category": 1,
         "product_group": 3,
         "name_product_group": "8Kg C/U total 16kg",
-        "express_payment_link": "https://buy.stripe.com/fZe4hn1ladK33gk02n"
+        "express_payment_link": "https://buy.stripe.com/fZe4hn1ladK33gk02n",
+        "cost": 0
     },
     {
         "id": 20,
@@ -220,6 +244,7 @@ data = [
         "category": 1,
         "product_group": 3,
         "name_product_group": "4Kg C/U total 8kg",
-        "express_payment_link": "https://buy.stripe.com/7sI3dj0h67lF5osbL6"
+        "express_payment_link": "https://buy.stripe.com/7sI3dj0h67lF5osbL6",
+        "cost": 0
     },
 ]

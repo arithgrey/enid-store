@@ -14,6 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     short_name = serializers.SerializerMethodField()
     formatted_price = serializers.SerializerMethodField()
+    formatted_cost = serializers.SerializerMethodField()
     formatted_weight = serializers.SerializerMethodField()
     category = CategorySerializer()     
     
@@ -31,3 +32,5 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_formatted_weight(self, obj):
         return f"{obj.weight} Kg"
     
+    def get_formatted_cost(self, obj):
+        return _('${:.2f}').format(obj.cost)
