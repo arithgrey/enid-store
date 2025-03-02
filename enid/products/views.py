@@ -34,6 +34,11 @@ class ProductVuewSet(viewsets.ModelViewSet):
         
         return Response(serializer.data)
 
+    @action(detail=False, methods=['GET'], url_path='primary-products')
+    def primary_products(self, request):        
+        primary_products = Product.objects.filter(primary=True).order_by('id')
+        serializer = ProductSerializer(primary_products, many=True)        
+        return Response(serializer.data)
 
 class ProductSlugVuewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
