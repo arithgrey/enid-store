@@ -54,5 +54,9 @@ data = [
         {"id": 1, "path": 'IMG_34kg_1.jpeg','is_main':True},
         {"id": 3, "path": 'barras_parlelas.jpg','is_main':True},
         {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False},
-        {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False},                   
+        {"id": 3, "path": 'barras_parlelas_1.jpg','is_main':False}, 
+        {"id": 21, "path": 'barra_22kg.png','is_main':True},
+        {"id": 21, "path": 'barra-22kg-1.png','is_main':False},
+        {"id": 21, "path": 'barra-22kg-2.png','is_main':False},
+                            
     ] 
