@@ -105,4 +105,10 @@ data = [
     {"product_id": 17, "variant_id": 8, "pieces": 2},
     {"product_id": 17, "variant_id": 7, "pieces": 1},
     {"product_id": 17, "variant_id": 9, "pieces": 6},
+    
+    # Producto 21 - 22Kg recta, mancuernas
+    {"product_id": 21, "variant_id": 1, "pieces": 2},
+    {"product_id": 21, "variant_id": 2, "pieces": 2},
+    {"product_id": 21, "variant_id": 3, "pieces": 2},
+    {"product_id": 21, "variant_id": 4, "pieces": 2}
 ]

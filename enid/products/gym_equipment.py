@@ -22,7 +22,9 @@ data = [
         "top_seller": True,
         "category": 2,
         "express_payment_link": "https://buy.stripe.com/14kaFLaVK21l3gk8yG",
-        "cost": 0
+        "cost": 0,
+        "primary": True
+
     },
     {
         "id": 4,
@@ -247,4 +249,20 @@ data = [
         "express_payment_link": "https://buy.stripe.com/7sI3dj0h67lF5osbL6",
         "cost": 0
     },
+    {
+        "id": 21,
+        "name": "PARA LOS QUE SOLO OCUPAN BARRA",
+        "specific_name": "BARRA RECTA DE 22KG 8 DISCOS AJUSTABLES, PESOS VARIABLES | ENVÍO GRATIS",
+        "price": 1000,
+        "weight": 22,
+        "count_discs": True,
+        "top_seller": True,
+        "category": 1,
+        "name_product_group": "22Kg con 8 Discos",
+        "express_payment_link": "https://buy.stripe.com/7sI3dj0h67lF5osbL6",
+        "cost": 430,
+        "primary": True,
+
+    },
+    
 ]
