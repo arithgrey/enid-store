@@ -40,12 +40,12 @@ def create_products(sender, **kwargs):
 
         category_id = item["category"]
         category = Category.objects.get(id=category_id)
-        item["category"]=category
+        item["category"] = category
         
         if "product_group" in item:
             product_group_id = item["product_group"]
-            product_group =  ProductGroup.objects.get(id=product_group_id)
-            item["product_group"]=product_group
+            product_group = ProductGroup.objects.get(id=product_group_id)
+            item["product_group"] = product_group
 
                 
         product_id = item["id"]

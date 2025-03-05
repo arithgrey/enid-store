@@ -7,7 +7,7 @@ echo "Running makemigrations and migrate..."
 echo "Running makemigrations and migrate..."
 echo "Running makemigrations and migrate..."
 
-python manage.py makemigrations image categories product_group products product_category_search variants product_variant state address order order_oauth order_search item_order search
+python manage.py makemigrations image categories product_group products product_category_search variants product_variant state address order order_oauth order_search item_order search primary_components
 python manage.py makemigrations
 python manage.py migrate
 # Inicia el servidor con watchmedo

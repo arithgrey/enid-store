@@ -25,13 +25,38 @@ class Product(models.Model):
     name_product_group = models.CharField(max_length=50, default=None, null=True, blank=True)    
     images = GenericRelation(Image)
     express_payment_link = models.URLField(max_length=500, null=True, blank=True)
-
     
+    # Campos para manejo de inventario
+    min_stock = models.IntegerField(default=1)
+    max_stock = models.IntegerField(default=100)
+    
+    primary_components = models.ManyToManyField(
+        'self',
+        through='primary_components.ProductComponent',
+        symmetrical=False,
+        related_name='kit_products',
+        blank=True,
+        help_text='Productos primarios que componen este kit'
+    )
+
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
             return f"{self.category.slug}/{self.slug}/"
+
+    def is_weight_kit(self):
+        """
+        Determina si el producto es un kit de pesas verificando si tiene
+        productos primarios asociados
+        """
+        return self.primary_components.exists()
+
+    def get_primary_products(self):
+        """
+        Retorna los productos primarios que componen este kit con sus cantidades
+        """
+        return self.component_quantities.all()
 
 @receiver(post_save, sender=Product)
 def clear_product_cache(sender, instance, **kwargs):

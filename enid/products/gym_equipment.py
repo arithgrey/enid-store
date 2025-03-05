@@ -24,7 +24,6 @@ data = [
         "express_payment_link": "https://buy.stripe.com/14kaFLaVK21l3gk8yG",
         "cost": 0,
         "primary": True
-
     },
     {
         "id": 4,
@@ -191,7 +190,7 @@ data = [
         "name_product_group": "10Kg C/U total 20kg",
         "express_payment_link": "https://buy.stripe.com/3cs15b1la49t9EI02m",
         "primary": True,
-        "cost": 450,
+        "cost": 450
     },
     {
         "id": 17,
@@ -219,7 +218,6 @@ data = [
         "express_payment_link": "https://buy.stripe.com/00g8xD3tieO7bMQ5mA",
         "primary": True,
         "cost": 300
-        
     },
     {
         "id": 19,
@@ -261,8 +259,7 @@ data = [
         "name_product_group": "22Kg con 8 Discos",
         "express_payment_link": "https://buy.stripe.com/7sI3dj0h67lF5osbL6",
         "cost": 430,
-        "primary": True,
-
+        "primary": True
     },
     
 ]
