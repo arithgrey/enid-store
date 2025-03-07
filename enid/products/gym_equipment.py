@@ -261,5 +261,4 @@ data = [
         "cost": 430,
         "primary": True
     },
-    
 ]
