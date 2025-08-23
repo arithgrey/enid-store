@@ -15,14 +15,20 @@ class ProducByCategorySlugViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['GET'])
     def get_by_category_slug(self, request, category_slug):
-        page_number = request.query_params.get('page', 1)
-        cache_key = f"product_{category_slug}_page_{page_number}"
+        # Usar request.GET para acceder a los parámetros de query
+        page_number = request.GET.get('page', 1)
+        # Actualizar la clave del cache para incluir el filtro de productos públicos
+        cache_key = f"product_{category_slug}_public_page_{page_number}"
         cache_data = cache.get(cache_key)
         if cache_data:
             return Response(cache_data)
 
         category = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(category=category).order_by("id")
+        # Filtrar solo productos públicos de la categoría
+        products = Product.objects.filter(
+            category=category, 
+            es_publico=True
+        ).order_by("id")
 
         page = self.paginate_queryset(products)
         if page is not None:
