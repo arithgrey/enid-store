@@ -27,6 +27,7 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')        
     user = models.ForeignKey(User, related_name='user_order', on_delete=models.CASCADE, null=True, blank=True)
     payment_on_delivery = models.BooleanField(default=False)
+    source = models.CharField(max_length=200, blank=True, null=True, default='main_landing', help_text="Landing page o fuente de origen de la orden")
     
     def __str__(self):
         return f"Order {self.id}"

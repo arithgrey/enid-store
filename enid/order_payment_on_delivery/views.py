@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from order.serializer import OrderSerializer
 from user.serializers.user_simple_validator import UserSimpleValidatorSerializer
 from address.serializers.address_simple_validator_serializers import AddressSimpleValidatorSerializer
+from .serializers import SourceValidatorSerializer
 from order.models import Order
 from address.models import Address
 from products.models import Product
@@ -34,15 +35,15 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
             user, _ = self.register_user(data)
             address = self.register_address(data)
             products = data["products"]
+            source = data.get('source', '')  # Obtener el campo source
 
             with transaction.atomic():
-                order = self.create_order_instance(address, user)
+                order = self.create_order_instance(address, user, source)  # Pasar source
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        
                     order_data = serializer.data                    
                     return Response(order_data, status=status.HTTP_201_CREATED)                    
-                    
                     
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
@@ -54,10 +55,18 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
 
 
     @transaction.atomic
-    def create_order_instance(self, address, user):
+    def create_order_instance(self, address, user, source=''):
         try:
-            order_instance = Order.objects.create(
-                shipping_address=address, user=user, payment_on_delivery=True)
+            create_kwargs = {
+                'shipping_address': address, 
+                'user': user, 
+                'payment_on_delivery': True
+            }
+            
+            if source:
+                create_kwargs['source'] = source
+            
+            order_instance = Order.objects.create(**create_kwargs)
             return order_instance
         
         except IntegrityError as integrity_error:            
@@ -132,6 +141,11 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
         address_serializer = AddressSimpleValidatorSerializer(data=data)
         if not address_serializer.is_valid():
             errors.update(address_serializer.errors)
+
+        # Validar el campo source
+        source_serializer = SourceValidatorSerializer(data=data)
+        if not source_serializer.is_valid():
+            errors.update(source_serializer.errors)
 
         products = data.get("products", [])
 

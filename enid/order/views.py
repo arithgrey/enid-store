@@ -40,7 +40,7 @@ class OrderViewSet(viewsets.ModelViewSet):
             products = data["products"]
 
             with transaction.atomic():
-                order = self.create_order_instance(address, user)
+                order = self.create_order_instance(address, user, data)
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})                                        
@@ -72,10 +72,12 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
     @transaction.atomic
-    def create_order_instance(self, address, user):
+    def create_order_instance(self, address, user, data=None):
         try:
             order_instance = Order.objects.create(
-                shipping_address=address, user=user)
+                shipping_address=address, 
+                user=user
+            )
             return order_instance
         
         except IntegrityError as integrity_error:            
