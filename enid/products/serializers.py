@@ -3,6 +3,7 @@ from rest_framework import serializers
 from products.models import Product
 from image.serializers import ImageSerializer
 from categories.serializers import CategorySerializer
+from categories.models import Category
 
 class ProductItemSerializer(serializers.ModelSerializer):
     category = CategorySerializer()     
@@ -16,12 +17,24 @@ class ProductSerializer(serializers.ModelSerializer):
     formatted_price = serializers.SerializerMethodField()
     formatted_cost = serializers.SerializerMethodField()
     formatted_weight = serializers.SerializerMethodField()
-    category = CategorySerializer()     
+    category = CategorySerializer(read_only=True)     
     
-
     class Meta:
         model = Product        
         fields = '__all__'
+    
+    def update(self, instance, validated_data):
+        # Manejar la actualización de categoría si se proporciona
+        if 'category' in self.initial_data:
+            try:
+                category_id = self.initial_data['category']
+                category = Category.objects.get(id=category_id)
+                instance.category = category
+            except (Category.DoesNotExist, ValueError, TypeError):
+                pass  # Si hay error, ignoramos el cambio de categoría
+        
+        # Actualizar los demás campos normalmente
+        return super().update(instance, validated_data)
     
     def get_short_name(self, obj):
         return obj.name[:82] if obj.name else ''
