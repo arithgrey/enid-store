@@ -33,7 +33,7 @@ class OrderPaymentOnDeliverySourceTestCase(APITestCase):
         self.assertEqual(response.data['source'], 'landing_page_principal')
     
     def test_create_order_without_source(self):
-        """Test crear orden sin campo source (debe funcionar)"""
+        """Test crear orden sin campo source (debe usar valor por defecto)"""
         data = {
             'name': 'María García',
             'street': 'Calle Secundaria 456',
@@ -43,11 +43,11 @@ class OrderPaymentOnDeliverySourceTestCase(APITestCase):
         
         response = self.client.post('/order-payment-on-delivery/pod/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        # Aceptar tanto None como string vacío para el campo source
-        self.assertIn(response.data.get('source'), [None, ''])
+        # Debe usar el valor por defecto del modelo
+        self.assertEqual(response.data['source'], 'main_landing')
     
     def test_create_order_with_empty_source(self):
-        """Test crear orden con source vacío"""
+        """Test crear orden con source vacío (debe usar valor por defecto)"""
         data = {
             'name': 'Carlos López',
             'street': 'Avenida Central 789',
@@ -58,7 +58,8 @@ class OrderPaymentOnDeliverySourceTestCase(APITestCase):
         
         response = self.client.post('/order-payment-on-delivery/pod/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['source'], '')
+        # Debe usar el valor por defecto del modelo cuando source está vacío
+        self.assertEqual(response.data['source'], 'main_landing')
     
     def test_create_order_with_long_source(self):
         """Test crear orden con source de 200 caracteres (debe funcionar)"""
@@ -112,7 +113,7 @@ class SourceFieldModelTestCase(TestCase):
         self.assertEqual(saved_order.source, 'landing_page_test')
     
     def test_order_source_field_null(self):
-        """Test que el campo source puede ser null"""
+        """Test que el campo source puede ser None (Django no usa default automáticamente)"""
         order = Order.objects.create(
             shipping_address=self.address,
             user=self.user,
@@ -121,10 +122,11 @@ class SourceFieldModelTestCase(TestCase):
         )
         
         saved_order = Order.objects.get(id=order.id)
+        # Django guarda None cuando se especifica explícitamente
         self.assertIsNone(saved_order.source)
     
     def test_order_source_field_blank(self):
-        """Test que el campo source puede estar en blanco"""
+        """Test que el campo source puede estar en blanco (Django no usa default automáticamente)"""
         order = Order.objects.create(
             shipping_address=self.address,
             user=self.user,
@@ -133,4 +135,65 @@ class SourceFieldModelTestCase(TestCase):
         )
         
         saved_order = Order.objects.get(id=order.id)
+        # Django guarda string vacío cuando se especifica explícitamente
         self.assertEqual(saved_order.source, '')
+    
+    def test_order_source_field_default_value(self):
+        """Test que el campo source usa el valor por defecto cuando no se especifica"""
+        order = Order.objects.create(
+            shipping_address=self.address,
+            user=self.user,
+            payment_on_delivery=True
+            # No especificar source
+        )
+        
+        saved_order = Order.objects.get(id=order.id)
+        # Debe usar el valor por defecto del modelo
+        self.assertEqual(saved_order.source, 'main_landing')
+    
+    def test_order_source_field_custom_value(self):
+        """Test que el campo source respeta valores personalizados válidos"""
+        custom_source = 'custom_landing_page'
+        order = Order.objects.create(
+            shipping_address=self.address,
+            user=self.user,
+            payment_on_delivery=True,
+            source=custom_source
+        )
+        
+        saved_order = Order.objects.get(id=order.id)
+        self.assertEqual(saved_order.source, custom_source)
+    
+    def test_order_source_field_edge_cases(self):
+        """Test casos edge del campo source"""
+        # Test con espacios en blanco
+        order1 = Order.objects.create(
+            shipping_address=self.address,
+            user=self.user,
+            payment_on_delivery=True,
+            source='   '
+        )
+        self.assertEqual(order1.source, '   ')  # Django guarda espacios cuando se especifica
+        
+        # Test con solo espacios
+        order2 = Order.objects.create(
+            shipping_address=self.address,
+            user=self.user,
+            payment_on_delivery=True,
+            source='   '
+        )
+        self.assertEqual(order2.source, '   ')  # Django guarda espacios cuando se especifica
+    
+    def test_order_source_field_default_behavior(self):
+        """Test que verifica el comportamiento real del valor por defecto"""
+        # Test sin especificar source en absoluto
+        order = Order.objects.create(
+            shipping_address=self.address,
+            user=self.user,
+            payment_on_delivery=True
+            # No especificar source
+        )
+        
+        saved_order = Order.objects.get(id=order.id)
+        # Solo aquí Django usa el valor por defecto
+        self.assertEqual(saved_order.source, 'main_landing')

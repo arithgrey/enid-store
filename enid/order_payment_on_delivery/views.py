@@ -57,12 +57,16 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
     @transaction.atomic
     def create_order_instance(self, address, user, source=''):
         try:
-            order_instance = Order.objects.create(
-                shipping_address=address, 
-                user=user, 
-                payment_on_delivery=True,
-                source=source  # Agregar el campo source
-            )
+            create_kwargs = {
+                'shipping_address': address, 
+                'user': user, 
+                'payment_on_delivery': True
+            }
+            
+            if source:
+                create_kwargs['source'] = source
+            
+            order_instance = Order.objects.create(**create_kwargs)
             return order_instance
         
         except IntegrityError as integrity_error:            
