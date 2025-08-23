@@ -9,6 +9,3 @@ app_name = 'order_payment_on_delivery'
 router.register(r'', views.OrderPaymentOnDeliveryViewSet, basename="order_payment_on_delivery")
 
 urlpatterns = router.urls
-urlpatterns = [
-    path('', include(router.urls)),       
-]
