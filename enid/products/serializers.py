@@ -23,6 +23,18 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product        
         fields = '__all__'
     
+    def create(self, validated_data):
+        # Manejar la creación de categoría si se proporciona un ID
+        if 'category' in self.initial_data:
+            try:
+                category_id = self.initial_data['category']
+                category = Category.objects.get(id=category_id)
+                validated_data['category'] = category
+            except (Category.DoesNotExist, ValueError, TypeError):
+                raise serializers.ValidationError({'category': 'La categoría especificada no existe'})
+        
+        return super().create(validated_data)
+    
     def update(self, instance, validated_data):
         # Manejar la actualización de categoría si se proporciona
         if 'category' in self.initial_data:
