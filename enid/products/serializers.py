@@ -16,7 +16,11 @@ class ProductItemSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
-        child=serializers.ImageField(max_length=1000000, allow_empty_file=False, use_url=False),
+        child=serializers.ImageField(
+            max_length=1000000, 
+            allow_empty_file=True,  # Permitir archivos vacíos temporalmente para debug
+            use_url=False
+        ),
         write_only=True,
         required=False
     )
@@ -25,7 +29,8 @@ class ProductSerializer(serializers.ModelSerializer):
     formatted_price = serializers.SerializerMethodField()
     formatted_cost = serializers.SerializerMethodField()
     formatted_weight = serializers.SerializerMethodField()
-    category = CategorySerializer(read_only=True)     
+    category = CategorySerializer(read_only=True)
+    category_slug = serializers.SerializerMethodField()
     
     class Meta:
         model = Product        
@@ -35,31 +40,55 @@ class ProductSerializer(serializers.ModelSerializer):
         uploaded_images = validated_data.pop('uploaded_images', [])
         main_image_index = validated_data.pop('main_image_index', 0)
         
-        # Manejar la creación de categoría si se proporciona un ID
-        if 'category' in self.initial_data:
-            try:
-                category_id = self.initial_data['category']
-                category = Category.objects.get(id=category_id)
-                validated_data['category'] = category
-            except (Category.DoesNotExist, ValueError, TypeError):
-                raise serializers.ValidationError({'category': 'La categoría especificada no existe'})
+        # Validación explícita de campos requeridos
+        required_fields = ['name', 'specific_name', 'price', 'category']
+        errors = {}
+        for field in required_fields:
+            if field not in self.initial_data or not self.initial_data[field]:
+                errors[field] = 'Este campo es requerido'
         
-        # Crear el producto
-        product = super().create(validated_data)
+        if errors:
+            raise serializers.ValidationError(errors)
         
-        # Obtener el content type para el producto
-        product_content_type = ContentType.objects.get_for_model(product)
+        # Validación de categoría
+        category_id = self.initial_data.get('category')
+        try:
+            category = Category.objects.get(id=category_id)
+            validated_data['category'] = category
+        except Category.DoesNotExist:
+            raise serializers.ValidationError({
+                'category': 'La categoría especificada no existe'
+            })
+        except (ValueError, TypeError):
+            raise serializers.ValidationError({
+                'category': 'ID de categoría inválido'
+            })
         
-        # Crear las imágenes asociadas
-        for index, image_file in enumerate(uploaded_images):
-            Image.objects.create(
-                content_type=product_content_type,
-                object_id=product.id,
-                image=image_file,
-                is_main=(index == main_image_index)
-            )
-        
-        return product
+        try:
+            # Crear el producto
+            product = super().create(validated_data)
+            
+            # Manejar imágenes
+            if uploaded_images:
+                product_content_type = ContentType.objects.get_for_model(product)
+                for index, image_file in enumerate(uploaded_images):
+                    if image_file:  # Verificar que el archivo no esté vacío
+                        Image.objects.create(
+                            content_type=product_content_type,
+                            object_id=product.id,
+                            image=image_file,
+                            is_main=(index == main_image_index)
+                        )
+            
+            return product
+            
+        except Exception as e:
+            print(f"Error creating product: {str(e)}")  # Debug
+            if hasattr(e, 'detail'):
+                raise serializers.ValidationError(e.detail)
+            raise serializers.ValidationError({
+                'error': str(e)
+            })
     
     def update(self, instance, validated_data):
         uploaded_images = validated_data.pop('uploaded_images', [])
@@ -107,3 +136,12 @@ class ProductSerializer(serializers.ModelSerializer):
     
     def get_formatted_cost(self, obj):
         return _('${:.2f}').format(obj.cost)
+
+    def get_category_slug(self, obj):
+        return obj.category.slug if obj.category else None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # Agregar URL para redirección
+        data['url'] = instance.get_absolute_url()
+        return data
