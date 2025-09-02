@@ -30,6 +30,9 @@ class Product(models.Model):
     min_stock = models.IntegerField(default=1)
     max_stock = models.IntegerField(default=100)
     
+    # Campo para control de visibilidad pública
+    es_publico = models.BooleanField(default=True, help_text='Indica si el producto es visible públicamente')
+    
     primary_components = models.ManyToManyField(
         'self',
         through='primary_components.ProductComponent',

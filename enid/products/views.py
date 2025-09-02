@@ -17,10 +17,14 @@ class ProductVuewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
           
-        cache_key = f'top_sellers_'
+        cache_key = f'top_sellers_public_'
         top_sellers = cache.get(cache_key)        
         if not top_sellers:            
-            top_sellers = Product.objects.filter(top_seller=True).order_by('id')
+            # Filtrar solo productos top_seller que sean públicos
+            top_sellers = Product.objects.filter(
+                top_seller=True, 
+                es_publico=True
+            ).order_by('id')
             cache.set(cache_key, top_sellers, timeout=86400)
         
         
@@ -36,7 +40,11 @@ class ProductVuewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], url_path='primary-products')
     def primary_products(self, request):        
-        primary_products = Product.objects.filter(primary=True).order_by('id')
+        # También filtrar productos primarios que sean públicos
+        primary_products = Product.objects.filter(
+            primary=True, 
+            es_publico=True
+        ).order_by('id')
         serializer = ProductSerializer(primary_products, many=True)        
         return Response(serializer.data)
 
@@ -47,15 +55,20 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'])    
     def get_by_slug(self, request, category_slug, product_slug):
         
-        cache_key = f"product_{category_slug}_{product_slug}_"
+        cache_key = f"product_{category_slug}_{product_slug}_public_"
         cached_data = cache.get(cache_key)
 
         if cached_data:             
             return Response(cached_data)
 
         category = get_object_or_404(Category, slug=category_slug)
+        # Solo permitir acceso a productos públicos
         product = get_object_or_404(
-            Product, category=category, slug=product_slug)
+            Product, 
+            category=category, 
+            slug=product_slug,
+            es_publico=True
+        )
 
         serializer = ProductSerializer(product)
         serializer_data= serializer.data
