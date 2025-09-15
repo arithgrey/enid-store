@@ -81,22 +81,29 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['GET'])    
     def get_by_slug(self, request, category_slug, product_slug):
-        
+        es_landing = request.query_params.get('es_landing', False) 
         cache_key = f"product_{category_slug}_{product_slug}_public_"
         cached_data = cache.get(cache_key)
 
-        if cached_data:             
+        if cached_data and not es_landing:             
             return Response(cached_data)
 
         category = get_object_or_404(Category, slug=category_slug)
-        # Solo permitir acceso a productos públicos
-        product = get_object_or_404(
-            Product, 
-            category=category, 
-            slug=product_slug,
-            es_publico=True
-        )
-
+        if es_landing:
+            product = get_object_or_404(    
+                Product, 
+                category=category, 
+                slug=product_slug
+            )
+        else:
+            # Solo permitir acceso a productos públicos
+            product = get_object_or_404(
+                Product, 
+                category=category, 
+                slug=product_slug,
+                es_publico=True
+            )
+                
         serializer = ProductSerializer(product)
         serializer_data= serializer.data
         cache.set(cache_key, serializer_data, timeout=86400)
