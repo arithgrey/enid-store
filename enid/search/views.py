@@ -1,9 +1,8 @@
-from rest_framework import viewsets, pagination
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import pagination
 from products.models import Product
-from rest_framework import status
 from products.serializers import ProductSerializer
 from search.serializers import SearchValidatorSerializer
 from django.db.models import Q
@@ -20,13 +19,11 @@ class ProductSeachByQViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['GET'])    
     def get_by_q(self, request, q):
-                
         data = {'q':q}
         serializer = SearchValidatorSerializer(data=data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
-        
         
         products = self.perform_search(q)
         products = products.order_by('id')
@@ -35,12 +32,15 @@ class ProductSeachByQViewSet(viewsets.ModelViewSet):
             serializer = ProductSerializer(page, many=True)    
             return self.get_paginated_response(serializer.data)
 
-
         serializer = ProductSerializer(products, many=True)    
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def perform_search(self,q):
-    
+    def perform_search(self, q):
+        # Si el término de búsqueda está vacío, devolver todos los productos
+        if not q or q.strip() == '':
+            return Product.objects.all()
+        
+        # Si hay un término de búsqueda, filtrar
         return Product.objects.filter(
             Q(specific_name__icontains=q) |        
             Q(name__icontains=q) |            

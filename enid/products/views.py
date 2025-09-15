@@ -7,12 +7,39 @@ from django.shortcuts import get_object_or_404
 from categories.models import Category
 from search.views import CustomPageNumberPagination
 from django.core.cache import cache
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ProductVuewSet(viewsets.ModelViewSet):
 
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     pagination_class = CustomPageNumberPagination
+
+    def create(self, request, *args, **kwargs):
+        try:
+            logger.info(f"Creating product with data: {request.data}")
+            
+            # Validar datos básicos
+            errors = {}
+            required_fields = ['name', 'specific_name', 'price', 'category']
+            for field in required_fields:
+                if field not in request.data:
+                    errors[field] = 'Este campo es requerido'
+            
+            if errors:
+                return Response(errors, status=400)
+            
+            response = super().create(request, *args, **kwargs)
+            logger.info(f"Product created successfully: {response.data}")
+            return response
+            
+        except Exception as e:
+            logger.error(f"Error creating product: {str(e)}")
+            if hasattr(e, 'detail'):
+                return Response(e.detail, status=400)
+            return Response({'error': str(e)}, status=400)
 
     @action(detail=False, methods=['GET'], url_path='top-sellers')
     def top_sellers(self, request):        
