@@ -81,12 +81,7 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['GET'])    
     def get_by_slug(self, request, category_slug, product_slug):
-        es_landing = request.query_params.get('es_landing', False)
-        print("*"*100)
-        print(f"es_landing: {es_landing}")
-        print(f"category_slug: {category_slug}")
-        print(f"product_slug: {product_slug}")
-        
+        es_landing = request.query_params.get('es_landing', False) 
         cache_key = f"product_{category_slug}_{product_slug}_public_"
         cached_data = cache.get(cache_key)
 
@@ -95,7 +90,6 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
 
         category = get_object_or_404(Category, slug=category_slug)
         if es_landing:
-            print("es_landing"*100)
             product = get_object_or_404(    
                 Product, 
                 category=category, 
