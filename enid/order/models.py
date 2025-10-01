@@ -24,10 +24,18 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(Address, related_name='order_address', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    delivery_date = models.DateTimeField(null=True, blank=True, help_text="Fecha estimada de entrega")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')        
     user = models.ForeignKey(User, related_name='user_order', on_delete=models.CASCADE, null=True, blank=True)
     payment_on_delivery = models.BooleanField(default=False)
     source = models.CharField(max_length=200, blank=True, null=True, default='main_landing', help_text="Landing page o fuente de origen de la orden")
+    
+    def save(self, *args, **kwargs):
+        # Si es una nueva orden y no tiene delivery_date, usar created_at
+        if not self.pk and not self.delivery_date:
+            from django.utils import timezone
+            self.delivery_date = timezone.now()
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"Order {self.id}"
