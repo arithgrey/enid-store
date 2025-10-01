@@ -40,10 +40,10 @@ def create_primary_components(sender, **kwargs):
             quantity = component['quantity']
             
             component_product = Product.objects.get(id=component_id)
-            ProductComponent.objects.create(
+            ProductComponent.objects.get_or_create(
                 kit=kit,
                 component=component_product,
-                quantity=quantity
+                defaults={'quantity': quantity}
             )
-            print(f"Componente primario creado para: {kit.name}")
+            print(f"Componente primario creado/verificado para: {kit.name}")
                 

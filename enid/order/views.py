@@ -18,6 +18,9 @@ from stripe.error import StripeError
 from django.db import IntegrityError
 from order.error_handling import ErrorResponse
 from django.conf import settings
+from django.db.models import Count
+from django.db.models.functions import TruncDate, Coalesce
+from datetime import datetime, timedelta
 import json
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -162,3 +165,54 @@ class OrderViewSet(viewsets.ModelViewSet):
             errors.update({"products": ["La orden debe tener al menos un producto."]})
 
         return errors
+
+    @action(detail=False, methods=['get'], url_path='delivery-stats')
+    def delivery_stats(self, request):
+        """
+        Endpoint para obtener estadísticas de entregas por fecha.
+        Si delivery_date es NULL, usa created_at como fecha de entrega.
+        Devuelve el conteo de órdenes agrupadas por fecha de entrega.
+        """
+        try:
+            # Obtener parámetros de fecha opcionales
+            start_date = request.query_params.get('start_date')
+            end_date = request.query_params.get('end_date')
+            
+            # Query base - todas las órdenes
+            queryset = Order.objects.all()
+            
+            # Usar Coalesce para tomar delivery_date si existe, sino created_at
+            # Anotar la fecha efectiva de entrega
+            queryset = queryset.annotate(
+                effective_delivery_date=Coalesce('delivery_date', 'created_at')
+            )
+            
+            # Filtrar por rango de fechas si se proporcionan
+            if start_date:
+                queryset = queryset.filter(effective_delivery_date__gte=start_date)
+            if end_date:
+                queryset = queryset.filter(effective_delivery_date__lte=end_date)
+            
+            # Agrupar por fecha (sin hora) y contar
+            stats = queryset.annotate(
+                delivery_day=TruncDate('effective_delivery_date')
+            ).values('delivery_day').annotate(
+                count=Count('id')
+            ).order_by('delivery_day')
+            
+            # Formatear respuesta
+            result = {}
+            for stat in stats:
+                date_str = stat['delivery_day'].strftime('%Y-%m-%d')
+                result[date_str] = stat['count']
+            
+            return Response({
+                'success': True,
+                'data': result
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
