@@ -264,3 +264,41 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Response([], status=status.HTTP_200_OK)
         except Exception as e:
             return Response([], status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'], url_path='update-delivery-date')
+    def update_delivery_date(self, request, pk=None):
+        """
+        Endpoint para actualizar la fecha de entrega de una orden específica.
+        """
+        try:
+            # Obtener la orden
+            order = self.get_object()
+            
+            # Validar que se proporcione delivery_date
+            new_delivery_date = request.data.get('delivery_date')
+            if not new_delivery_date:
+                return Response({
+                    'error': 'El campo delivery_date es requerido'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Actualizar la fecha de entrega
+            order.delivery_date = new_delivery_date
+            order.save()
+            
+            # Serializar y devolver la orden actualizada
+            serializer = OrderSerializer(order, context={'request': request})
+            
+            return Response({
+                'success': True,
+                'message': 'Fecha de entrega actualizada exitosamente',
+                'order': serializer.data
+            }, status=status.HTTP_200_OK)
+            
+        except Order.DoesNotExist:
+            return Response({
+                'error': 'Orden no encontrada'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
