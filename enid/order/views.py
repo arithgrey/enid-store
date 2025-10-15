@@ -216,3 +216,89 @@ class OrderViewSet(viewsets.ModelViewSet):
                 'success': False,
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['get'], url_path='orders-by-date')
+    def orders_by_date(self, request):
+        """
+        Endpoint para obtener órdenes por fecha específica.
+        Similar a order-search pero solo con filtro de fecha.
+        Devuelve el mismo formato que order-search para reutilizar componentes.
+        """
+        try:
+            # Obtener parámetro de fecha
+            delivery_date = request.query_params.get('delivery_date')
+            if not delivery_date:
+                return Response([], status=status.HTTP_200_OK)
+            
+            # Query base - todas las órdenes con prefetch de relaciones
+            queryset = Order.objects.select_related(
+                'shipping_address', 
+                'shipping_address__state',
+                'user'
+            ).prefetch_related(
+                'items__product'
+            )
+            
+            # Usar Coalesce para tomar delivery_date si existe, sino created_at
+            queryset = queryset.annotate(
+                effective_delivery_date=Coalesce('delivery_date', 'created_at')
+            )
+            
+            # Filtrar por fecha específica (sin hora)
+            from datetime import datetime, timedelta
+            target_date = datetime.strptime(delivery_date, '%Y-%m-%d').date()
+            next_day = target_date + timedelta(days=1)
+            
+            queryset = queryset.filter(
+                effective_delivery_date__date__gte=target_date,
+                effective_delivery_date__date__lt=next_day
+            ).order_by('-created_at')
+            
+            # Serializar usando el mismo serializer que order-search
+            from order_search.serializers import OrderSearchSerializer
+            serializer = OrderSearchSerializer(queryset, many=True, context={'request': request})
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+        except ValueError:
+            return Response([], status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response([], status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'], url_path='update-delivery-date')
+    def update_delivery_date(self, request, pk=None):
+        """
+        Endpoint para actualizar la fecha de entrega de una orden específica.
+        """
+        try:
+            # Obtener la orden
+            order = self.get_object()
+            
+            # Validar que se proporcione delivery_date
+            new_delivery_date = request.data.get('delivery_date')
+            if not new_delivery_date:
+                return Response({
+                    'error': 'El campo delivery_date es requerido'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Actualizar la fecha de entrega
+            order.delivery_date = new_delivery_date
+            order.save()
+            
+            # Serializar y devolver la orden actualizada
+            serializer = OrderSerializer(order, context={'request': request})
+            
+            return Response({
+                'success': True,
+                'message': 'Fecha de entrega actualizada exitosamente',
+                'order': serializer.data
+            }, status=status.HTTP_200_OK)
+            
+        except Order.DoesNotExist:
+            return Response({
+                'error': 'Orden no encontrada'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
