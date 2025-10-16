@@ -13,20 +13,37 @@ class OrderSearchViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     
-    def perform_search(self,request, user):
-        
+    def perform_search(self, request, user):
+        """
+        Busca órdenes con los siguientes filtros:
+        - q: búsqueda por teléfono o ID de orden
+        - email: filtra por email del usuario
+        - status: filtra por estado de la orden (default: pending)
+        """
         q = request.query_params.get('q', None)        
-        status = request.query_params.get('status', 'pending')                        
-
-        if q is None:            
-
-            return Order.objects.filter(
-                user=user, status=status).order_by('-created_at')[:30]
-
-        else:   
-            
-            return Order.objects.filter(                            
-                Q(shipping_address__phone_number__icontains=q )|                
-                Q(id__icontains=q),                   
-                user=user, status=status
+        email = request.query_params.get('email', None)
+        status = request.query_params.get('status', 'pending')
+        
+        # Construir query base con status
+        query_filters = Q(status=status)
+        
+        # Agregar filtro por email si se proporciona
+        if email:
+            query_filters &= Q(user__email__iexact=email)
+        else:
+            # Si no hay email en los parámetros, filtrar por usuario autenticado
+            query_filters &= Q(user=user)
+        
+        # Construir consulta
+        if q is None:
+            # Sin búsqueda de texto, solo filtros
+            return Order.objects.filter(query_filters).order_by('-created_at')[:30]
+        else:
+            # Con búsqueda de texto (teléfono o ID)
+            search_filters = (
+                Q(shipping_address__phone_number__icontains=q) |                
+                Q(id__icontains=q)
             )
+            return Order.objects.filter(
+                query_filters & search_filters
+            ).order_by('-created_at')[:30]

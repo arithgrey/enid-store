@@ -7,6 +7,7 @@ from address.models import Address
 from django.contrib.auth.models import User
 import re 
 import random
+import uuid
 
 class CommonsTest:
 
@@ -14,21 +15,32 @@ class CommonsTest:
         self.fake = Faker('es_MX')
 
     def create_fake_category(self):
-
-        return Category.objects.create(name=self.fake.word())
+        # Intenta reutilizar una categoría existente, o crea una nueva con nombre único
+        existing_category = Category.objects.first()
+        if existing_category:
+            return existing_category
+        
+        # Si no existe ninguna, crea una con nombre único usando UUID
+        category_name = f"test_category_{uuid.uuid4().hex[:8]}"
+        category = Category.objects.create(name=category_name)
+        return category
 
 
     def create_fake_product(self, **kwargs):
+        # Si no se especifica nada, intenta reutilizar un producto existente
+        if not kwargs:
+            existing_product = Product.objects.first()
+            if existing_product:
+                return existing_product
     
         defaults = {
-            'name': self.fake.word(),
+            'name': f"test_product_{uuid.uuid4().hex[:8]}",
             'price': self.fake.random_int(min=100, max=10000)
         }
         
         params = {**defaults, **kwargs}
         
         if 'category' not in params:
-            
             params['category'] = self.create_fake_category()
 
         product = Product.objects.create(**params)

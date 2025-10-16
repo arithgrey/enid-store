@@ -104,20 +104,43 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
             raise  
 
     def register_user(self, data):
-        
+        """
+        Registra o recupera un usuario.
+        - Si viene 'email' en data (usuario autenticado), lo usa para buscar/crear el usuario
+        - Si NO viene email (guest checkout), genera un email hash temporal
+        """
         name = data.get('name', '')
-        name_hash = hashlib.sha1(name.encode('utf-8')).hexdigest()
-        # solo para los casos donde es pay on delivery 
-        email = f"{name_hash[:10]}_{name.replace(' ', '').lower()}@gmail.com"
-        defaults = {
-            'username': email,
-            'first_name': name.split()[0],
-            'last_name': ' '.join(name.split()[1:])
-        }
+        user_email = data.get('email', None)  # ✅ NUEVO: Obtener email del usuario autenticado
         
-        # Create or get the user
-        user, created = User.objects.get_or_create(email=email, defaults=defaults)
-        return user, created
+        # Si hay email del usuario autenticado, usarlo
+        if user_email:
+            print(f"🔗 Usuario autenticado detectado con email: {user_email}")
+            defaults = {
+                'username': user_email,
+                'first_name': name.split()[0] if name else '',
+                'last_name': ' '.join(name.split()[1:]) if name and len(name.split()) > 1 else ''
+            }
+            # Buscar o crear usuario con el email real
+            user, created = User.objects.get_or_create(email=user_email, defaults=defaults)
+            if created:
+                print(f"✅ Nuevo usuario creado: {user_email}")
+            else:
+                print(f"✅ Usuario existente encontrado: {user_email}")
+            return user, created
+        
+        # Si NO hay email (guest checkout), usar comportamiento legacy con hash
+        else:
+            print(f"📝 Guest checkout - generando email temporal para: {name}")
+            name_hash = hashlib.sha1(name.encode('utf-8')).hexdigest()
+            email = f"{name_hash[:10]}_{name.replace(' ', '').lower()}@gmail.com"
+            defaults = {
+                'username': email,
+                'first_name': name.split()[0],
+                'last_name': ' '.join(name.split()[1:])
+            }
+            # Create or get the user
+            user, created = User.objects.get_or_create(email=email, defaults=defaults)
+            return user, created
 
 
     def register_address(self, address_data):
