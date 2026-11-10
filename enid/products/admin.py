@@ -1,5 +1,5 @@
 from django.contrib import admin
-from products.models import Product
-# Register your models here.
+from products.models import Product, PaymentMethod
 
 admin.site.register(Product)
+admin.site.register(PaymentMethod)

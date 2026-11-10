@@ -41,6 +41,11 @@ class Product(models.Model):
         blank=True,
         help_text='Productos primarios que componen este kit'
     )
+    payment_methods = models.ManyToManyField(
+        'PaymentMethod',
+        blank=True,
+        related_name='products'
+    )
 
     def __str__(self):
         return self.name
@@ -60,6 +65,14 @@ class Product(models.Model):
         Retorna los productos primarios que componen este kit con sus cantidades
         """
         return self.component_quantities.all()
+
+class PaymentMethod(models.Model):
+    slug = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
 
 @receiver(post_save, sender=Product)
 def clear_product_cache(sender, instance, **kwargs):
