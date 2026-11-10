@@ -1,6 +1,6 @@
 from django.utils.translation import gettext as _
 from rest_framework import serializers
-from products.models import Product
+from products.models import Product, PaymentMethod
 from image.serializers import ImageSerializer
 from categories.serializers import CategorySerializer
 from categories.models import Category
@@ -15,6 +15,12 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
+    payment_methods = serializers.SlugRelatedField(
+        many=True,
+        slug_field='slug',
+        queryset=PaymentMethod.objects.all(),
+        required=False
+    )
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(
             max_length=1000000, 

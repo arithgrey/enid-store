@@ -1,4 +1,5 @@
 from django.contrib import admin
+from products.views import PaymentMethodListView
 from django.views.static import serve
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
@@ -45,5 +46,6 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('uploads/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('primary-components/', include('primary_components.urls')),
+    path('payment-methods/', PaymentMethodListView.as_view(), name='payment-methods'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

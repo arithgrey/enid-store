@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from products.models import Product
+from rest_framework.serializers import ModelSerializer
+from products.models import Product, PaymentMethod
 from products.serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
 from categories.models import Category
@@ -109,3 +110,14 @@ class ProductSlugVuewSet(viewsets.ModelViewSet):
         cache.set(cache_key, serializer_data, timeout=86400)
 
         return Response(serializer_data)
+
+
+class PaymentMethodSerializer(ModelSerializer):
+    class Meta:
+        model = PaymentMethod
+        fields = ['slug', 'name']
+
+
+class PaymentMethodListView(generics.ListAPIView):
+    queryset = PaymentMethod.objects.all()
+    serializer_class = PaymentMethodSerializer
