@@ -50,6 +50,7 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
                     self.register_items_order(order, products)
                     serializer = OrderSerializer(order, context={'request': request})
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'error': 'No se pudo crear la orden.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
@@ -58,9 +59,21 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
             return Response(ErrorResponse.handle_exception(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def _validate_delivery_dates(self, data):
-        products = data.get('products', [])
-        requires_scheduling = any(p.get('allows_scheduled_delivery') for p in products)
-        has_service = any(p.get('allows_scheduled_delivery') and p.get('is_service') for p in products)
+        from products.models import Product as ProductModel
+        products_data = data.get('products', [])
+
+        requires_scheduling = False
+        has_service = False
+
+        for p_data in products_data:
+            try:
+                product = ProductModel.objects.get(id=p_data.get('id'))
+                if product.allows_scheduled_delivery:
+                    requires_scheduling = True
+                    if product.is_service:
+                        has_service = True
+            except ProductModel.DoesNotExist:
+                pass
 
         if not requires_scheduling:
             return None
@@ -84,6 +97,14 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
             except ValueError:
                 return {'delivery_date': 'Formato de fecha inválido. Use YYYY-MM-DD.'}
 
+        # Validate date format for single mode too
+        if not has_service:
+            from datetime import datetime
+            try:
+                datetime.strptime(delivery_date, '%Y-%m-%d')
+            except ValueError:
+                return {'delivery_date': 'Formato de fecha inválido. Use YYYY-MM-DD.'}
+
         return None
 
     @transaction.atomic
@@ -98,7 +119,9 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
             if source:
                 create_kwargs['source'] = source
             if delivery_date:
-                create_kwargs['delivery_date'] = datetime.strptime(delivery_date, '%Y-%m-%d')
+                from django.utils import timezone
+                naive_dt = datetime.strptime(delivery_date, '%Y-%m-%d')
+                create_kwargs['delivery_date'] = timezone.make_aware(naive_dt)
             if delivery_date_end:
                 create_kwargs['delivery_date_end'] = datetime.strptime(delivery_date_end, '%Y-%m-%d').date()
 
