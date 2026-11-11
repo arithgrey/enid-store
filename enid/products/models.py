@@ -46,6 +46,18 @@ class Product(models.Model):
         blank=True,
         related_name='products'
     )
+    allows_scheduled_delivery = models.BooleanField(
+        default=False,
+        help_text='El cliente puede seleccionar fecha de entrega en checkout'
+    )
+    is_service = models.BooleanField(
+        default=False,
+        help_text='Si True, el picker muestra selección de rango (inicio–fin)'
+    )
+    min_delivery_days = models.PositiveIntegerField(
+        default=1,
+        help_text='Días mínimos de anticipación que el cliente debe respetar al elegir fecha'
+    )
 
     def __str__(self):
         return self.name

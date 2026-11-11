@@ -25,6 +25,11 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     delivery_date = models.DateTimeField(null=True, blank=True, help_text="Fecha estimada de entrega")
+    delivery_date_end = models.DateField(
+        null=True,
+        blank=True,
+        help_text='Fecha fin de entrega — solo para órdenes de servicios con rango de fechas'
+    )
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')        
     user = models.ForeignKey(User, related_name='user_order', on_delete=models.CASCADE, null=True, blank=True)
     payment_on_delivery = models.BooleanField(default=False)
