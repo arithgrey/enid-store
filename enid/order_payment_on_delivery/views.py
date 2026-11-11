@@ -29,51 +29,85 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
         data = request.data
         errors = self.validatorSerializers(data=data)
         if errors:
-            return Response(errors, status=status.HTTP_400_BAD_REQUEST)    
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-        try:            
+        # Validar fechas de entrega si algún producto las requiere
+        date_errors = self._validate_delivery_dates(data)
+        if date_errors:
+            return Response(date_errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
             user, _ = self.register_user(data)
             address = self.register_address(data)
             products = data["products"]
-            source = data.get('source', '')  # Obtener el campo source
+            source = data.get('source', '')
+            delivery_date = data.get('delivery_date')
+            delivery_date_end = data.get('delivery_date_end')
 
             with transaction.atomic():
-                order = self.create_order_instance(address, user, source)  # Pasar source
+                order = self.create_order_instance(address, user, source, delivery_date, delivery_date_end)
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
-                    serializer = OrderSerializer(order, context={'request': request})                                        
-                    order_data = serializer.data                    
-                    return Response(order_data, status=status.HTTP_201_CREATED)                    
-                    
+                    serializer = OrderSerializer(order, context={'request': request})
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         except ValidationError as e:
             return Response({"errors": e.detail}, status=status.HTTP_400_BAD_REQUEST)
-        
-     
-        except Exception as e:            
+
+        except Exception as e:
             return Response(ErrorResponse.handle_exception(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def _validate_delivery_dates(self, data):
+        products = data.get('products', [])
+        requires_scheduling = any(p.get('allows_scheduled_delivery') for p in products)
+        has_service = any(p.get('allows_scheduled_delivery') and p.get('is_service') for p in products)
 
+        if not requires_scheduling:
+            return None
+
+        delivery_date = data.get('delivery_date')
+        delivery_date_end = data.get('delivery_date_end')
+
+        if not delivery_date:
+            return {'delivery_date': 'Este campo es requerido para productos con agendamiento de entrega.'}
+
+        if has_service and not delivery_date_end:
+            return {'delivery_date_end': 'Este campo es requerido para servicios con rango de fechas.'}
+
+        if has_service and delivery_date_end:
+            from datetime import datetime
+            try:
+                start = datetime.strptime(delivery_date, '%Y-%m-%d').date()
+                end = datetime.strptime(delivery_date_end, '%Y-%m-%d').date()
+                if end < start:
+                    return {'delivery_date_end': 'La fecha de fin debe ser mayor o igual a la fecha de inicio.'}
+            except ValueError:
+                return {'delivery_date': 'Formato de fecha inválido. Use YYYY-MM-DD.'}
+
+        return None
 
     @transaction.atomic
-    def create_order_instance(self, address, user, source=''):
+    def create_order_instance(self, address, user, source='', delivery_date=None, delivery_date_end=None):
         try:
+            from datetime import datetime
             create_kwargs = {
-                'shipping_address': address, 
-                'user': user, 
+                'shipping_address': address,
+                'user': user,
                 'payment_on_delivery': True
             }
-            
             if source:
                 create_kwargs['source'] = source
-            
-            order_instance = Order.objects.create(**create_kwargs)
-            return order_instance
-        
-        except IntegrityError as integrity_error:            
+            if delivery_date:
+                create_kwargs['delivery_date'] = datetime.strptime(delivery_date, '%Y-%m-%d')
+            if delivery_date_end:
+                create_kwargs['delivery_date_end'] = datetime.strptime(delivery_date_end, '%Y-%m-%d').date()
+
+            return Order.objects.create(**create_kwargs)
+
+        except IntegrityError as integrity_error:
             print(f"Error de integridad al crear la instancia de Order: {integrity_error}")
             return None
         except Exception as e:
-            
             print(f"Error al crear la instancia de Order: {e}")
             return None
 
