@@ -16,6 +16,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from django.db import IntegrityError
 from order.error_handling import ErrorResponse
+from notifications.client import notify_order
 import json
 import hashlib
 
@@ -48,6 +49,7 @@ class OrderPaymentOnDeliveryViewSet(viewsets.ModelViewSet):
                 order = self.create_order_instance(address, user, source, delivery_date, delivery_date_end)
                 if isinstance(order, Order):
                     self.register_items_order(order, products)
+                    notify_order('new_order', order)
                     serializer = OrderSerializer(order, context={'request': request})
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': 'No se pudo crear la orden.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -22,6 +22,7 @@ from django.db.models import Count
 from django.db.models.functions import TruncDate, Coalesce
 from datetime import datetime, timedelta
 import json
+from notifications.client import notify_order
 
 class OrderViewSet(viewsets.ModelViewSet):
 
@@ -50,9 +51,9 @@ class OrderViewSet(viewsets.ModelViewSet):
                     stripe_payment = StripePayment()
                     charge_result = stripe_payment.stripeCharge(data=data, order=order)                    
                                         
-                    if charge_result['status'] == 'success':          
+                    if charge_result['status'] == 'success':
                         order_data = serializer.data
-                        
+                        notify_order('new_order', order)
                         return Response(order_data, status=status.HTTP_201_CREATED)                    
                     else:      
                         
