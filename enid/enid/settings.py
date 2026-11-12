@@ -71,7 +71,8 @@ INSTALLED_APPS = [
     'order_user',
     'order_payment_on_delivery',
     'item_order',
-    'search'
+    'search',
+    'revenue',
 ]
 
 SWAGGER_SETTINGS = {

@@ -47,5 +47,6 @@ urlpatterns = [
     path('uploads/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
     path('primary-components/', include('primary_components.urls')),
     path('payment-methods/', PaymentMethodListView.as_view(), name='payment-methods'),
+    path('revenue/', include('revenue.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
