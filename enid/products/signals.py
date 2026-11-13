@@ -1,5 +1,6 @@
 import os
-from django.db.models.signals import post_migrate
+import logging
+from django.db.models.signals import post_migrate, post_save
 from django.dispatch import receiver
 from products.models import Product
 from django.utils.text import slugify
@@ -7,6 +8,8 @@ from categories.models import Category
 from product_group.models import ProductGroup
 from initial_products_images import ImagesLoader
 from decouple import config
+
+logger = logging.getLogger(__name__)
 
 DATA_MODULES = {
     0: 'products.gym_equipment',
@@ -58,3 +61,28 @@ def create_products(sender, **kwargs):
                 
     images = ImagesLoader()
     images.load_products_images(list_product)
+
+# ---------------------------------------------------------------------------
+# Máquina de certificación: promoción automática published -> candidate
+# al detectar una orden con ingreso real (status in RECIBIDOS).
+# ---------------------------------------------------------------------------
+from order.models import Order
+from item_order.models import ItemOrder
+from products.services import promote_products_to_candidate
+
+
+@receiver(post_save, sender=Order)
+def _promote_on_order_save(sender, instance, **kwargs):
+    try:
+        promote_products_to_candidate(instance)
+    except Exception:
+        # No romper el guardado de la orden. Sin PII: solo el pk.
+        logger.error("Fallo promoviendo productos a candidate (order=%s)", instance.pk)
+
+
+@receiver(post_save, sender=ItemOrder)
+def _promote_on_item_order_save(sender, instance, **kwargs):
+    try:
+        promote_products_to_candidate(instance.order)
+    except Exception:
+        logger.error("Fallo promoviendo productos a candidate (item_order=%s)", instance.pk)
