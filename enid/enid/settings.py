@@ -89,8 +89,14 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        
+
     ],
+}
+
+# Llave de firma JWT compartida con service-oauth (oauth emite, enid-store valida).
+# Debe coincidir con JWT_SIGNING_KEY de oauth para que los tokens sean válidos aquí.
+SIMPLE_JWT = {
+    'SIGNING_KEY': config('JWT_SIGNING_KEY', default=SECRET_KEY),
 }
 
  
