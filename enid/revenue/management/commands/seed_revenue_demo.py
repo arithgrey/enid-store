@@ -22,11 +22,9 @@ from django.utils import timezone
 from order.models import Order
 from item_order.models import ItemOrder
 from products.models import Product
+from revenue.constants import RECIBIDOS, PENDIENTES
 
 SEED_SOURCE = "revenue_demo_seed"
-
-RECIBIDOS = ["payment_confirmed", "delivered", "cash_on_delivery"]
-PENDIENTES = ["pending", "preparing", "ready_for_shipping", "in_transit", "ready_for_pickup"]
 
 # (mes, status, [(product_index, quantity), ...])
 # product_index indexa la lista ordenada de productos disponibles.

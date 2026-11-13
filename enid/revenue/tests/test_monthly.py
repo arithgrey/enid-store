@@ -11,10 +11,9 @@ from products.models import Product
 from categories.models import Category
 from datetime import datetime
 import pytz
+from revenue.constants import RECIBIDOS, PENDIENTES
 
 
-RECIBIDOS = ['payment_confirmed', 'delivered', 'cash_on_delivery']
-PENDIENTES = ['pending', 'preparing', 'ready_for_shipping', 'in_transit', 'ready_for_pickup']
 EXCLUIDOS  = ['returned', 'refund_processed', 'canceled']
 
 

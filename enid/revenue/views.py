@@ -11,9 +11,7 @@ from revenue.serializers import (
     ComparisonSerializer, ByProductSerializer,
 )
 from decimal import Decimal
-
-RECIBIDOS = ['payment_confirmed', 'delivered', 'cash_on_delivery']
-PENDIENTES = ['pending', 'preparing', 'ready_for_shipping', 'in_transit', 'ready_for_pickup']
+from revenue.constants import RECIBIDOS, PENDIENTES, ALL_COUNTED
 
 
 def _monthly_sums(year, group):
@@ -76,9 +74,6 @@ class SummaryRevenueView(APIView):
             'total': recibidos + pendientes,
         }
         return Response(SummaryRevenueSerializer(data).data)
-
-
-ALL_COUNTED = RECIBIDOS + PENDIENTES
 
 
 def _year_total_by_month(year, statuses):
