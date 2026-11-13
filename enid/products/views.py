@@ -1,7 +1,9 @@
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
+from django.utils import timezone
 from products.models import Product, PaymentMethod
 from products.serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
@@ -73,8 +75,32 @@ class ProductVuewSet(viewsets.ModelViewSet):
             primary=True, 
             es_publico=True
         ).order_by('id')
-        serializer = ProductSerializer(primary_products, many=True)        
+        serializer = ProductSerializer(primary_products, many=True)
         return Response(serializer.data)
+
+    ALLOWED_TRANSITIONS = {
+        'published': {'candidate', 'certified'},
+        'candidate': {'certified', 'published'},
+        'certified': {'candidate', 'published'},
+    }
+
+    @action(detail=True, methods=['patch'], url_path='certification',
+            permission_classes=[IsAdminUser])
+    def certification(self, request, pk=None):
+        product = self.get_object()
+        target = request.data.get('certification')
+        valid = dict(Product.CERTIFICATION_CHOICES)
+        if target not in valid:
+            return Response({'error': 'Estado de certificación inválido'}, status=400)
+        if target != product.certification and target not in self.ALLOWED_TRANSITIONS[product.certification]:
+            return Response(
+                {'error': f'Transición no permitida: {product.certification} → {target}'},
+                status=400,
+            )
+        product.certification = target
+        product.certified_at = timezone.now() if target == 'certified' else None
+        product.save(update_fields=['certification', 'certified_at'])
+        return Response(ProductSerializer(product).data)
 
 class ProductSlugVuewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
