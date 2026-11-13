@@ -59,6 +59,20 @@ class Product(models.Model):
         help_text='Días mínimos de anticipación que el cliente debe respetar al elegir fecha'
     )
 
+    CERTIFICATION_CHOICES = (
+        ('published', 'Publicado (A/B test)'),
+        ('candidate', 'Candidato a certificado'),
+        ('certified', 'Certificado'),
+    )
+    certification = models.CharField(
+        max_length=20, choices=CERTIFICATION_CHOICES, default='published',
+        help_text='Estado de certificación: published→candidate→certified',
+    )
+    certified_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text='Fecha en que el producto fue certificado (se limpia al revertir)',
+    )
+
     def __str__(self):
         return self.name
     
