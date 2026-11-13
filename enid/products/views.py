@@ -4,6 +4,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
 from django.utils import timezone
+from django.db import transaction
+from order.models import Order
+from item_order.models import ItemOrder
+from revenue.constants import RECIBIDOS
 from products.models import Product, PaymentMethod
 from products.serializers import ProductSerializer
 from django.shortcuts import get_object_or_404
@@ -101,6 +105,37 @@ class ProductVuewSet(viewsets.ModelViewSet):
         product.certified_at = timezone.now() if target == 'certified' else None
         product.save(update_fields=['certification', 'certified_at'])
         return Response(ProductSerializer(product).data)
+
+    @action(detail=False, methods=['post'], url_path='manual-sale',
+            permission_classes=[IsAdminUser])
+    def manual_sale(self, request):
+        items = request.data.get('items') or []
+        status_val = request.data.get('status', 'delivered')
+        sale_date = request.data.get('sale_date') or None
+
+        if not items:
+            return Response({'error': 'Se requiere al menos un item'}, status=400)
+        if status_val not in RECIBIDOS:
+            return Response(
+                {'error': f'status inválido; usar uno de {RECIBIDOS}'}, status=400
+            )
+        # Validar productos antes de crear nada
+        resolved = []
+        for it in items:
+            product = Product.objects.filter(pk=it.get('product')).first()
+            if not product:
+                return Response({'error': 'Producto inexistente'}, status=400)
+            resolved.append((product, it.get('quantity', 1), it.get('price')))
+
+        with transaction.atomic():
+            order = Order.objects.create(
+                status=status_val, source='admin_manual', sale_date=sale_date
+            )
+            for product, quantity, price in resolved:
+                ItemOrder.objects.create(
+                    order=order, product=product, quantity=quantity, price=price
+                )
+        return Response({'order_id': order.id, 'status': order.status}, status=201)
 
 class ProductSlugVuewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
