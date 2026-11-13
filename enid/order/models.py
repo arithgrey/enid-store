@@ -34,7 +34,12 @@ class Order(models.Model):
     user = models.ForeignKey(User, related_name='user_order', on_delete=models.CASCADE, null=True, blank=True)
     payment_on_delivery = models.BooleanField(default=False)
     source = models.CharField(max_length=200, blank=True, null=True, default='main_landing', help_text="Landing page o fuente de origen de la orden")
-    
+    sale_date = models.DateTimeField(
+        null=True, blank=True,
+        help_text="Fecha real de la venta (para ventas manuales/históricas). "
+                  "Si es nulo se usa created_at.",
+    )
+
     def save(self, *args, **kwargs):
         # Si es una nueva orden y no tiene delivery_date, usar created_at
         if not self.pk and not self.delivery_date:

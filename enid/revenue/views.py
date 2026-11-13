@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from django.db.models import Sum, F, DecimalField
-from django.db.models.functions import ExtractMonth
+from django.db.models.functions import ExtractMonth, Coalesce
 from django.utils import timezone
 from item_order.models import ItemOrder
 from products.models import Product
@@ -17,8 +17,9 @@ from revenue.constants import RECIBIDOS, PENDIENTES, ALL_COUNTED
 def _monthly_sums(year, group):
     return (
         ItemOrder.objects
-        .filter(order__created_at__year=year, order__status__in=group)
-        .annotate(month=ExtractMonth('order__created_at'))
+        .annotate(effective_date=Coalesce('order__sale_date', 'order__created_at'))
+        .filter(effective_date__year=year, order__status__in=group)
+        .annotate(month=ExtractMonth('effective_date'))
         .values('month')
         .annotate(total=Sum(F('price') * F('quantity'), output_field=DecimalField()))
     )
@@ -57,9 +58,10 @@ class SummaryRevenueView(APIView):
         def _sum(statuses):
             result = (
                 ItemOrder.objects
+                .annotate(effective_date=Coalesce('order__sale_date', 'order__created_at'))
                 .filter(
-                    order__created_at__year=year,
-                    order__created_at__month=month,
+                    effective_date__year=year,
+                    effective_date__month=month,
                     order__status__in=statuses,
                 )
                 .aggregate(total=Sum(F('price') * F('quantity'), output_field=DecimalField()))
@@ -80,8 +82,9 @@ def _year_total_by_month(year, statuses):
     """Returns {month: total} for a given year and status list."""
     qs = (
         ItemOrder.objects
-        .filter(order__created_at__year=year, order__status__in=statuses)
-        .annotate(month=ExtractMonth('order__created_at'))
+        .annotate(effective_date=Coalesce('order__sale_date', 'order__created_at'))
+        .filter(effective_date__year=year, order__status__in=statuses)
+        .annotate(month=ExtractMonth('effective_date'))
         .values('month')
         .annotate(total=Sum(F('price') * F('quantity'), output_field=DecimalField()))
     )
@@ -120,9 +123,10 @@ class ByProductRevenueView(APIView):
 
         rows = list(
             ItemOrder.objects
+            .annotate(effective_date=Coalesce('order__sale_date', 'order__created_at'))
             .filter(
-                order__created_at__year=year,
-                order__created_at__month=month,
+                effective_date__year=year,
+                effective_date__month=month,
                 order__status__in=ALL_COUNTED,
             )
             .values('product_id')
