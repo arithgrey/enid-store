@@ -8,6 +8,7 @@ from django.db import transaction
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from order.models import Order
+from address.models import Address
 from item_order.models import ItemOrder
 from revenue.constants import RECIBIDOS
 from products.models import Product, PaymentMethod
@@ -159,6 +160,10 @@ class ProductVuewSet(viewsets.ModelViewSet):
         items = request.data.get('items') or []
         status_val = request.data.get('status', 'delivered')
         sale_date = request.data.get('sale_date') or None
+        customer_id = request.data.get('customer_id')
+        customer_email = request.data.get('customer_email')
+        customer_name = request.data.get('customer_name', '')
+        address_data = request.data.get('address')
 
         if not items:
             return Response({'error': 'Se requiere al menos un item'}, status=400)
@@ -166,6 +171,53 @@ class ProductVuewSet(viewsets.ModelViewSet):
             return Response(
                 {'error': f'status inválido; usar uno de {RECIBIDOS}'}, status=400
             )
+
+        # Resolver usuario
+        UserModel = get_user_model()
+        user = None
+        if customer_id is not None:
+            user = UserModel.objects.filter(pk=customer_id).first()
+            if user is None:
+                return Response({'error': f'Usuario {customer_id} no existe'}, status=400)
+        elif customer_email is not None:
+            if not customer_email:
+                return Response({'error': 'customer_email no puede ser vacío'}, status=400)
+            parts = customer_name.split(' ', 1)
+            first_name = parts[0] if parts else ''
+            last_name = parts[1] if len(parts) > 1 else ''
+            user, _ = UserModel.objects.get_or_create(
+                email=customer_email,
+                defaults={
+                    'username': customer_email,
+                    'first_name': first_name,
+                    'last_name': last_name,
+                },
+            )
+
+        # Resolver dirección
+        ADDRESS_REQUIRED = ['street', 'number', 'interior_number', 'colony',
+                             'delegation_or_municipality', 'city', 'state',
+                             'postal_code', 'phone_number']
+        shipping_address = None
+        if address_data is not None:
+            missing = [f for f in ADDRESS_REQUIRED if not address_data.get(f)]
+            if missing:
+                return Response(
+                    {'error': f'Campos de dirección requeridos faltantes: {missing}'}, status=400
+                )
+            shipping_address = Address(
+                street=address_data['street'],
+                number=address_data['number'],
+                interior_number=address_data['interior_number'],
+                colony=address_data['colony'],
+                delegation_or_municipality=address_data['delegation_or_municipality'],
+                city=address_data['city'],
+                state_id=address_data['state'],
+                postal_code=address_data['postal_code'],
+                phone_number=address_data['phone_number'],
+                additional_details=address_data.get('additional_details', ''),
+            )
+
         # Validar productos antes de crear nada
         resolved = []
         for it in items:
@@ -175,14 +227,26 @@ class ProductVuewSet(viewsets.ModelViewSet):
             resolved.append((product, it.get('quantity', 1), it.get('price')))
 
         with transaction.atomic():
+            if shipping_address is not None:
+                shipping_address.save()
             order = Order.objects.create(
-                status=status_val, source='admin_manual', sale_date=sale_date
+                status=status_val,
+                source='admin_manual',
+                sale_date=sale_date,
+                user=user,
+                shipping_address=shipping_address,
             )
             for product, quantity, price in resolved:
                 ItemOrder.objects.create(
                     order=order, product=product, quantity=quantity, price=price
                 )
-        return Response({'order_id': order.id, 'status': order.status}, status=201)
+
+        return Response({
+            'order_id': order.id,
+            'status': order.status,
+            'customer_id': user.id if user else None,
+            'customer_email': user.email if user else None,
+        }, status=201)
 
 class ProductSlugVuewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
