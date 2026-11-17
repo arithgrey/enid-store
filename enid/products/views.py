@@ -5,6 +5,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.serializers import ModelSerializer
 from django.utils import timezone
 from django.db import transaction
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 from order.models import Order
 from item_order.models import ItemOrder
 from revenue.constants import RECIBIDOS
@@ -105,6 +107,51 @@ class ProductVuewSet(viewsets.ModelViewSet):
         product.certified_at = timezone.now() if target == 'certified' else None
         product.save(update_fields=['certification', 'certified_at'])
         return Response(ProductSerializer(product).data)
+
+    @action(detail=False, methods=['GET'], url_path='clientes',
+            permission_classes=[IsAdminUser])
+    def clientes(self, request):
+        q = request.query_params.get('q', '').strip()
+        if not q:
+            return Response({'error': 'El parámetro q es requerido'}, status=400)
+
+        UserModel = get_user_model()
+        users = UserModel.objects.filter(
+            Q(email__icontains=q) |
+            Q(first_name__icontains=q) |
+            Q(last_name__icontains=q)
+        )[:20]
+
+        result = []
+        for u in users:
+            last_order = Order.objects.filter(
+                user=u, shipping_address__isnull=False
+            ).order_by('-created_at').first()
+
+            addr = None
+            if last_order and last_order.shipping_address:
+                a = last_order.shipping_address
+                addr = {
+                    'street': a.street,
+                    'number': a.number,
+                    'interior_number': a.interior_number,
+                    'colony': a.colony,
+                    'delegation_or_municipality': a.delegation_or_municipality,
+                    'city': a.city,
+                    'state': a.state_id,
+                    'postal_code': a.postal_code,
+                    'phone_number': a.phone_number,
+                    'additional_details': a.additional_details or '',
+                }
+
+            result.append({
+                'id': u.id,
+                'email': u.email,
+                'name': f'{u.first_name} {u.last_name}'.strip(),
+                'last_address': addr,
+            })
+
+        return Response(result)
 
     @action(detail=False, methods=['post'], url_path='manual-sale',
             permission_classes=[IsAdminUser])
