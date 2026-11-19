@@ -8,12 +8,14 @@ services:
     image: ${SERVICENAME}_service
     container_name: ${SERVICENAME}_service
     ports:
-      - "8085:8080"
-      - "5678:5678"
+      - "127.0.0.1:8085:8080"
+      - "127.0.0.1:5678:5678"
     env_file:
       - .env
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
+      # Único interruptor dev/prod (ver settings.py). Default dev local.
+      - APP_ENV=${APP_ENV:-dev}
       - NOTIFICATIONS_SERVICE_URL=http://service-notifications_service:8080
     depends_on:
       - redis
@@ -37,7 +39,7 @@ services:
     container_name: ${SERVICENAME}_postgres
     image: postgres:alpine
     ports:
-      - "5434:5432"
+      - "127.0.0.1:5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
@@ -55,7 +57,7 @@ services:
       context: .
       dockerfile: Dockerfile.locust
     ports:
-      - "8089:8089"
+      - "127.0.0.1:8089:8089"
     volumes:
       - ./locust:/mnt/locust/test
     command: ["locust", "-f", "/mnt/locust/test/locustfile.py", "--host", "http://app:8085"]

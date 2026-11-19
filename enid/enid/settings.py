@@ -26,9 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = config('SECRET_KEY', default='')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+# Único interruptor dev/prod. Default 'prod' (falla cerrado: DEBUG=False).
+APP_ENV = config('APP_ENV', default='prod')
+DEBUG = APP_ENV == 'dev'
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
+# '*' aprobado: el servicio solo es alcanzable vía nginx (puertos ligados a 127.0.0.1),
+# y se sirve por IP, dominio o localhost sin tocar config.
+ALLOWED_HOSTS = ['*']
 
 FORCE_SCRIPT_NAME = '/api/enid'
 USE_X_FORWARDED_HOST = True
