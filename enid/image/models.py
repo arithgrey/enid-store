@@ -1,7 +1,6 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.conf import settings
 from autoslug import AutoSlugField
 
 class Image(models.Model):
@@ -20,7 +19,7 @@ class Image(models.Model):
         return self.title or f"Imagen {self.id}"
 
     def get_image_url(self):
-        
-        if settings.DOMAIN:                        
-            return f"{settings.DOMAIN}{self.image.url}"
+        # Ruta relativa: el navegador la resuelve contra el origen de la página
+        # (IP, dominio o localhost); un host fijo rompe las imágenes fuera de él.
+        return self.image.url
 
